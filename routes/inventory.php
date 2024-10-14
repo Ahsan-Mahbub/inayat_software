@@ -50,7 +50,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::get('create', [RequisitionController::class, 'create'])->name('requisition.create');
         Route::post('store', [RequisitionController::class, 'store'])->name('requisition.store');
         Route::get('edit/{id}', [RequisitionController::class, 'edit'])->name('requisition.edit');
-        Route::post('update', [RequisitionController::class, 'update'])->name('requisition.update');
+        Route::post('update/{id}', [RequisitionController::class, 'update'])->name('requisition.update');
         Route::delete('destroy/{id}', [RequisitionController::class, 'destroy'])->name('requisition.destroy');
         Route::get('/search', [RequisitionController::class, 'search'])->name('requisition.search');
 
@@ -58,7 +58,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::get('active/{id}', [RequisitionController::class, 'requisitionActive'])->name('requisition.active');
         Route::get('deactive/{id}', [RequisitionController::class, 'requisitionDeActive'])->name('requisition.deactive');
 
-        Route::get('/requisition-search-product', [RequisitionController::class, 'getSearchProduct']);
+        Route::get('/requisition-search-product', [RequisitionController::class, 'getSearchProduct'])->name('requisition.search.product');
         Route::post('/get-product-details', [RequisitionController::class, 'getProductDetails']);
 
         Route::post('get-requisition', [RequisitionController::class, 'getRequisitionId'])->name('get-requisition');

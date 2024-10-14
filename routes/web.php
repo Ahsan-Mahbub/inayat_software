@@ -103,6 +103,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::get('/search', [ProductController::class, 'search'])->name('product.search');
         Route::get('print', [ProductController::class, 'productListPrint'])->name('product.print');
         Route::get('/print-search', [ProductController::class, 'printSearch'])->name('product.print.search');
+        Route::get('/export-product', [ProductController::class, 'exportProduct'])->name('product.export');
+        Route::get('/export-product-list', [ProductController::class, 'exportProductList'])->name('product.exportlist');
     });
     //Barcode Route
     Route::group(['prefix' => 'barcode'], function () {

@@ -26,6 +26,9 @@
                     @isset(auth()->user()->role->permission['permission']['product']['print'])
                     <a href="{{route('product.print')}}" class="btn btn-dark btn-sm waves-effect waves-light">Print Product</a>
                     @endisset
+                    @isset(auth()->user()->role->permission['permission']['product']['export'])
+                    <a href="{{route('product.export')}}" class="btn btn-warning btn-sm waves-effect waves-light">Product Export</a>
+                    @endisset
                 </div>
 
                 <form method="get" action="{{route('product.search')}}">
@@ -56,6 +59,7 @@
                                 <th>S/N</th>
                                 <th>Name/Code</th>
                                 <th>Image</th>
+                                <th>QR Code</th>
                                 <th>Category</th>
                                 <th>Action</th>
                             </tr>
@@ -72,6 +76,8 @@
                                 <td>{{$product->sku}}</td>
                                 <td><img style="width: auto; height: 100px;"
                                     src="{{ $product->image ? '/' . $product->image : '/demo.svg' }}"></td>
+                                <td><img style="width: auto; height: 100px;"
+                                    src="{{ $product->qr_code ? '/' . $product->qr_code : '/demo.svg' }}"></td>
                                 <td>{{$product -> category ? $product -> category ->  category_name : ''}} </td>
                                 <td>
                                     <form action="{{ route('product.destroy', $product->id) }}" method="post"

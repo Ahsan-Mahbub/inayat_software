@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Purchase;
+use App\Models\PurchaseReturn;
 use App\Models\PurchaseProduct;
+use App\Models\Sale;
+use App\Models\SaleReturn;
+use App\Models\SaleProduct;
 use App\Models\Supplier;
 use App\Models\Product;
 use App\Models\Method;
@@ -25,7 +29,7 @@ class PurchaseController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -57,7 +61,7 @@ class PurchaseController extends Controller
         {
             $requisitions = Requisition::whereNotIn('id', $purchase_requisitions)->where('status',1)->get();
         }else{
-            $requisitions = Requisition::whereNotIn('id', $purchase_requisitions)->where('creator_id', Auth::user()->role_id)->where('status',1)->get();
+            $requisitions = Requisition::whereNotIn('id', $purchase_requisitions)->where('creator_id', Auth::user()->id)->where('status',1)->get();
         }
         return view('backend.purchase.purchase.requisition_purchase', compact('suppliers','methods','categories', 'requisitions'));
     }
@@ -210,7 +214,7 @@ class PurchaseController extends Controller
     {
         $search = $request->search;
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
         
@@ -368,7 +372,14 @@ class PurchaseController extends Controller
 
         $invoice_product = PurchaseProduct::where('product_id', $search_product)->where('unit_id', $search_unit)->orderBy('id','desc')->first();
 
-        return view('backend.purchase.purchase.get-product', compact('products','units','search_product','search_unit','invoice_product'));
+        $purchase_product = PurchaseProduct::where('product_id', $search_product)->where('unit_id', $search_unit)->sum('qty');
+        $purchase_return = PurchaseReturn::where('product_id', $search_product)->where('unit_id', $search_unit)->sum('qty');
+        $sale_product = SaleProduct::where('product_id', $search_product)->where('unit_id', $search_unit)->sum('qty');
+        $sale_return = SaleReturn::where('product_id', $search_product)->where('unit_id', $search_unit)->sum('qty');
+
+        $total_stock = ($purchase_product + $sale_return) - ($sale_product + $purchase_return);
+
+        return view('backend.purchase.purchase.get-product', compact('products','units','search_product','search_unit','invoice_product','total_stock'));
     }
 
     public function updateProductQty(Request $request, $id)

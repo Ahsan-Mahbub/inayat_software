@@ -72,6 +72,7 @@
                                     <th>S/N</th>
                                     <th>Date</th>
                                     <th>Requisitor</th>
+                                    <th>Editor</th>
                                     <th>Quotation Number</th>
                                     <th>Supplier Name</th>
                                     <th>Status</th>
@@ -94,6 +95,7 @@
                                             {{$date}}
                                         </td>
                                         <td>{{$requisition->creator ? $requisition->creator->name : 'N/A'}}</td>
+                                        <td>{{$requisition->editor ? $requisition->editor->name : 'N/A'}}</td>
                                         <td>{{$requisition -> requisition_number}}</td>
                                         <td>{{$requisition->supplier ? $requisition->supplier->supplier_name : 'N/A'}}</td>
                                         <td>

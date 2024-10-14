@@ -77,6 +77,7 @@
                                     <th>Client Name</th>
                                     <th>Total Amount</th>
                                     <th>Paid Amount</th>
+                                    <th>Adjustment Amount</th>
                                     <th>Due Amount</th>
                                 </tr>
                             </thead>
@@ -85,6 +86,10 @@
                             <tbody>
                                 @php
                                     $sl = 1;
+                                    $total_amount = 0;
+                                    $total_paid_amount = 0;
+                                    $total_due_amount = 0;
+                                    $total_adjustment_amount = 0;
                                 @endphp
                                 @foreach($all_sale as $sale)
                                     <tr>
@@ -93,6 +98,9 @@
                                             <?php
                                                 $timestamp = strtotime($sale->date);
                                                 $date = date('d-m-Y', $timestamp);
+                                                $total_amount += $sale->total_amount;
+                                                $total_paid_amount += $sale->paid_amount;
+                                                $total_adjustment_amount += $sale->adjustment_amount;
                                             ?>
                                             {{$date}}
                                         </td>
@@ -102,12 +110,25 @@
                                         <td>{{$sale->customer ? $sale->customer->customer_name : 'N/A'}}</td>
                                         <td>{{$sale -> total_amount}}</td>
                                         <td>{{$sale -> paid_amount}}</td>
+                                        <td>{{$sale -> adjustment_amount}}</td>
                                         <?php
                                             $return = App\Models\SaleReturn::where('sale_id', $sale->id)->sum('amount');
                                         ?>
-                                        <td>{{$sale -> due_amount - $return}}</td>
+                                        <td>
+                                            {{($sale->due_amount - $return) - $total_adjustment_amount}}
+                                            <?php
+                                                $total_due_amount += ($sale->due_amount - $return) - $total_adjustment_amount;
+                                            ?>
+                                        </td>
                                     </tr>
                                 @endforeach
+                                <tr>
+                                    <td class="text-right" colspan="6">Total Amount</td>
+                                    <td>{{$total_amount}}</td>
+                                    <td>{{$total_paid_amount}}</td>
+                                    <td>{{$total_adjustment_amount}}</td>
+                                    <td>{{$total_due_amount}}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

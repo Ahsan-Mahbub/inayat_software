@@ -9,7 +9,7 @@ use App\Models\SaleTransaction;
 use Illuminate\Http\Request;
 use File;
 use Str;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -20,7 +20,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -35,7 +35,7 @@ class CustomerController extends Controller
 
     public function dues(Request $request)
     {
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -52,7 +52,7 @@ class CustomerController extends Controller
     {
         $search = $request->search;
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
         
@@ -140,7 +140,7 @@ class CustomerController extends Controller
     {
         $search = $request->search;
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
         

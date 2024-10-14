@@ -37,6 +37,7 @@
                                 <th>S/N</th>
                                 <th>Date</th>
                                 <th>Requisitor</th>
+                                <th>Editor</th>
                                 <th>Quotation Number</th>
                                 <th>Supplier Name</th>
                                 {{-- <th>Total Amount</th> --}}
@@ -61,6 +62,7 @@
                                     {{$date}}
                                 </td>
                                 <td>{{$requisition->creator ? $requisition->creator->name : 'N/A'}}</td>
+                                <td>{{$requisition->editor ? $requisition->editor->name : 'N/A'}}</td>
                                 <td>{{$requisition -> requisition_number}}</td>
                                 <td>{{$requisition->supplier ? $requisition->supplier->supplier_name : 'N/A'}}</td>
                                 {{-- <td>{{$requisition -> total_amount}}</td> --}}
@@ -96,6 +98,12 @@
                                         <a href="{{ route('requisition.show', $requisition->id) }}"
                                             class="btn btn-sm btn-primary">
                                             <i class="far fa-eye text-white"></i>
+                                        </a>
+                                        @endisset
+                                        @isset(auth()->user()->role->permission['permission']['requisition']['edit'])
+                                        <a href="{{ route('requisition.edit', $requisition->id) }}"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="far fa-edit text-white"></i>
                                         </a>
                                         @endisset
                                         @csrf

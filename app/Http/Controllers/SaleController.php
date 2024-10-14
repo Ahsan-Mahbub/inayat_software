@@ -18,6 +18,7 @@ use App\Models\PurchaseReturn;
 use App\Models\PurchaseProduct;
 use App\Models\SaleRequisition;
 use App\Models\SaleTransaction;
+use App\Models\Schedule;
 use Illuminate\Support\Facades\Auth;
 
 class SaleController extends Controller
@@ -29,7 +30,7 @@ class SaleController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -49,7 +50,7 @@ class SaleController extends Controller
     {
         $search = $request->search;
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -86,9 +87,6 @@ class SaleController extends Controller
         $customers = Customer::get();
         $methods = Method::get();
         $sale_requisitions = Sale::whereNotNull('requisition_id')->pluck('requisition_id');
-        // dd($sale_requisitions);
-        // $requisitions = SaleRequisition::whereNotIn('id', $sale_requisitions)->where('status', 1)->get();
-
 
         $currentUserId = Auth::user()->id;
         if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5) {
@@ -131,8 +129,6 @@ class SaleController extends Controller
                 'product_id' => 'required',
             ]);
             $request_data = $request->all();
-
-            // dd($request_data);
 
             if ($request->requisition_id) {
                 $requisition = SaleRequisition::findOrFail($request->requisition_id);
@@ -264,28 +260,18 @@ class SaleController extends Controller
             }
             SaleProduct::insert($sale_product_data);
 
-            // if($request->paid_amount >= 0)
-            // {
-            //     Account
-            //     $account = Account::where('id',$request->account_id)->first();
-            //     $data = [
-            //         'total_amount'   => $account->total_amount + $request->paid_amount,
-            //     ];
+            //Schedule
+            $schedule = [];
+            for ($key = 0; $key < count($request_data['payment_date']); $key++) {
 
-            //     Account::where('id', $account->id)->update($data);
-
-            //     Transaction
-            //     $sale_transaction = [
-            //         'date'              => $request->date,
-            //         'customer_id'       => $customer_id,
-            //         'sale_id'           => $sale_ids,
-            //         'method_id'         => $request->method_id,
-            //         'account_id'        => $request->account_id,
-            //         'amount'            => $request->paid_amount,
-            //     ];
-            //     SaleTransaction::insert($sale_transaction);
-
-            // }
+                $schedule[] = [
+                    'sale_id'       => $sale_ids,
+                    'customer_id'   => $request->customer_id,
+                    'date'          => $request_data['payment_date'][$key],
+                    'amount'        => $request_data['payment_amount'][$key],
+                ];
+            }
+            Schedule::insert($schedule);
 
             //Customer Amount
             $customer = Customer::where('id', $customer_id)->first();

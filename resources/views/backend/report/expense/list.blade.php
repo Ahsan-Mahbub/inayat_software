@@ -85,6 +85,7 @@
                             <tbody>
                                 @php
                                     $sl = 1;
+                                    $total_amount = 0;
                                 @endphp
                                 @foreach($all_expense as $expense)
                                 <tr>
@@ -95,6 +96,7 @@
                                         <?php
                                             $timestamp = strtotime($expense->date);
                                             $date = date('d-m-Y', $timestamp);
+                                            $total_amount += $expense->amount;
                                         ?>
                                         {{$date}}
                                     </td>
@@ -103,6 +105,11 @@
                                     <td>{{$expense->amount}} </td>
                                 </tr>
                                 @endforeach
+                                <tr>
+                                    <td colspan="5" class="text-right">Total Expense Amount</td>
+                                    <td>{{$total_amount}}</td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

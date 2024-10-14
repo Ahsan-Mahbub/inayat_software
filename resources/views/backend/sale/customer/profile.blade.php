@@ -86,8 +86,27 @@
             </div>
         </div>
     </div>
+
+    <div class="col-sm-6 col-xl-3">
+        <div class="card">
+            <div class="card-body" style="padding: 2.25rem 1.25rem;">
+                <div class="media">
+                    <div class="media-body">
+                        <h5 class="font-size-14">Total Adjustment Amount</h5>
+                    </div>
+                    <div class="avatar-xs">
+                        <span class="avatar-title rounded-circle bg-primary">
+                            <i class="dripicons-briefcase"></i>
+                        </span>
+                    </div>
+                </div>
+                <h4 class="m-0 align-self-center">{{$customer->adjustment_amount ? $customer->adjustment_amount : 0}}</h4>
+            </div>
+        </div>
+    </div>
+
     <?php
-        $due_amount = ($customer->total_amount - ($customer->paid_amount + $customer->return_amount));
+        $due_amount = ($customer->total_amount - ($customer->paid_amount + $customer->return_amount + $customer->adjustment_amount));
         $credit = abs($due_amount);
     ?>
     <div class="col-sm-6 col-xl-3">

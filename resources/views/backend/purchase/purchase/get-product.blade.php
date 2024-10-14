@@ -61,31 +61,18 @@
                                 <thead>
                                         <th>Product Code &nbsp;</th>
                                         <th>Unit &nbsp;</th>
-                                        <th>Now Stock Qty &nbsp;</th>
+                                        <th>Total Stock Qty &nbsp;</th>
                                         <th>Now Add Qty &nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <?php
-                                            $purchase_return_qty = App\Models\PurchaseReturn::where('product_id', $search_product)
-                                                ->where('unit_id', $search_unit)
-                                                ->sum('qty');
-                                            $sale_qty = App\Models\SaleProduct::where('product_id', $search_product)
-                                                ->where('unit_id', $search_unit)
-                                                ->sum('qty');
-                                            $sale_return_qty = App\Models\SaleReturn::where('product_id', $search_product)
-                                                ->where('unit_id', $search_unit)
-                                                ->sum('qty');
-                                            
-                                            $total_qty = $invoice_product->qty - $purchase_return_qty - $sale_qty + $sale_return_qty;
-                                        ?>
                                         <td>{{$invoice_product->product ? $invoice_product->product->product_name : ''}}</td>
                                         <td>
                                             {{$invoice_product->unit ? $invoice_product->unit->unit_name : ''}}
                                         </td>
                                         <input type="hidden" value="{{$search_product}}" name="product_id">
-                                        <td>{{$total_qty}}</td>
+                                        <td>{{$total_stock}}</td>
                                         <td width="35%">
                                             <input class="form-control return-qty" type="number"
                                                 name="qty" placeholder="Add Qty">

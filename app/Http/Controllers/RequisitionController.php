@@ -11,7 +11,7 @@ use App\Models\Supplier;
 use App\Models\Product;
 use App\Models\PurchaseProduct;
 use App\Models\Unit;
-use Auth;
+Use Illuminate\Support\Facades\Auth;
 
 class RequisitionController extends Controller
 {
@@ -22,7 +22,7 @@ class RequisitionController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -35,7 +35,7 @@ class RequisitionController extends Controller
     {
         $search = $request->search;
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
         
@@ -179,9 +179,14 @@ class RequisitionController extends Controller
      * @param  \App\Models\Requisition  $requisition
      * @return \Illuminate\Http\Response
      */
-    public function edit(Requisition $requisition)
+    public function edit($id)
     {
-        //
+        $requisition = Requisition::with('requisitionProduct')->findOrFail($id);
+
+        $supplier = Supplier::where('id', $requisition->supplier_id)->first();
+        $units = Unit::get();
+
+        return view('backend.purchase.requisition.edit', compact('supplier', 'units', 'requisition'));
     }
 
     /**
@@ -191,9 +196,67 @@ class RequisitionController extends Controller
      * @param  \App\Models\Requisition  $requisition
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Requisition $requisition)
+    public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $validated = $request->validate([
+                'product_id' => 'required',
+            ]);
+            $request_data = $request->all();
+
+            $supplier_id = $request->supplier_id;
+
+            $requisition = Requisition::findOrFail($request->requisition_main);
+
+            $check_requisition = Requisition::where('duplicate_requ', $request->requisition_main)->count();
+
+            if ($check_requisition <= 0) {
+                $requisition_number = $requisition->requisition_number . '/' . 1;
+            } else {
+                $requisition_number = $requisition->requisition_number . '/' . ($check_requisition + 1);
+            }
+
+            $requisition_information = [
+                'date'              => $request->date,
+                'editor_id'         => Auth::user()->id,
+                'creator_id'        => $request->creator_id,
+                'supplier_id'       => $supplier_id,
+                'requisition_number'=> $requisition_number,
+                'subtotal'          => $request->subtotal,
+                'discount'          => 0,
+                'percentage'        => 0,
+                'discount_price'    => $request->subtotal,
+                'vat'               => 0,
+                'total_amount'      => $request->subtotal,
+                'duplicate_requ'    => $request->requisition_main,
+            ];
+
+            $save = Requisition::create($requisition_information);
+            $requisition_ids = $save['id'];
+
+            //requisition Product
+            $requisition_product_data = [];
+            for ($key = 0; $key < count($request_data['product_id']); $key++) {
+
+                $requisition_product_data[] = [
+                    'requisition_id'  => $requisition_ids,
+                    'product_id'      => $request_data['product_id'][$key],
+                    'unit_id'         => $request_data['unit_id'][$key],
+                    'qty'             => $request_data['buying_qty'][$key],
+                    'amount'          => $request_data['amount'][$key],
+                    'discount_amount' => $request_data['amount'][$key],
+                ];
+            }
+            RequisitionProduct::insert($requisition_product_data);
+
+            DB::commit();
+            return redirect()->route('requisition.index')->with('message', 'Quotation successfully');
+        } catch (\Exception $e) {
+            dd($e);
+            return back()->with('error', 'Quotation failed. Try another');
+        }
     }
 
     /**

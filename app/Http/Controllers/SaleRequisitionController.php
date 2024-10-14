@@ -26,7 +26,7 @@ class SaleRequisitionController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = 15;
+        $perPage = 50;
         $currentUserId = Auth::user()->id;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
@@ -61,7 +61,7 @@ class SaleRequisitionController extends Controller
     {
         $search = $request->search;
 
-        $perPage = 15;
+        $perPage = 50;
         $currentUserId = Auth::user()->id;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;

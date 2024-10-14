@@ -35,12 +35,62 @@
               </button>
           </div>
           <div class="dropdown d-inline-block">
+            <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="mdi mdi-bell-outline"></i>
+                <span class="badge badge-danger badge-pill">{{$total_notification}}</span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
+                aria-labelledby="page-header-notifications-dropdown">
+                <div class="p-3">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h6 class="m-0 font-weight-medium text-uppercase"> Notifications </h6>
+                        </div>
+                    </div>
+                </div>
+                <div data-simplebar style="max-height: 230px;">
+                    @foreach($notifications as $notification)
+                    <a href="{{route('customer.transaction', $notification->customer->id)}}" class="text-reset notification-item">
+                        <div class="media">
+                            <div class="avatar-xs mr-3">
+                                <span class="avatar-title bg-primary rounded-circle font-size-16">
+                                    <img src="/{{$notification->customer->image ? $notification->customer->image : 'demo.svg'}}" height="45">
+                                </span>
+                            </div>
+                            <div class="media-body">
+                                <h6 class="mt-0 mb-1">Collection Money</h6>
+                                <div class="font-size-12 text-muted">
+                                    <p class="mb-1">There is a day to collect the due amount from "{{$notification->customer->customer_name}}". Invoice number is {{$notification->sale->invoice}}. The amount is {{$notification->amount}} tk.</p>
+                                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i>
+                                        <?php
+                                            $timestamp = strtotime($notification->date);
+                                            $notification_date = date('d-m-Y', $timestamp);
+                                        ?>
+                                        {{$notification_date}} 
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
+                </div>
+                <div class="p-2 border-top">
+                    <a class="btn-link btn btn-block text-center" href="{{route('notification')}}">
+                        <i class="mdi mdi-arrow-down-circle mr-1"></i> View More..
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+          <div class="dropdown d-inline-block">
               <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   @if(Auth::user()->image)
-                  <img class="rounded-circle header-profile-user" src="/{{Auth::user()->image}}" alt="profile">
+                  <img class="rounded-circle header-profile-user" src="/{{Auth::user()->image}}" alt="profile" style="object-fit: contain">
                   @else
-                  <img class="rounded-circle header-profile-user" src="/logo2.jpeg" alt="profile">
+                  <img class="rounded-circle header-profile-user" src="/logo2.jpeg" alt="profile" style="object-fit: contain">
                   @endif
                   <span class="d-none d-sm-inline-block ml-1">{{Auth::user()->name}}</</span>
                   <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>

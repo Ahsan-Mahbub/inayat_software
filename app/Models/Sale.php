@@ -31,6 +31,7 @@ class Sale extends Model
         'total_amount',
         'paid_amount',
         'due_amount',
+        'adjustment_amount',
         'payment_date',
         'payment_amount',
     ];

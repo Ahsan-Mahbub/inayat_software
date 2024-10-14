@@ -364,6 +364,12 @@
                                                     <input type="checkbox" class="check-input" @isset($permission['permission']['product']['print']) checked @endisset name="permission[product][print]" value="1">
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td class="text-left">Export</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['product']['export']) checked @endisset name="permission[product][export]" value="1">
+                                                </td>
+                                            </tr>
                                         </table>
                                     </div>
                                     <div class="col-md-12">
@@ -435,6 +441,12 @@
                                                 <td class="text-left">Add</td>
                                                 <td class="text-right">
                                                     <input type="checkbox" class="check-input" @isset($permission['permission']['requisition']['create']) checked @endisset name="permission[requisition][create]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Update</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['requisition']['edit']) checked @endisset name="permission[requisition][edit]" value="1">
                                                 </td>
                                             </tr>
                                             <tr>

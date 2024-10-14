@@ -55,6 +55,7 @@
                               <input class="ml-3 mr-1" type="checkbox"  id="sl" checked> S.L
                               <input class="ml-3 mr-1" type="checkbox"  id="code" checked> Product Name / Code
                               <input class="ml-3 mr-1" type="checkbox"  id="image" checked> Image
+                              <input class="ml-3 mr-1" type="checkbox"  id="qr_code" checked> QR Code
                               <input class="ml-3 mr-1" type="checkbox"  id="description" checked> Description
                               @if(Auth::user()->role_id == 1)
                               <input class="ml-3 mr-1" type="checkbox"  id="purchase" checked> Purchase Price
@@ -71,6 +72,7 @@
                                     <th class="sl">S/N</th>
                                     <th class="code">Name/Code</th>
                                     <th class="image">Image</th>
+                                    <th class="qr_code">QR Code</th>
                                     <th class="description">Description</th>
                                     @if(Auth::user()->role_id == 1)
                                     <th class="purchase" style="width: 11%;">Purchase Price</th>
@@ -90,6 +92,8 @@
                                     <td class="code" style="vertical-align: middle;">{{$product->sku}}</td>
                                     <td class="image" style="vertical-align: middle;"><img style="width: 150px; height: 150px; object-fit: contain;"
                                         src="{{ $product->image ? '/' . $product->image : '/demo.svg' }}"></td>
+                                    <td class="qr_code" style="vertical-align: middle;"><img style="width: 150px; height: 150px; object-fit: contain;"
+                                        src="{{ $product->qr_code ? '/' . $product->qr_code : '/demo.svg' }}"></td>
                                     <td class="description" style="vertical-align: middle;">{!! $product->description !!} </td>
                                     @if(Auth::user()->role_id == 1)
                                     <td class="purchase" style="vertical-align: middle;">{{$product->purchase_price}}</td>

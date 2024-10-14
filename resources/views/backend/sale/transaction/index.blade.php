@@ -30,6 +30,7 @@
                                 <th>Total Amount</th>
                                 <th>Paid</th>
                                 <th>Return</th>
+                                <th>Adjustment</th>
                                 <th>Due</th>
                                 <th class="text-center">Schedule
                                     <table class="table table-bordered table-striped table-hover mt-2 mb-0">
@@ -68,7 +69,8 @@
                                 <td>{{$sale -> total_amount}}</td>
                                 <td>{{$sale->paid_amount}}</td>
                                 <td>{{$return_amount}}</td>
-                                <td>{{$sale -> due_amount + $return_amount}}</td>
+                                <td>{{$sale->adjustment_amount}}</td>
+                                <td>{{($sale -> due_amount - $return_amount) - $sale->adjustment_amount}}</td>
                                 <td>
                                     <table class="table table-bordered table-striped table-hover">
                                         <tbody>
@@ -118,15 +120,17 @@
                                         <th>Total &nbsp;</th>
                                         <th>Paid &nbsp;</th>
                                         <th>Return &nbsp;</th>
+                                        <th>Adjustment &nbsp;</th>
                                         <th>Due &nbsp;</th>
                                         <th>Now Pay* &nbsp;</th>
+                                        <th>Now Adjustment* &nbsp;</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($sales as $sale)
                                     <?php
                                         $return_amount = App\Models\SaleReturn::where('sale_id', $sale->id)->sum('amount');
-                                        $due_amount = $sale -> due_amount + $return_amount;
+                                        $due_amount = ($sale->due_amount - $return_amount) - $sale->adjustment_amount;
                                     ?>
                                     @if($due_amount > 0)
                                         <tr>
@@ -139,7 +143,8 @@
                                             <td>{{$sale -> total_amount}}</td>
                                             <td>{{$sale->paid_amount}}</td>
                                             <td>{{$return_amount}}</td>
-                                            <td>{{$due_amount}}</td>
+                                            <td>{{$sale->adjustment_amount}}</td>
+                                            <td>{{$due_amount - $sale->adjustment_amount}}</td>
                                             @if($due_amount > 0)
                                             <td>
                                                 <input type="hidden" value="{{$sale->id}}" name="sale_id[]">
@@ -147,6 +152,17 @@
                                                     min="0" name="amount[]" placeholder="Pay Amount"
                                                     value="0" required onkeyup="row_total_price()">
                                             </td>
+                                            @endif
+
+                                            @if($due_amount > 0)
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" onclick="toggleInput(this)">
+                                                        <input class="form-control adjustment" type="number" max="{{ intval($due_amount, 0) }}"
+                                                            min="0" name="adjustment[]" placeholder="Adjustment Amount"
+                                                            value="0" required onkeyup="row_adjustment_price()" style="display: none;">
+                                                    </div>
+                                                </td>
                                             @endif
                                         </tr>
                                     @endif
@@ -187,6 +203,12 @@
                                             <td class="text-center">Now Pay Amount *</td>
                                             <td>
                                                 <input class="form-control" readonly value="0" id="total_amount" name="total_amount" required>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center">Adjustment Amount *</td>
+                                            <td>
+                                                <input class="form-control" readonly value="0" id="total_adjustment_amount" name="total_adjustment_amount" required>
                                             </td>
                                         </tr>
                                     </table>
@@ -303,6 +325,24 @@
                 total += parseInt($(this).val());
                 $('#total_amount').val(total);
             });
+        }
+
+        function row_adjustment_price() {
+            var total = 0;
+            $('.adjustment').each(function() {
+                total += parseInt($(this).val());
+                $('#total_adjustment_amount').val(total);
+            });
+        }
+    </script>
+    <script>
+        function toggleInput(checkbox) {
+            const inputField = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                inputField.style.display = 'block';
+            } else {
+                inputField.style.display = 'none';
+            }
         }
     </script>
 @endsection

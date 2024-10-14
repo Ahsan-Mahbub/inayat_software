@@ -84,6 +84,7 @@
                             <tbody>
                                 @php
                                     $sl = 1;
+                                    $total_amount = 0;
                                 @endphp
                                 @foreach ($all_requisition as $requisition)
                                     <tr>
@@ -92,6 +93,7 @@
                                             <?php
                                             $timestamp = strtotime($requisition->date);
                                             $date = date('d-m-Y', $timestamp);
+                                            $total_amount += $requisition->total_amount;
                                             ?>
                                             {{ $date }}
                                         </td>
@@ -119,6 +121,11 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                <tr>
+                                    <td colspan="6" class="text-right">Total Sale Quotation Amount</td>
+                                    <td>{{$total_amount}}</td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

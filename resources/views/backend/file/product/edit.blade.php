@@ -57,13 +57,22 @@
                             <label class="d-block">Product Description</label>
                             <textarea id="elm1" name="description" placeholder="Product Description">{{$product->description}}</textarea>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label>Image </label>
                             <div class="col-lg-12">
                                 <input type='file' class="form-group" name="image"
                                     onchange="readURL(this);" />
                                 <img id="file_image" src="{{ $product->image ? '/' . $product->image : '/demo.svg' }}" class="pt-2" height="200" width="auto"
                                     alt="product" /><br>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label>QR Code </label>
+                            <div class="col-lg-12">
+                                <input type='file' class="form-group" name="qr_code"
+                                    onchange="readURL2(this);" />
+                                <img id="file_qr_code" src="{{ $product->qr_code ? '/' . $product->qr_code : '/demo.svg' }}" class="pt-2" height="200" width="auto"
+                                    alt="qr code" /><br>
                             </div>
                         </div>
                     </div>
@@ -79,12 +88,21 @@
 @endsection
 @section('script')
     <script type="text/javascript">
-
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     $('#file_image')
+                        .attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function readURL2(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#file_qr_code')
                         .attr('src', e.target.result);
                 };
                 reader.readAsDataURL(input.files[0]);

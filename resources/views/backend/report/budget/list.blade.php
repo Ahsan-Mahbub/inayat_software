@@ -70,8 +70,8 @@
                                     <th>Date</th>
                                     <th>Method/Account</th>
                                     <th>Employee Name</th>
-                                    <th>Amount</th>
                                     <th>Purpose</th>
+                                    <th>Amount</th>
                                 </tr>
                             </thead>
 
@@ -79,6 +79,7 @@
                             <tbody>
                                 @php
                                     $sl = 1;
+                                    $total_amount = 0;
                                 @endphp
                                 @foreach($all_budget as $budget)
                                 <tr>
@@ -87,15 +88,21 @@
                                         <?php
                                             $timestamp = strtotime($budget->date);
                                             $date = date('d-m-Y', $timestamp);
+                                            $total_amount += $budget->amount;
                                         ?>
                                         {{$date}}
                                     </td>
                                     <td>{{$budget->method ? $budget->method->method_name : ''}} <br> {{$budget->account ? $budget->account->account_name : ''}}</td>
                                     <td>{{$budget->employee ? $budget->employee->name : ''}} </td>
-                                    <td>{{$budget->amount}} </td>
                                     <td>{{$budget->purpose}} </td>
+                                    <td>{{$budget->amount}} </td>
                                 </tr>
                                 @endforeach
+                                <tr>
+                                    <td colspan="5" class="text-right">Total Budget Amount</td>
+                                    <td>{{$total_amount}}</td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

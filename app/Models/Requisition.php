@@ -15,6 +15,7 @@ class Requisition extends Model
         'date',
         'requisition_number',
         'creator_id',
+        'editor_id',
         'supplier_id',
         'subtotal',
         'discount',
@@ -22,12 +23,18 @@ class Requisition extends Model
         'discount_price',
         'vat',
         'total_amount',
-        'status'
+        'status',
+        'duplicate_requ',
     ];
 
     public function creator()
     {
         return $this->belongsTo(User::class, 'creator_id');
+    }
+
+    public function editor()
+    {
+        return $this->belongsTo(User::class, 'editor_id');
     }
 
     public function supplier()

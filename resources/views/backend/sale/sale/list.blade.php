@@ -41,8 +41,9 @@
                                 <th>Quotation</th>
                                 <th>Client Name</th>
                                 <th>Total Amount</th>
-                                <th>Paid Amount</th>
-                                <th>Due Amount</th>
+                                <th>Paid</th>
+                                <th>Adjustment</th>
+                                <th>Due</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -66,12 +67,13 @@
                                 <td>{{$sale -> invoice}}</td>
                                 <td>{{$sale->requisition ? $sale->requisition->requisition_number : 'N/A'}}</td>
                                 <td>{{$sale->customer ? $sale->customer->customer_name : 'N/A'}}</td>
-                                <td>{{$sale -> total_amount}}</td>
-                                <td>{{$sale -> paid_amount}}</td>
+                                <td>{{$sale->total_amount}}</td>
+                                <td>{{$sale->paid_amount}}</td>
+                                <td>{{$sale->adjustment_amount}}</td>
                                 <?php
                                     $return = App\Models\SaleReturn::where('sale_id', $sale->id)->sum('amount');
                                 ?>
-                                <td>{{$sale -> due_amount - $return}}</td>
+                                <td>{{($sale->due_amount - $return) - $sale->adjustment_amount}}</td>
                                 <td>
                                     <form action="{{ route('sale.destroy', $sale->id) }}" method="post"
                                         accept-charset="utf-8">

@@ -43,7 +43,7 @@
                                 <th>Phone</th>
                                 <th>Email</th>
                                 <th>Total Amount</th>
-                                <th>Paid Amount + Return Amount</th>
+                                <th>Paid + Return + Adjustment</th>
                                 <th>Due / Credit</th>
                                 <th>Action</th>
                             </tr>
@@ -56,7 +56,7 @@
                             @endphp
                             @foreach($all_customer as $customer)
                             @php
-                                $due_amount = $customer -> total_amount - ($customer -> paid_amount + $customer->return_amount);
+                                $due_amount = $customer->total_amount - ($customer->paid_amount + $customer->return_amount + $customer->adjustment_amount);
                                 $credit_amount = abs($due_amount);
                             @endphp
                             <tr>

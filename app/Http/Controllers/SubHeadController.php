@@ -16,7 +16,7 @@ class SubHeadController extends Controller
     public function index(Request $request)
     {
         $heads = Head::get();
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -67,7 +67,7 @@ class SubHeadController extends Controller
         $heads = Head::get();
         $search = $request->search;
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
         

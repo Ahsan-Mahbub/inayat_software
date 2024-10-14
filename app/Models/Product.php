@@ -17,6 +17,7 @@ class Product extends Model
         'purchase_price',
         'sale_price',
         'image',
+        'qr_code',
         'description',
     ];
 

@@ -86,10 +86,10 @@
                                                 </a>
                                                 @endisset
                                                 @isset(auth()->user()->role->permission['permission']['purchase']['edit'])
-                                                <a href="{{ route('purchase.edit', $purchase->id) }}"
+                                                {{-- <a href="{{ route('purchase.edit', $purchase->id) }}"
                                                     class="btn btn-sm btn-primary">
                                                     <i class="far fa-edit text-white"></i>
-                                                </a>
+                                                </a> --}}
                                                 @endisset
                                                 @csrf
                                                 @method('delete')

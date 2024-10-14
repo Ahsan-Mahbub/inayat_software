@@ -9,6 +9,8 @@ use Validator;
 use Carbon\Carbon;
 use File;
 use Str;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ExportProduct;
 
 class ProductController extends Controller
 {
@@ -21,7 +23,7 @@ class ProductController extends Controller
     {
         $search_category = '';
         $categories = Category::get();
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -36,7 +38,7 @@ class ProductController extends Controller
         $search = $request->search;
         $search_category = $request->category_id;
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -60,7 +62,7 @@ class ProductController extends Controller
 
     public function productListPrint ()
     {
-        $all_product = Product::orderBy('id','desc')->get();
+        $all_product = Product::orderBy('id','desc')->paginate(100);
         $categories = Category::get();
         $search_category = "";
         $search = "";
@@ -89,6 +91,40 @@ class ProductController extends Controller
             $all_product = Product::get();
         }
         return view('backend.file.product.list-print', compact('all_product','categories','search','search_category'));
+    }
+
+    public function exportProduct ()
+    {
+        $categories = Category::get();
+        $search_category = "";
+        $search = "";
+        return view('backend.file.product.export', compact('categories','search','search_category'));
+    }
+
+    public function exportProductList(Request $request)
+    {
+        $search_category = $request->category_id;
+        
+        if ($request->search && $request->category_id) {
+            $data = Product::where('product_name', 'LIKE', '%' .$request->search . '%')
+                                    ->where('category_id', $search_category)
+                                    ->get();
+        }elseif($request->search){
+            $data = Product::where('product_name', 'LIKE', '%' .$request->search . '%')
+                                    ->get();
+        }elseif($request->category_id){
+            $data = Product::where('category_id', $search_category)
+                                    ->get();
+        }
+        else {
+            $data = Product::get();
+        }
+
+        if ($data->isNotEmpty()) {
+            return Excel::download(new ExportProduct($data), 'product.xlsx');
+        } else {
+            return back()->with('error', 'No data found!.');
+        }
     }
 
     /**
@@ -141,6 +177,13 @@ class ProductController extends Controller
                 $path = "backend/assets/images/product/";
                 $request->file('image')->move($path, $name);
                 $requested_data['image'] = $path . $name;
+            }
+            if ($request->hasFile('qr_code')) {
+                $extension = $request->file('qr_code')->getClientOriginalExtension();
+                $name = 'qr_code' . Str::random(5) . '.' . $extension;
+                $path = "backend/assets/qr-code/product/";
+                $request->file('qr_code')->move($path, $name);
+                $requested_data['qr_code'] = $path . $name;
             }
             $save = $product->fill($requested_data)->save();
             if($save){
@@ -197,6 +240,16 @@ class ProductController extends Controller
             $path = "backend/assets/images/product/";
             $request->file('image')->move($path, $name);
             $formData['image'] = $path . $name;
+        }
+        if ($request->hasFile('qr_code')) {
+            if (File::exists($update->qr_code)) {
+                File::delete($update->qr_code);
+            }
+            $extension = $request->file('qr_code')->getClientOriginalExtension();
+            $name = 'qr_code' . Str::random(5) . '.' . $extension;
+            $path = "backend/assets/qr-code/product/";
+            $request->file('qr_code')->move($path, $name);
+            $formData['qr_code'] = $path . $name;
         }
         $updated = $update->fill($formData)->save();
         if($updated){

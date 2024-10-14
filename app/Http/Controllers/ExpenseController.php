@@ -24,7 +24,7 @@ class ExpenseController extends Controller
         $search_head = '';
         $heads = Head::get();
         $users = User::whereIn('role_id', [11, 12])->get();
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -50,7 +50,7 @@ class ExpenseController extends Controller
         $search_subhead = $request->subhead_id;
         $subhead = SubHead::where('id',$search_subhead)->first();
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -236,7 +236,7 @@ class ExpenseController extends Controller
         $year = date('Y');
         $subhead = SubHead::where('id', $id)->first();
 
-        $perPage = 15;
+        $perPage = 50;
         
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;

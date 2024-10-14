@@ -24,7 +24,7 @@ class BudgetController extends Controller
         $search_method = '';
         $methods = Method::get();
         $users = User::whereIn('role_id', [11, 12])->get();
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -50,7 +50,7 @@ class BudgetController extends Controller
         $search_account = $request->account_id;
         $account = Account::where('id',$search_account)->first();
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 

@@ -70,6 +70,11 @@
                 background: #000000;
                 /* border-radius: 20px; */
             }
+            @media only screen and (max-width: 768px) {
+                .page-content {
+                    padding: calc(70px + 24px) calc(24px / 2) 60px calc(24px / 2)!important;
+                }
+            }
         </style>
 
     </head>

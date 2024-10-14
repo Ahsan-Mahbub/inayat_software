@@ -213,13 +213,16 @@
         document.getElementById('action-form').submit();
     });
 </script>
-    
+
 <script>
     function printDiv(divId) {
         var content = document.getElementById(divId).innerHTML;
         var myWindow = window.open('', '', 'width=1200,height=600');
         myWindow.document.write('<html><head><title>Print Barcode</title>');
-        myWindow.document.write('<style>@media print { .no-print { display: none; } }</style>');
+        myWindow.document.write('<style>');
+        myWindow.document.write('@media print { .no-print { display: none; } }');
+        myWindow.document.write('body { font-family: Arial, sans-serif; }');
+        myWindow.document.write('</style>');
         myWindow.document.write('</head><body>');
         myWindow.document.write(content);
         myWindow.document.write('</body></html>');

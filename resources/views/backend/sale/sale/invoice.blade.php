@@ -264,11 +264,20 @@
                                                 </td>
                                             </tr>
                                             @endif
+                                            @if($sale->adjustment_amount > 0)
+                                            <tr class="bg-grey bg-lighten-4">
+                                                <td style="border: 2px solid #3e3e3e; width: 65%; padding: 3px; text-align: right"
+                                                    colspan="7" class="text-bold-800">Adjustment Amount</td>
+                                                <td style="border: 2px solid #3e3e3e; text-align: center; padding: 3px;">
+                                                    {{ number_format($sale->adjustment_amount, 2, '.', '') }}/-
+                                                </td>
+                                            </tr>
+                                            @endif
                                             <tr class="bg-grey bg-lighten-4">
                                                 <td style="border: 2px solid #3e3e3e; width: 65%; padding: 3px; text-align: right"
                                                     colspan="7" class="text-bold-800"><b>Due Amount</b></td>
                                                 <td style="border: 2px solid #3e3e3e; text-align: center; padding: 3px;">
-                                                    <b>{{ number_format(($sale->due_amount - $return), 2, '.', '') }}/-</b>
+                                                    <b>{{ number_format(($sale->due_amount - $return - $sale->adjustment_amount), 2, '.', '') }}/-</b>
                                                 </td>
                                             </tr>
                                         </tbody>

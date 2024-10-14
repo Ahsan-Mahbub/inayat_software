@@ -106,7 +106,7 @@
                                     <div class="col-2">
                                         <select class="custom-select unit-{{$product->id}}" required="" name="unit_id[]" id="unit_id" random_number="{{$product->id}}">
                                             @foreach($units as $unit)
-                                            <option value="{{$unit->id}}" {{$product->unit_id == $unit->id ?? 'selected' }}>{{$unit->unit_name}}</option>
+                                            <option value="{{$unit->id}}" {{$product->unit_id == $unit->id ? 'selected' : '' }}>{{$unit->unit_name}}</option>
                                             @endforeach
                                         </select>
                                     </div>  

@@ -50,7 +50,7 @@
                                     @foreach ($all_qrcode as $qrcode)
                                         @for ($i = 0; $i < $qrcode->quantity; $i++)
                                             @if($qrcode->product)
-                                            <div class="single-qrcode" style="border: 1px solid gray; padding: 5px; width: 330px; ">
+                                            <div class="single-qrcode" style="border: 1px solid gray; padding: 5px; width: 300px; ">
                                                 <div style="display: flex">
                                                     <div style="display: inline; margin: auto;">
                                                         <?php
@@ -60,7 +60,7 @@
                                                             echo QrCode::generate($qrcode_gen);
                                                         ?>
                                                     </div>
-                                                    <div style="display: inline; padding-left:10px;">
+                                                    <div style="display: inline; padding-left:10px; width: 65%">
                                                         <b style="color: #000; display: block;">INAYAT LIGHTING</b>
                                                         <span style="color: #000; display: block; font-size: 13px;">{{ $qrcode->product ? $qrcode->product->sku : 'N/A' }}</span>
                                                         @if($qrcode->watt_id)
@@ -210,7 +210,10 @@
         var content = document.getElementById(divId).innerHTML;
         var myWindow = window.open('', '', 'width=1200,height=600');
         myWindow.document.write('<html><head><title>Print qrcode</title>');
-        myWindow.document.write('<style>@media print { .no-print { display: none; } }</style>');
+        myWindow.document.write('<style>');
+        myWindow.document.write('@media print { .no-print { display: none; } }');
+        myWindow.document.write('body { font-family: Arial, sans-serif; }');
+        myWindow.document.write('</style>');
         myWindow.document.write('</head><body>');
         myWindow.document.write(content);
         myWindow.document.write('</body></html>');

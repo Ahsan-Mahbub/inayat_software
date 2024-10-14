@@ -23,6 +23,7 @@ class Customer extends Model
         'image',
         'total_amount',
         'paid_amount',
-        'return_amount'
+        'return_amount',
+        'adjustment_amount',
     ];
 }

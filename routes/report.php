@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\BudgetExpenseReportController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Report Routes
@@ -38,5 +39,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
 
         Route::get('/all-account-budget-expense', [BudgetExpenseReportController::class, 'allAccountBudgetExpense'])->name('report.all-account-budget-expense');
         Route::get('/all-account-budget-expense-data', [BudgetExpenseReportController::class, 'allAccountBudgetExpenseData'])->name('report.all-account-budget-expense.data');
+
+        //Notification
+        Route::get('/notification', [NotificationController::class, 'notification'])->name('notification');
     });
 });

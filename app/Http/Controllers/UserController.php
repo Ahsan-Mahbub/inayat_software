@@ -18,7 +18,7 @@ class UserController extends Controller
         $roles = Role::get();
         $head_users = User::where('role_id', 4)->get();
         $subhead_users = User::where('role_id', 5)->get();
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
@@ -67,7 +67,7 @@ class UserController extends Controller
         $headId = $request->input('head_id');
         $subheadId = $request->input('subhead_id');
 
-        $perPage = 15;
+        $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
         

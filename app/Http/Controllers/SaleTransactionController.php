@@ -70,6 +70,7 @@ class SaleTransactionController extends Controller
                 $customer = Customer::where('id', $request->customer_id)->first();
                 $customer_amount = [
                     'paid_amount' => $customer->paid_amount + $request->total_amount,
+                    'adjustment_amount' => $customer->adjustment_amount + $request->total_adjustment_amount,
                 ];
                 Customer::where('id', $customer->id)->update($customer_amount);
 
@@ -87,6 +88,7 @@ class SaleTransactionController extends Controller
                     $sale->update([
                         'paid_amount' => $sale->paid_amount + $request_data['amount'][$key],
                         'due_amount'  => $sale->due_amount - $request_data['amount'][$key],
+                        'adjustment_amount' => $sale->adjustment_amount + $request_data['adjustment'][$key],
                     ]);
                 }
 
@@ -155,12 +157,13 @@ class SaleTransactionController extends Controller
             $sale = Sale::where('id', $sale_transaction->sale_id)->first();
             if ($sale) {
                 $sale->paid_amount -= $sale_transaction->amount; 
-                $sale->due_amount += $sale_transaction->amount; 
+                $sale->due_amount += $sale_transaction->amount;
                 $sale->save();
             }
             $customer = Customer::where('id', $sale_transaction->customer_id)->first();
             if ($customer) {
-                $customer->paid_amount -= $sale_transaction->amount; 
+                $customer->paid_amount -= $sale_transaction->amount;
+                $customer->adjustment_amount -= $sale_transaction->amount;
                 $customer->save();
             }
         }

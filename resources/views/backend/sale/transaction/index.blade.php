@@ -307,7 +307,6 @@
                         html += '<option value=' + element.id + '>' + element.account_name + '</option>'
                     });
                     $("#account_id").html(html);
-
                 }
             });
         }

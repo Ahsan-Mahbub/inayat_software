@@ -222,8 +222,6 @@
                         </div>
                     </div>
                     @endisset
-
-
                     @isset(auth()->user()->role->permission['permission']['budget']['index'])
                     <div class="col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
@@ -278,4 +276,488 @@
         </div>
     </div>
 </div>
+@isset(auth()->user()->role->permission['permission']['product']['index'])
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3"> Product</h4>
+                <div>
+                    <canvas id="pieChartCategoryInfo" width="100" height="50"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Recent 12 Products</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Name/Code</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+    
+                        <tbody>
+                            @php
+                                $sl = 1;
+                            @endphp
+                            @foreach($products as $product)
+                            <tr>
+                                <td>{{$sl++}}</td>
+                                <td>{{$product->sku}}</td>
+                                <td>{{$product -> category ? $product -> category ->  category_name : ''}} </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+@endisset
+@isset(auth()->user()->role->permission['permission']['sale']['index'])
+<div class="row mt-4">
+    <div class="col-md-5">
+        @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 11)
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-3">Employee Sales</h4>
+                    <div>
+                        <canvas id="employeeSalesChart" width="100" height="50"></canvas>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3"> Sales Amount</h4>
+                <div>
+                    <canvas id="salesChart" width="100" height="50"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Recent 12 Sales</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Date</th>
+                                <th>Seller</th>
+                                <th>Invoice</th>
+                                <th>Quotation</th>
+                                <th>Client Name</th>
+                                <th>Total Amount</th>
+                            </tr>
+                        </thead>
+    
+                        <tbody>
+                            @php
+                                $sl = 1;
+                            @endphp
+                            @foreach($sales as $sale)
+                            <tr>
+                                <td>{{$sl++}}</td>
+                                <td>
+                                    <?php
+                                        $timestamp = strtotime($sale->date);
+                                        $date = date('d-m-Y', $timestamp);
+                                    ?>
+                                    {{$date}}
+                                </td>
+                                <td>{{$sale->creator ? $sale->creator->name : 'N/A'}}</td>
+                                <td>{{$sale -> invoice}}</td>
+                                <td>{{$sale->requisition ? $sale->requisition->requisition_number : 'N/A'}}</td>
+                                <td>{{$sale->customer ? $sale->customer->customer_name : 'N/A'}}</td>
+                                <td>{{$sale->total_amount}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+@endisset
+
+@isset(auth()->user()->role->permission['permission']['purchase']['index'])
+<div class="row mt-4">
+    <div class="col-md-5">
+        @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 11)
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-3">Employee Purchases</h4>
+                    <div>
+                        <canvas id="employeePurchasesChart" width="100" height="50"></canvas>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-3">Recent 12 Purchases</h4>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Date</th>
+                                <th>Purchaser</th>
+                                <th>Invoice</th>
+                                <th>Quotation</th>
+                                <th>Supplier Name</th>
+                            </tr>
+                        </thead>
+    
+                        <tbody>
+                            @php
+                                $sl = 1;
+                            @endphp
+                            @foreach($purchases as $purchase)
+                            <tr>
+                                <td>{{$sl++}}</td>
+                                <td>
+                                    <?php
+                                        $timestamp = strtotime($purchase->date);
+                                        $date = date('d-m-Y', $timestamp);
+                                    ?>
+                                    {{$date}}
+                                </td>
+                                <td>{{$purchase->creator ? $purchase->creator->name : 'N/A'}}</td>
+                                <td>{{$purchase -> invoice}}</td>
+                                <td>{{$purchase->requisition ? $purchase->requisition->requisition_number : 'N/A'}}</td>
+                                <td>{{$purchase->supplier ? $purchase->supplier->supplier_name : 'N/A'}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+@endisset
+
+
+
+@endsection
+@section('script')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+    // Pie Chart for Sales Information
+    const purchaseEmployeeNames = @json($purchaseEmployeeNames);
+    const purchaseCounts = @json($purchaseCounts);
+
+    var ctxPie = document.getElementById('employeePurchasesChart').getContext('2d');
+    var employeePurchasesChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: purchaseEmployeeNames,
+            datasets: [{
+                data: purchaseCounts,
+                backgroundColor: [
+                    'rgba(34, 139, 34, 0.8)',
+                    'rgba(255, 165, 0, 0.8)',
+                    'rgba(220, 20, 60, 0.8)',
+                    'rgba(70, 130, 180, 0.8)',
+                    'rgba(128, 0, 128, 0.8)',
+                    'rgba(255, 99, 71, 0.8)',
+                    'rgba(0, 255, 127, 0.8)',
+                    'rgba(135, 206, 250, 0.8)',
+                    'rgba(255, 215, 0, 0.8)',
+                    'rgba(47, 79, 79, 0.8)',
+                    'rgba(75, 0, 130, 0.8)',
+                    'rgba(255, 69, 0, 0.8)',
+                    'rgba(0, 191, 255, 0.8)',
+                    'rgba(139, 0, 0, 0.8)',
+                    'rgba(255, 20, 147, 0.8)',
+                    'rgba(85, 107, 47, 0.8)',
+                    'rgba(154, 205, 50, 0.8)',
+                    'rgba(123, 104, 238, 0.8)',
+                    'rgba(0, 128, 128, 0.8)',
+                    'rgba(240, 230, 140, 0.8)',
+                    'rgba(255, 182, 193, 0.8)',
+                    'rgba(255, 140, 0, 0.8)',
+                    'rgba(46, 139, 87, 0.8)',
+                    'rgba(64, 224, 208, 0.8)',
+                    'rgba(210, 105, 30, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(34, 139, 34, 1)',
+                    'rgba(255, 165, 0, 1)',
+                    'rgba(220, 20, 60, 1)',
+                    'rgba(70, 130, 180, 1)',
+                    'rgba(128, 0, 128, 1)',
+                    'rgba(255, 99, 71, 1)',
+                    'rgba(0, 255, 127, 1)',
+                    'rgba(135, 206, 250, 1)',
+                    'rgba(255, 215, 0, 1)',
+                    'rgba(47, 79, 79, 1)',
+                    'rgba(75, 0, 130, 1)',
+                    'rgba(255, 69, 0, 1)',
+                    'rgba(0, 191, 255, 1)',
+                    'rgba(139, 0, 0, 1)',
+                    'rgba(255, 20, 147, 1)',
+                    'rgba(85, 107, 47, 1)',
+                    'rgba(154, 205, 50, 1)',
+                    'rgba(123, 104, 238, 1)',
+                    'rgba(0, 128, 128, 1)',
+                    'rgba(240, 230, 140, 1)',
+                    'rgba(255, 182, 193, 1)',
+                    'rgba(255, 140, 0, 1)',
+                    'rgba(46, 139, 87, 1)',
+                    'rgba(64, 224, 208, 1)',
+                    'rgba(210, 105, 30, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+    });
+
+    // Pie Chart for Sales Information
+    const employeeNames = @json($employeeNames);
+    const saleCounts = @json($saleCounts);
+
+    var ctxPie = document.getElementById('employeeSalesChart').getContext('2d');
+    var employeeSalesChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: employeeNames,
+            datasets: [{
+                data: saleCounts,
+                backgroundColor: [
+                    'rgba(34, 139, 34, 0.8)',
+                    'rgba(255, 165, 0, 0.8)',
+                    'rgba(220, 20, 60, 0.8)',
+                    'rgba(70, 130, 180, 0.8)',
+                    'rgba(128, 0, 128, 0.8)',
+                    'rgba(255, 99, 71, 0.8)',
+                    'rgba(0, 255, 127, 0.8)',
+                    'rgba(135, 206, 250, 0.8)',
+                    'rgba(255, 215, 0, 0.8)',
+                    'rgba(47, 79, 79, 0.8)',
+                    'rgba(75, 0, 130, 0.8)',
+                    'rgba(255, 69, 0, 0.8)',
+                    'rgba(0, 191, 255, 0.8)',
+                    'rgba(139, 0, 0, 0.8)',
+                    'rgba(255, 20, 147, 0.8)',
+                    'rgba(85, 107, 47, 0.8)',
+                    'rgba(154, 205, 50, 0.8)',
+                    'rgba(123, 104, 238, 0.8)',
+                    'rgba(0, 128, 128, 0.8)',
+                    'rgba(240, 230, 140, 0.8)',
+                    'rgba(255, 182, 193, 0.8)',
+                    'rgba(255, 140, 0, 0.8)',
+                    'rgba(46, 139, 87, 0.8)',
+                    'rgba(64, 224, 208, 0.8)',
+                    'rgba(210, 105, 30, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(34, 139, 34, 1)',
+                    'rgba(255, 165, 0, 1)',
+                    'rgba(220, 20, 60, 1)',
+                    'rgba(70, 130, 180, 1)',
+                    'rgba(128, 0, 128, 1)',
+                    'rgba(255, 99, 71, 1)',
+                    'rgba(0, 255, 127, 1)',
+                    'rgba(135, 206, 250, 1)',
+                    'rgba(255, 215, 0, 1)',
+                    'rgba(47, 79, 79, 1)',
+                    'rgba(75, 0, 130, 1)',
+                    'rgba(255, 69, 0, 1)',
+                    'rgba(0, 191, 255, 1)',
+                    'rgba(139, 0, 0, 1)',
+                    'rgba(255, 20, 147, 1)',
+                    'rgba(85, 107, 47, 1)',
+                    'rgba(154, 205, 50, 1)',
+                    'rgba(123, 104, 238, 1)',
+                    'rgba(0, 128, 128, 1)',
+                    'rgba(240, 230, 140, 1)',
+                    'rgba(255, 182, 193, 1)',
+                    'rgba(255, 140, 0, 1)',
+                    'rgba(46, 139, 87, 1)',
+                    'rgba(64, 224, 208, 1)',
+                    'rgba(210, 105, 30, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+    });
+
+
+    // Pie Chart for Category Information
+    const categoryNames = @json($categoryNames);
+    const productCounts = @json($productCounts);
+
+    var ctxPie = document.getElementById('pieChartCategoryInfo').getContext('2d');
+    var pieChartCategoryInfo = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: categoryNames,
+            datasets: [{
+                data: productCounts,
+                backgroundColor: [
+                    'rgba(34, 139, 34, 0.8)',
+                    'rgba(255, 165, 0, 0.8)',
+                    'rgba(220, 20, 60, 0.8)',
+                    'rgba(70, 130, 180, 0.8)',
+                    'rgba(128, 0, 128, 0.8)',
+                    'rgba(255, 99, 71, 0.8)',
+                    'rgba(0, 255, 127, 0.8)',
+                    'rgba(135, 206, 250, 0.8)',
+                    'rgba(255, 215, 0, 0.8)',
+                    'rgba(47, 79, 79, 0.8)',
+                    'rgba(75, 0, 130, 0.8)',
+                    'rgba(255, 69, 0, 0.8)',
+                    'rgba(0, 191, 255, 0.8)',
+                    'rgba(139, 0, 0, 0.8)',
+                    'rgba(255, 20, 147, 0.8)',
+                    'rgba(85, 107, 47, 0.8)',
+                    'rgba(154, 205, 50, 0.8)',
+                    'rgba(123, 104, 238, 0.8)',
+                    'rgba(0, 128, 128, 0.8)',
+                    'rgba(240, 230, 140, 0.8)',
+                    'rgba(255, 182, 193, 0.8)',
+                    'rgba(255, 140, 0, 0.8)',
+                    'rgba(46, 139, 87, 0.8)',
+                    'rgba(64, 224, 208, 0.8)',
+                    'rgba(210, 105, 30, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(34, 139, 34, 1)',
+                    'rgba(255, 165, 0, 1)',
+                    'rgba(220, 20, 60, 1)',
+                    'rgba(70, 130, 180, 1)',
+                    'rgba(128, 0, 128, 1)',
+                    'rgba(255, 99, 71, 1)',
+                    'rgba(0, 255, 127, 1)',
+                    'rgba(135, 206, 250, 1)',
+                    'rgba(255, 215, 0, 1)',
+                    'rgba(47, 79, 79, 1)',
+                    'rgba(75, 0, 130, 1)',
+                    'rgba(255, 69, 0, 1)',
+                    'rgba(0, 191, 255, 1)',
+                    'rgba(139, 0, 0, 1)',
+                    'rgba(255, 20, 147, 1)',
+                    'rgba(85, 107, 47, 1)',
+                    'rgba(154, 205, 50, 1)',
+                    'rgba(123, 104, 238, 1)',
+                    'rgba(0, 128, 128, 1)',
+                    'rgba(240, 230, 140, 1)',
+                    'rgba(255, 182, 193, 1)',
+                    'rgba(255, 140, 0, 1)',
+                    'rgba(46, 139, 87, 1)',
+                    'rgba(64, 224, 208, 1)',
+                    'rgba(210, 105, 30, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+    });
+
+    // Line Chart for Sales Report
+    const currentMonthSales = @json($currentMonthSales);
+    const previousMonthSales = @json($previousMonthSales);
+
+    if (currentMonthSales.length === 0 && previousMonthSales.length === 0) {
+        console.error('No sales data available.');
+    }
+
+    const currentMonthData = currentMonthSales.slice(0, 2).map(sale => ({
+        x: new Date(sale.date).toLocaleDateString(),
+        y: sale.total_sales
+    }));
+
+    const previousMonthData = previousMonthSales.map(sale => ({
+        x: new Date(sale.date).toLocaleDateString(),
+        y: sale.total_sales
+    }));
+
+    const ctxBar = document.getElementById('salesChart');
+    if (ctxBar) {
+        const ctx = ctxBar.getContext('2d');
+
+        const gradientCurrent = ctx.createLinearGradient(0, 0, 0, 400);
+        gradientCurrent.addColorStop(0, 'rgba(75, 192, 192, 0.5)');
+        gradientCurrent.addColorStop(1, 'rgba(75, 192, 192, 0)');
+
+        const gradientPrevious = ctx.createLinearGradient(0, 0, 0, 400);
+        gradientPrevious.addColorStop(0, 'rgba(34, 139, 34, 0.5)');
+        gradientPrevious.addColorStop(1, 'rgba(34, 139, 34, 0)');
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: currentMonthData.map(data => data.x),
+                datasets: [
+                    {
+                        label: 'Current Month Sales',
+                        data: currentMonthData.map(data => data.y),
+                        backgroundColor: gradientCurrent,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Previous Month Sales',
+                        data: previousMonthData.map(data => data.y),
+                        backgroundColor: gradientPrevious,
+                        borderColor: 'rgba(34, 139, 34, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        },
+                        stacked: false
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Total Sales Amount'
+                        },
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            }
+        });
+    } else {
+        console.error('Canvas element for sales chart not found.');
+    }
+</script>
+
 @endsection

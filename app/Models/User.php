@@ -59,4 +59,14 @@ class User extends Authenticatable
     public function subhead(){
         return $this->belongsTo(User::class, 'subhead_id');
     }
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class, 'creator_id');
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class, 'creator_id');
+    }
 }

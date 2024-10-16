@@ -114,6 +114,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::delete('destroy/{id}', [CustomerController::class, 'destroy'])->name('customer.destroy');
         Route::get('/search', [CustomerController::class, 'search'])->name('customer.search');
         Route::get('/profile/{id}', [CustomerController::class, 'show'])->name('customer.show');
+        Route::get('/print', [CustomerController::class, 'print'])->name('customer.print');
     });
     Route::group(['prefix' => 'receivable'], function () {
         Route::get('/list', [CustomerController::class, 'index'])->name('receivable.index');

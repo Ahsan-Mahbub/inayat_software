@@ -50,7 +50,7 @@
                                     @foreach ($all_qrcode as $qrcode)
                                         @for ($i = 0; $i < $qrcode->quantity; $i++)
                                             @if($qrcode->product)
-                                            <div class="single-qrcode" style="border: 1px solid gray; padding: 5px; width: 300px; ">
+                                            <div class="single-qrcode" style="border: 1px solid gray; padding: 5px; width: 280px; ">
                                                 <div style="display: flex">
                                                     <div style="display: inline; margin: auto;">
                                                         <?php
@@ -109,7 +109,7 @@
                 </div>
                 <div class="mt-3">
                     <!-- Form -->
-                    <form action="{{ route('qr-code.store') }}" method="post" enctype="multipart/form-data">
+                    <form id="action-form" action="{{ route('qr-code.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" id="action-type" name="action_type" value="">
                         <div class="row">
@@ -191,8 +191,11 @@
                             </div>
                         </div>
                         <div class="block-content block-content-full block-content-sm text-center">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="button" class="btn btn-primary" id="save-button" data-value="save">
                                 Save
+                            </button>
+                            <button type="button" class="btn btn-dark" id="download-button" data-value="download">
+                                Download Image
                             </button>
                         </div>
                     </form> 
@@ -221,5 +224,18 @@
         myWindow.focus();
         myWindow.print();
     }
+</script>
+<script>
+    document.getElementById('save-button').addEventListener('click', function() {
+        var value = this.getAttribute('data-value');
+        document.getElementById('action-type').value = value;
+        document.getElementById('action-form').submit();
+    });
+    
+    document.getElementById('download-button').addEventListener('click', function() {
+        var value = this.getAttribute('data-value');
+        document.getElementById('action-type').value = value;
+        document.getElementById('action-form').submit();
+    });
 </script>
 @endsection

@@ -682,6 +682,12 @@
                                                 <td class="text-right">
                                                     <input type="checkbox" class="check-input" name="permission[customer][transaction-delete]" value="1">
                                                 </td>
+                                            </tr>   
+                                            <tr>
+                                                <td class="text-left">Print List</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[customer][print]" value="1">
+                                                </td>
                                             </tr>                                           
                                         </table>
                                     </div> 
@@ -1031,7 +1037,19 @@
                                             </tr>
                                         </table>
                                     </div> 
-
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-striped text-center ">
+                                            <tr>
+                                                <th colspan="2">Notification</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Notification</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[notification][index]" value="1">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>

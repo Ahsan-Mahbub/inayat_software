@@ -76,6 +76,21 @@ class CustomerController extends Controller
         return view('backend.sale.customer.dues', compact('all_customer','search','startingSerial')); 
     }
 
+    public function print(Request $request)
+    {
+        $perPage = 50;
+        $page = $request->query('page', 1);
+        $startingSerial = ($page - 1) * $perPage + 1;
+
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 11){
+            $all_customer = Customer::orderBy('id','desc')->paginate($perPage);
+        }else{
+            $all_customer = Customer::where('creator_id', Auth::user()->id)->orderBy('id','desc')->paginate($perPage);
+        }
+        $search = '';
+        return view('backend.sale.customer.print', compact('all_customer','search','startingSerial'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -113,7 +128,7 @@ class CustomerController extends Controller
             $customer_update = $customer_update->id+1;
         }
 
-        $customer->customer_id = 'CUS-' . (substr( $request->customer_name, 0,3)). $customer_update;
+        $customer->customer_id = 'client-' . date('Y-m-d') . '-' . $customer_update;
 
         if ($request->hasFile('image')) {
             $extension = $request->file('image')->getClientOriginalExtension();

@@ -43,7 +43,7 @@ class ExportProduct implements FromCollection
             $rowData = [
                 $item->sku,
                 $item->category ? $item->category->category_name : '',
-                $item->description ? strip_tags($item->description) : '',
+                $item->description ? str_replace('&nbsp;', ' ', html_entity_decode(strip_tags($item->description))) : '',
                 $item->purchase_price,
                 $item->sale_price,
             ];

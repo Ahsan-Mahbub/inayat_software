@@ -34,6 +34,7 @@
                   <i class="mdi mdi-fullscreen"></i>
               </button>
           </div>
+          @isset(auth()->user()->role->permission['permission']['notification']['index'])
           <div class="dropdown d-inline-block">
             <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -81,7 +82,8 @@
                     </a>
                 </div>
             </div>
-        </div>
+          </div>
+          @endisset
 
 
           <div class="dropdown d-inline-block">

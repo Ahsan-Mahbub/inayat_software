@@ -26,6 +26,9 @@
                     @isset(auth()->user()->role->permission['permission']['customer']['create'])
                     <button type="button" class="btn btn-primary btn-sm waves-effect waves-light" data-toggle="modal" data-target=".bs-example-modal-md">Add Client</button>
                     @endisset
+                    @isset(auth()->user()->role->permission['permission']['customer']['print'])
+                    <a href="{{route('customer.print')}}" class="btn btn-warning btn-sm waves-effect waves-light">Print Client</a>
+                    @endisset
                 </div>
 
                 <div class="table-responsive">
@@ -93,10 +96,16 @@
                                         @csrf
                                         @method('delete')
                                         @isset(auth()->user()->role->permission['permission']['customer']['destroy'])
+                                        <?php
+                                            $match_url = url('/admin/receivable/list');
+                                            $currentUrl = url()->current();
+                                        ?>
+                                        @if($match_url != $currentUrl)
                                         <button type="submit"
                                             class="btn btn-sm btn-danger delete-confirm">
                                             <i class="far fa-trash-alt"></i>
                                         </button>
+                                        @endif
                                         @endisset
                                     </form>
                                 </td>

@@ -681,6 +681,12 @@
                                                 <td class="text-right">
                                                     <input type="checkbox" class="check-input" @isset($permission['permission']['customer']['transaction-delete']) checked @endisset name="permission[customer][transaction-delete]" value="1">
                                                 </td>
+                                            </tr>       
+                                            <tr>
+                                                <td class="text-left">Print List</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['customer']['print']) checked @endisset name="permission[customer][print]" value="1">
+                                                </td>
                                             </tr>                                        
                                         </table>
                                     </div> 
@@ -1026,6 +1032,19 @@
                                                 <td class="text-left">Budget & Expense Report</td>
                                                 <td class="text-right">
                                                     <input type="checkbox" class="check-input" @isset($permission['permission']['report']['budget-expense']) checked @endisset name="permission[report][budget-expense]" value="1">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-striped text-center ">
+                                            <tr>
+                                                <th colspan="2">Notification</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Notification</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['notification']['index']) checked @endisset name="permission[notification][index]" value="1">
                                                 </td>
                                             </tr>
                                         </table>

@@ -61,6 +61,10 @@
                                 <th>Image</th>
                                 <th>QR Code</th>
                                 <th>Category</th>
+                                @if(Auth::user()->role_id == 1)
+                                <th>Purchase Price</th>
+                                @endif
+                                <th>MRP</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -79,6 +83,10 @@
                                 <td><img style="width: auto; height: 100px;"
                                     src="{{ $product->qr_code ? '/' . $product->qr_code : '/demo.svg' }}"></td>
                                 <td>{{$product -> category ? $product -> category ->  category_name : ''}} </td>
+                                @if(Auth::user()->role_id == 1)
+                                <td>{{$product->purchase_price}}</td>
+                                @endif
+                                <td>{{$product->sale_price}}</td>
                                 <td>
                                     <form action="{{ route('product.destroy', $product->id) }}" method="post"
                                         accept-charset="utf-8">

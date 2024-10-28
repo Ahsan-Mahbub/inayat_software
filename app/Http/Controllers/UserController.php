@@ -41,13 +41,15 @@ class UserController extends Controller
         $user = new User();
         $user->fill($requested_data);
         $user->password = Hash::make($request->m_password);
+
         if ($request->hasFile('image')) {
             $extension = $request->file('image')->getClientOriginalExtension();
             $name = 'image' . Str::random(5) . '.' . $extension;
             $path = "backend/assets/images/user/";
             $request->file('image')->move($path, $name);
-            $requested_data['image'] = $path . $name;
+            $user->image = $path . $name;
         }
+
         $save = $user->save();
 
         if ($save) {

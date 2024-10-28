@@ -1,12 +1,15 @@
 @extends('backend.layouts.app')
 @section('content')
 <style>
-    .quick-link .col-lg-3 {
-        -webkit-box-flex: 0;
-        -ms-flex: 0 0 25%;
-        flex: 0 0 20%;
-        max-width: 20%;
+    @media (min-width: 1024px){
+        .quick-link .col-lg-3 {
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 25%;
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
     }
+
 </style>
 <!-- start page title -->
 <div class="row">
@@ -31,7 +34,7 @@
             <div class="quick-link">
                 <div class="row">
                     @isset(auth()->user()->role->permission['permission']['expense']['received'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('budget.employee')}}">
                                 <div class="row">
@@ -47,7 +50,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['expense']['office'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('expense.head')}}">
                                 <div class="row">
@@ -63,7 +66,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['product']['create'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('product.create')}}">
                                 <div class="row">
@@ -79,7 +82,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['qr-code']['index'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('qr-code.index')}}">
                                 <div class="row">
@@ -95,7 +98,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['requisition']['create'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('requisition.create')}}">
                                 <div class="row">
@@ -111,7 +114,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['purchase']['create'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('purchase.create')}}">
                                 <div class="row">
@@ -127,7 +130,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['purchase-return']['create'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('purchase.return.create')}}">
                                 <div class="row">
@@ -143,7 +146,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['sale-requisition']['create'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('sale.requisition.create')}}">
                                 <div class="row">
@@ -159,7 +162,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['sale']['create'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('sale.create')}}">
                                 <div class="row">
@@ -175,7 +178,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['sale-return']['create'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('sale.return.create')}}">
                                 <div class="row">
@@ -191,7 +194,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['inventory']['index'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('inventory.index')}}">
                                 <div class="row">
@@ -207,7 +210,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['customer']['dues'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('receivable.dues')}}">
                                 <div class="row">
@@ -223,7 +226,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['budget']['index'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('budget.index')}}">
                                 <div class="row">
@@ -239,7 +242,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['expense']['index'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('expense.index')}}">
                                 <div class="row">
@@ -255,7 +258,7 @@
                     </div>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['permission']['index'])
-                    <div class="col-lg-3 col-md-3 pt-3">
+                    <div class="col-6 col-lg-3 col-md-3 pt-3">
                         <div class="border text-center bg-dark p-1" style="border-radius: 10px">
                             <a href="{{route('permission.index')}}">
                                 <div class="row">

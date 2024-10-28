@@ -77,6 +77,14 @@
 
                 @if (isset(auth()->user()->role->permission['permission']['customer']['index'])  || isset(auth()->user()->role->permission['permission']['sale']['index']) || isset(auth()->user()->role->permission['permission']['sale']['create']) || isset(auth()->user()->role->permission['permission']['sale']['requisition']) || isset(auth()->user()->role->permission['permission']['sale-return']['index']) || isset(auth()->user()->role->permission['permission']['sale-return']['create']) || isset(auth()->user()->role->permission['permission']['sale-requisition']['index']) || isset(auth()->user()->role->permission['permission']['sale-requisition']['create']))
                 <li class="menu-title">Sales Module</li>
+                @isset(auth()->user()->role->permission['permission']['customer']['index'])
+                <li>
+                    <a href="{{route('customer.index')}}" class="waves-effect">
+                        <i class="mdi mdi-account"></i>
+                        <span>Client</span>
+                    </a>
+                </li>
+                @endisset
                 @if (isset(auth()->user()->role->permission['permission']['sale-requisition']['index']) || isset(auth()->user()->role->permission['permission']['sale-requisition']['create']))
                 <li class="">
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -94,16 +102,13 @@
                 </li>
                 @endif
 
-                @if (isset(auth()->user()->role->permission['permission']['customer']['index'])  || isset(auth()->user()->role->permission['permission']['sale']['index']) || isset(auth()->user()->role->permission['permission']['sale']['create']) || isset(auth()->user()->role->permission['permission']['sale']['requisition']) || isset(auth()->user()->role->permission['permission']['sale-return']['index']) || isset(auth()->user()->role->permission['permission']['sale-return']['create']))
+                @if (isset(auth()->user()->role->permission['permission']['sale']['index']) || isset(auth()->user()->role->permission['permission']['sale']['create']) || isset(auth()->user()->role->permission['permission']['sale']['requisition']) || isset(auth()->user()->role->permission['permission']['sale-return']['index']) || isset(auth()->user()->role->permission['permission']['sale-return']['create']))
                 <li class="">
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="mdi mdi-dice-multiple-outline"></i>
                         <span>Sales</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
-                        @isset(auth()->user()->role->permission['permission']['customer']['index'])
-                        <li><a href="{{route('customer.index')}}">Client</a></li>
-                        @endisset
                         @if (isset(auth()->user()->role->permission['permission']['sale']['index']) || isset(auth()->user()->role->permission['permission']['sale']['create']) || isset(auth()->user()->role->permission['permission']['sale']['requisition']))
                         <li class=""><a href="javascript: void(0);" class="has-arrow">Sales</a>
                             <ul class="sub-menu" aria-expanded="true">
@@ -146,6 +151,14 @@
 
                 @if (isset(auth()->user()->role->permission['permission']['requisition']['index']) || isset(auth()->user()->role->permission['permission']['requisition']['create']) || isset(auth()->user()->role->permission['permission']['supplier']['index']) || isset(auth()->user()->role->permission['permission']['purchase']['create']) || isset(auth()->user()->role->permission['permission']['purchase']['index']) || isset(auth()->user()->role->permission['permission']['purchase']['requisition']) || isset(auth()->user()->role->permission['permission']['purchase-return']['index']) || isset(auth()->user()->role->permission['permission']['purchase-return']['create']))
                 <li class="menu-title">Purchase Module</li>
+                @isset(auth()->user()->role->permission['permission']['supplier']['index'])
+                <li>
+                    <a href="{{route('supplier.index')}}" class="waves-effect">
+                        <i class="mdi mdi-account"></i>
+                        <span>Supplier</span>
+                    </a>
+                </li>
+                @endisset
                 @if (isset(auth()->user()->role->permission['permission']['requisition']['index']) || isset(auth()->user()->role->permission['permission']['requisition']['create']))
                 <li class="">
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -162,16 +175,13 @@
                     </ul>
                 </li>
                 @endif
-                @if (isset(auth()->user()->role->permission['permission']['purchase']['qty-update']) || isset(auth()->user()->role->permission['permission']['supplier']['index']) || isset(auth()->user()->role->permission['permission']['purchase']['create']) || isset(auth()->user()->role->permission['permission']['purchase']['index']) || isset(auth()->user()->role->permission['permission']['purchase']['requisition']) || isset(auth()->user()->role->permission['permission']['purchase-return']['index']) || isset(auth()->user()->role->permission['permission']['purchase-return']['create']))
+                @if (isset(auth()->user()->role->permission['permission']['purchase']['qty-update']) || isset(auth()->user()->role->permission['permission']['purchase']['create']) || isset(auth()->user()->role->permission['permission']['purchase']['index']) || isset(auth()->user()->role->permission['permission']['purchase']['requisition']) || isset(auth()->user()->role->permission['permission']['purchase-return']['index']) || isset(auth()->user()->role->permission['permission']['purchase-return']['create']))
                 <li class="">
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="mdi mdi-dice-multiple-outline"></i>
                         <span>Purchase</span>
                     </a>
                     <ul class="sub-menu" aria-expanded="true">
-                        @isset(auth()->user()->role->permission['permission']['supplier']['index'])
-                        <li><a href="{{route('supplier.index')}}">Supplier</a></li>
-                        @endisset
                         @if (isset(auth()->user()->role->permission['permission']['purchase']['qty-update']) || isset(auth()->user()->role->permission['permission']['purchase']['create']) || isset(auth()->user()->role->permission['permission']['purchase']['index']) || isset(auth()->user()->role->permission['permission']['purchase']['requisition']))
                         <li class=""><a href="javascript: void(0);" class="has-arrow">Purchase</a>
                             <ul class="sub-menu" aria-expanded="true">

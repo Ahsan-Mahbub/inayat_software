@@ -26,4 +26,9 @@ class Customer extends Model
         'return_amount',
         'adjustment_amount',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'creator_id');
+    }
 }

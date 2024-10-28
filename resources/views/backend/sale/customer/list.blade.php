@@ -41,6 +41,7 @@
                         <thead>
                             <tr>
                                 <th>S/N</th>
+                                <th>Creator Name</th>
                                 <th>Image</th>
                                 <th>ID / Name</th>
                                 <th>Phone</th>
@@ -64,6 +65,7 @@
                             @endphp
                             <tr>
                                 <td>{{$startingSerial++}}</td>
+                                <td>{{$customer->creator ? $customer->creator->name : ''}}</td>
                                 <td><img src="/{{$customer->image ? $customer->image : 'demo.svg'}}" height="50"></td>
                                 <td>{{$customer -> customer_id}} <br> {{$customer -> customer_name}}</td>
                                 <td>{{$customer -> phone}}</td>

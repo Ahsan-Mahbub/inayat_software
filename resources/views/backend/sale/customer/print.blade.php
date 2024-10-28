@@ -31,6 +31,7 @@
                     <div class="block-header block-header-default">
                         <div class="block-options">
                               <input class="ml-3 mr-1" type="checkbox"  id="sl" checked> S.L
+                              <input class="ml-3 mr-1" type="checkbox"  id="creator" checked> Creator Name
                               <input class="ml-3 mr-1" type="checkbox"  id="image" checked> Image
                               <input class="ml-3 mr-1" type="checkbox"  id="name" checked> ID / Name
                               <input class="ml-3 mr-1" type="checkbox"  id="phone" checked> Phone
@@ -47,6 +48,7 @@
                             <thead>
                                 <tr>
                                     <th class="sl">S/N</th>
+                                    <th class="creator">Creator Name</th>
                                     <th class="image">Image</th>
                                     <th class="name">ID / Name</th>
                                     <th class="phone">Phone</th>
@@ -69,6 +71,7 @@
                                 @endphp
                                 <tr>
                                     <td class="sl">{{$startingSerial++}}</td>
+                                    <td class="creator">{{$customer->creator ? $customer->creator->name : ''}}</td>
                                     <td class="image"><img src="/{{$customer->image ? $customer->image : 'demo.svg'}}" height="50"></td>
                                     <td class="name">{{$customer -> customer_id}} <br> {{$customer -> customer_name}}</td>
                                     <td class="phone">{{$customer -> phone}}</td>

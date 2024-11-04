@@ -44,69 +44,73 @@ class QRCodeController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        if ($request->quantity) {
-            $quantity = $request->quantity;
-        } else {
-            $quantity = 1;
+        if($request->product_id)
+        {
+            if ($request->quantity) {
+                $quantity = $request->quantity;
+            } else {
+                $quantity = 1;
+            }
+            if ($request->action_type == 'save')
+            {
+                $qr_code = new QRCode();
+                $qr_code->product_id = $request->product_id;
+                if($request->watt_id)
+                {
+                    $qr_code->watt_id = $request->watt_id ? $request->watt_id : '';
+                }
+                if($request->color_id)
+                {
+                    $qr_code->color_id = $request->color_id ? $request->color_id : '';
+    
+                }
+                if($request->temperature_id)
+                {
+                    $qr_code->temperature_id = $request->temperature_id ? $request->temperature_id : '';
+    
+                }
+                if($request->dimmable_type)
+                {
+                    $qr_code->dimmable_type = $request->dimmable_type ? $request->dimmable_type : '';
+                }
+                if($request->size)
+                {
+                    $qr_code->size = $request->size ? $request->size : '';
+    
+                }
+                if($request->patch_type)
+                {
+                    $qr_code->patch_type = $request->patch_type ? $request->patch_type : '';
+    
+                }
+                if($request->channel_type)
+                {
+                    $qr_code->channel_type = $request->channel_type ? $request->channel_type : '';
+    
+                }
+                $qr_code->quantity = $quantity;
+                $qr_code->save();
+                
+                return redirect()->route('qr-code.index')->with('message','QR Code added Successfully');
+            }elseif ($request->action_type == 'download')
+            {
+                return back()->with('warning', 'Under Process');
+                $product = Product::where('id', $request->product_id)->first();
+                if($product){
+                    $productCode = $product->sku;
+                    $qrCodeImage = QrCode::format('png')->size(200)->generate($productCode);
+                    return response($qrCodeImage)
+                        ->header('Content-Type', 'image/png')
+                        ->header('Content-Disposition', 'attachment; filename="product-' . $productCode . '.png"');
+                }else{
+                    return redirect()->back()->with('error', 'Product is required!');
+                }
+            }else {
+                return redirect()->back()->with('error', 'Invalid action!');
+            }  
+        } else{
+            return redirect()->back()->with('error', 'Product not found!');
         }
-        if ($request->action_type == 'save')
-        {
-            $qr_code = new QRCode();
-            $qr_code->product_id = $request->product_id;
-            if($request->watt_id)
-            {
-                $qr_code->watt_id = $request->watt_id ? $request->watt_id : '';
-            }
-            if($request->color_id)
-            {
-                $qr_code->color_id = $request->color_id ? $request->color_id : '';
-
-            }
-            if($request->temperature_id)
-            {
-                $qr_code->temperature_id = $request->temperature_id ? $request->temperature_id : '';
-
-            }
-            if($request->dimmable_type)
-            {
-                $qr_code->dimmable_type = $request->dimmable_type ? $request->dimmable_type : '';
-            }
-            if($request->size)
-            {
-                $qr_code->size = $request->size ? $request->size : '';
-
-            }
-            if($request->patch_type)
-            {
-                $qr_code->patch_type = $request->patch_type ? $request->patch_type : '';
-
-            }
-            if($request->channel_type)
-            {
-                $qr_code->channel_type = $request->channel_type ? $request->channel_type : '';
-
-            }
-            $qr_code->quantity = $quantity;
-            $qr_code->save();
-            
-            return redirect()->route('qr-code.index')->with('message','QR Code added Successfully');
-        }elseif ($request->action_type == 'download')
-        {
-            return back()->with('warning', 'Under Process');
-            $product = Product::where('id', $request->product_id)->first();
-            if($product){
-                $productCode = $product->sku;
-                $qrCodeImage = QrCode::format('png')->size(200)->generate($productCode);
-                return response($qrCodeImage)
-                    ->header('Content-Type', 'image/png')
-                    ->header('Content-Disposition', 'attachment; filename="product-' . $productCode . '.png"');
-            }else{
-                return redirect()->back()->with('error', 'Product is required!');
-            }
-        }else {
-            return redirect()->back()->with('error', 'Invalid action!');
-        }   
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Models\Expense;
 use App\Models\Method;
 use App\Models\Account;
 use App\Models\User;
+use App\Models\ExpenseRequisition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -275,7 +276,8 @@ class BudgetController extends Controller
         $employee = User::findOrFail($id);
 
         $budgets = Budget::where('employee_id', $id)->whereMonth('date', $month)->whereYear('date', $year)->orderBy('date','desc')->get();
-        $expenses = Expense::where('employee_id', $id)->whereMonth('date', $month)->whereYear('date', $year)->orderBy('date','desc')->get();
+        $expenses = Expense::where('employee_id', $id)->whereMonth('date', $month)->whereYear('date', $year)->where('status',1)->orderBy('date','desc')->get();
+        $expense_requisitions = ExpenseRequisition::where('employee_id', $id)->whereMonth('date', $month)->whereYear('date', $year)->where('status',1)->orderBy('date','desc')->get();
 
 
         $pre_total_budget = Budget::where('employee_id', $id)
@@ -283,10 +285,15 @@ class BudgetController extends Controller
             ->sum('amount');
         $pre_total_expense = Expense::where('employee_id', $id)
             ->whereNotIn('id', $expenses->pluck('id')->toArray())
+            ->where('status',1)
             ->sum('amount');    
-        $previous_amount = $pre_total_budget - $pre_total_expense;
+        $pre_total_expense_requisition = ExpenseRequisition::where('employee_id', $id)
+            ->whereNotIn('id', $expense_requisitions->pluck('id')->toArray())
+            ->where('status',1)
+            ->sum('amount');   
+        $previous_amount = $pre_total_budget + $pre_total_expense_requisition - $pre_total_expense;
 
-        return view('backend.office-expense.budget.employee-budget-monthly', compact('employee','budgets','expenses','previous_amount'));
+        return view('backend.office-expense.budget.employee-budget-monthly', compact('employee','budgets','expenses','expense_requisitions','previous_amount'));
     }
 
 }

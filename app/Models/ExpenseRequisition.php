@@ -5,27 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Expense extends Model
+class ExpenseRequisition extends Model
 {
     use HasFactory;
 
-    protected $table = 'expenses';
+    protected $table = 'expense_requisitions';
     protected $fillable = [
         'head_id',
         'subhead_id',
-        'requisition_id',
         'date',
+        'request_amount',
         'amount',
         'reason',
         'employee_id',
-        'image',
-        'status',
+        'accessor_id',
+        'requisition',
+        'status'
     ];
-
-    public function requisition()
-    {
-        return $this->belongsTo(ExpenseRequisition::class, 'requisition_id');
-    }
 
     public function head()
     {
@@ -40,5 +36,10 @@ class Expense extends Model
     public function employee()
     {
         return $this->belongsTo(User::class, 'employee_id');
+    }
+
+    public function accessor()
+    {
+        return $this->belongsTo(User::class, 'accessor_id');
     }
 }

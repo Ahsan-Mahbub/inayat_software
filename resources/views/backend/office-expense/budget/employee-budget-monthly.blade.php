@@ -37,6 +37,7 @@
                 <div id="printableContent">
                     @php
                         $total_budget_amount = 0;
+                        $total_requisition_amount = 0;
                     @endphp
                     @isset($budgets)
                         <div class="row">
@@ -67,6 +68,46 @@
                                         <tr>
                                             <th colspan="3" class="text-right">Grand Total</th>
                                             <th>TK. {{ $total_budget_amount }}</th>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="4" class="text-center text-danger h4">Item Not Found</td>
+                                        </tr>
+                                    @endif
+                                </table>
+                            </div>
+                        </div>
+                    @endisset
+
+                    @isset($expense_requisitions)
+                        <div class="row">
+                            <div class="col-md-12 mt-4">
+                                <table class="table table-bordered table-striped text-center">
+                                    <tr>
+                                        <th colspan="4" class="text-center">{{$employee->name}} - {{$monthName}} - Expense Requisition Histories</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th>Date</th>
+                                        <th>Reason</th>
+                                        <th>Budget</th>
+                                    </tr>
+                                    @if(count($expense_requisitions) > 0)
+                                        @foreach ($expense_requisitions as $item)
+                                            @php
+                                                $total_requisition_amount = $total_requisition_amount + $item->amount;
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ date('d-F-Y', strtotime($item->date ?? '')) }}</td>
+                                                <td>{!! $item->reason !!}</td>
+                                                <td>{{ $item->amount ?? ''}}</td>
+                                            </tr>
+                                        @endforeach
+                                        
+                                        <tr>
+                                            <th colspan="3" class="text-right">Grand Total</th>
+                                            <th>TK. {{ $total_requisition_amount }}</th>
                                         </tr>
                                     @else
                                         <tr>
@@ -134,8 +175,12 @@
                                     <th class="text-right">{{$total_budget_amount}}</th>
                                 </tr>
                                 <tr>
+                                    <th class="text-right">{{$monthName}} - Total Expense Requisition Amount</th>
+                                    <th class="text-right">{{$total_requisition_amount}}</th>
+                                </tr>
+                                <tr>
                                     <th class="text-right">{{$monthName}} - Total Amount</th>
-                                    <th class="text-right">{{$previous_amount + $total_budget_amount}}</th>
+                                    <th class="text-right">{{$previous_amount + $total_budget_amount + $total_requisition_amount}}</th>
                                 </tr>
                             </table>
                             <table class="table table-bordered table-striped text-center">
@@ -147,7 +192,7 @@
                             <table class="table table-bordered table-striped text-center">
                                 <tr>
                                     <th class="text-right">{{$monthName}} - Current Balance</th>
-                                    <th class="text-right">{{$previous_amount + $total_budget_amount - $total_expense_amount}}</th>
+                                    <th class="text-right">{{$previous_amount + $total_budget_amount + $total_requisition_amount - $total_expense_amount}}</th>
                                 </tr>
                             </table>
                         </div>

@@ -3,11 +3,11 @@
 <div class="row">
     <div class="col-12">
         <div class="page-title-box d-flex align-items-center justify-content-between">
-            <h4 class="mb-0 font-size-18">Expense List</h4>
+            <h4 class="mb-0 font-size-18">Expense Requisition List</h4>
             <div class="page-title-right">
                 <ol class="breadcrumb m-0">
                     <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
-                    <li class="breadcrumb-item">Expense</li>
+                    <li class="breadcrumb-item">Expense Requisition</li>
                     <li class="breadcrumb-item active">List</li>
                 </ol>
             </div>
@@ -20,12 +20,12 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-right mb-4">
-                    @isset(auth()->user()->role->permission['permission']['expense']['create'])
-                    <a href="{{route('expense.create')}}" class="btn btn-primary btn-sm waves-effect waves-light">Add Expense</a>
+                    @isset(auth()->user()->role->permission['permission']['expense-requisition']['create'])
+                    <a href="{{route('expense.requisition.create')}}" class="btn btn-primary btn-sm waves-effect waves-light">Add Expense Requisition</a>
                     @endisset
                 </div>
 
-                <form method="get" action="{{route('expense.search')}}">
+                <form method="get" action="{{route('expense.requisition.search')}}">
                     <div class="row mb-3">
                         <div class="col-md-3 col-12">
                             <label>Head: </label>
@@ -45,9 +45,8 @@
                                 @endif
                             </select>
                         </div>
-                        @if(Auth::user()->role_id != 11)
                         <div class="col-md-3 col-12">
-                            <label>Employee: </label>
+                            <label>Accessor: </label>
                             <select class="custom-select select2" name="user_id">
                                 <option value="">Select One</option>
                                 @foreach($users as $user)
@@ -55,7 +54,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        @endif
                         <div class="col-md-2 col-12 mt-auto">
                             <input type="submit" class="btn btn-info" value="Search">
                         </div>
@@ -67,12 +65,12 @@
                         <thead>
                             <tr>
                                 <th>S/N</th>
-                                <th>Expense Image</th>
-                                <th>Date</th>
                                 <th>Requisition</th>
+                                <th>Date</th>
                                 <th>Head Name</th>
-                                <th>Employee Name</th>
-                                <th>Amount</th>
+                                <th>Accessor Name</th>
+                                <th>Req. Amount</th>
+                                <th>Approved Amount</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -86,8 +84,7 @@
                             @foreach($all_expense as $expense)
                             <tr>
                                 <td>{{$startingSerial++}}</td>
-                                <td><img style="width: auto; height: 100px;"
-                                    src="{{ $expense->image ? '/' . $expense->image : '/demo.svg' }}"></td>
+                                <td>{{$expense->requisition}}</td>
                                 <td>
                                     <?php
                                         $timestamp = strtotime($expense->date);
@@ -95,9 +92,9 @@
                                     ?>
                                     {{$date}}
                                 </td>
-                                <td>{{$expense->requisition ? $expense->requisition->requisition : ''}}</td>
                                 <td>{{$expense->head ? $expense->head->head_name : ''}} <br> {{$expense->subhead ? $expense->subhead->subhead_name : ''}}</td>
-                                <td>{{$expense->employee ? $expense->employee->name : ''}} </td>
+                                <td>{{$expense->accessor ? $expense->accessor->name : ''}} </td>
+                                <td>{{$expense->request_amount}} </td>
                                 <td>{{$expense->amount}} </td>
                                 <td>
                                     @if($expense->status == 0)
@@ -111,22 +108,31 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @isset(auth()->user()->role->permission['permission']['expense']['approved'])
+                                    @isset(auth()->user()->role->permission['permission']['expense-requisition']['approved'])
                                         @if($expense->status == 0)
-                                            <a href="{{ route('expense.approved',$expense->id) }}" class="btn btn-warning btn-sm mb-2 waves-effect waves-light">Approved</a>
+                                            <a href="{{ route('expense.requisition.approved',$expense->id) }}" class="btn btn-warning btn-sm mb-2 waves-effect waves-light">Approved</a>
                                         @endif
                                     @endisset
-                                    <form action="{{ route('expense.destroy', $expense->id) }}" method="post"
+                                    <form action="{{ route('expense.requisition.destroy', $expense->id) }}" method="post"
                                         accept-charset="utf-8">
-                                        @isset(auth()->user()->role->permission['permission']['expense']['edit'])
-                                        <a href="{{ route('expense.edit', $expense->id) }}"
+
+                                        @if(Auth::user()->role_id == 1)
+                                            @if($expense->status != 1)
+                                            <a href="{{ route('expense.requisition.adjustment', $expense->id) }}"
+                                                class="btn btn-sm btn-info" title="Adjustment">
+                                                <i class="mdi mdi-adjust"></i>
+                                            </a>
+                                            @endif
+                                        @endif
+                                        @isset(auth()->user()->role->permission['permission']['expense-requisition']['edit'])
+                                        <a href="{{ route('expense.requisition.edit', $expense->id) }}"
                                             class="btn btn-sm btn-primary">
                                             <i class="far fa-edit text-white"></i>
                                         </a>
                                         @endisset
                                         @csrf
                                         @method('delete')
-                                        @isset(auth()->user()->role->permission['permission']['expense']['destroy'])
+                                        @isset(auth()->user()->role->permission['permission']['expense-requisition']['destroy'])
                                         <button type="submit"
                                             class="btn btn-sm btn-danger delete-confirm">
                                             <i class="far fa-trash-alt"></i>
@@ -150,7 +156,7 @@
     <script type="text/javascript">
         function getSubHead() {
             let id = $("#head_id").val();
-            let url = '/admin/expense/subhead/' + id;
+            let url = '/admin/expense-requisition/subhead/' + id;
             $.ajax({
                 type: "get",
                 url: url,

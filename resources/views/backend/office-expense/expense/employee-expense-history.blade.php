@@ -35,6 +35,7 @@
                                 <th>Head Name</th>
                                 <th>Employee Name</th>
                                 <th>Amount</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -59,6 +60,17 @@
                                 <td>{{$expense->head ? $expense->head->head_name : ''}} <br> {{$expense->subhead ? $expense->subhead->subhead_name : ''}}</td>
                                 <td>{{$expense->employee ? $expense->employee->name : ''}} </td>
                                 <td>{{$expense->amount}} </td>
+                                <td>
+                                    @if($expense->status == 0)
+                                    <span class="text-warning">
+                                        Pending
+                                    </span>
+                                    @else
+                                    <span class="text-success">
+                                        Approved
+                                    </span>
+                                    @endif
+                                </td>
                                 <td>
                                     <form action="{{ route('expense.destroy', $expense->id) }}" method="post"
                                         accept-charset="utf-8">

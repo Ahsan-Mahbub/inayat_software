@@ -7,6 +7,7 @@ use App\Http\Controllers\MethodController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\HeadController;
 use App\Http\Controllers\SubHeadController;
+use App\Http\Controllers\ExpenseRequisitionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\BudgetController;
 /*
@@ -57,6 +58,23 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::delete('destroy/{id}', [SubHeadController::class, 'destroy'])->name('sub-head.destroy');
         Route::get('/search', [SubHeadController::class, 'search'])->name('sub-head.search');
     });
+
+    //Expense Route
+    Route::group(['prefix' => 'expense-requisition'], function () {
+        Route::get('/list', [ExpenseRequisitionController::class, 'index'])->name('expense.requisition.index');
+        Route::get('/create', [ExpenseRequisitionController::class, 'create'])->name('expense.requisition.create');
+        Route::post('store', [ExpenseRequisitionController::class, 'store'])->name('expense.requisition.store');
+        Route::get('edit/{id}', [ExpenseRequisitionController::class, 'edit'])->name('expense.requisition.edit');
+        Route::post('update/{id}', [ExpenseRequisitionController::class, 'update'])->name('expense.requisition.update');
+        Route::delete('destroy/{id}', [ExpenseRequisitionController::class, 'destroy'])->name('expense.requisition.destroy');
+        Route::get('approved/{id}', [ExpenseRequisitionController::class, 'approved'])->name('expense.requisition.approved');
+        Route::get('adjustment/{id}', [ExpenseRequisitionController::class, 'adjustment'])->name('expense.requisition.adjustment');
+        Route::post('adjustment-update/{id}', [ExpenseRequisitionController::class, 'updateAdjustment'])->name('requisition.update.adjustment');
+        Route::get('/search', [ExpenseRequisitionController::class, 'search'])->name('expense.requisition.search');
+        Route::get('subhead/{id}', [ExpenseRequisitionController::class, 'subHead'])->name('expense.requisition.subhead');
+        Route::get('employee-expense-requisition-history/{id}', [ExpenseRequisitionController::class, 'employeeExpenseRequisitionHistory'])->name('expense-requisition.employee.history');
+    });
+
     //Expense Route
     Route::group(['prefix' => 'expense'], function () {
         Route::get('/list', [ExpenseController::class, 'index'])->name('expense.index');
@@ -65,8 +83,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::get('edit/{id}', [ExpenseController::class, 'edit'])->name('expense.edit');
         Route::post('update/{id}', [ExpenseController::class, 'update'])->name('expense.update');
         Route::delete('destroy/{id}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+        Route::get('approved/{id}', [ExpenseController::class, 'approved'])->name('expense.approved');
         Route::get('/search', [ExpenseController::class, 'search'])->name('expense.search');
-        Route::get('subhead/{id}', [ExpenseController::class, 'subHead'])->name('expense.subhead');
+        Route::get('requisition/{id}', [ExpenseController::class, 'requisition'])->name('expense.requisition');
+        Route::post('requisition-details', [ExpenseController::class, 'getRequisitionDetails'])->name('get-expense-requisition-details');
         Route::get('expense-head', [ExpenseController::class, 'expenseHead'])->name('expense.head');
         Route::get('expense-subhead-expense/{id}', [ExpenseController::class, 'expenseSubHead'])->name('expense.subhead-expense');
         Route::get('employee-expense-history/{id}', [ExpenseController::class, 'employeeExpenseHistory'])->name('expense.employee.history');

@@ -19,12 +19,12 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0 font-size-18">Expense Report</h4>
+                <h4 class="mb-0 font-size-18">Expense Requisition Report</h4>
                 <div class="page-title-right">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
                         <li class="breadcrumb-item">Report</li>
-                        <li class="breadcrumb-item active">Expense</li>
+                        <li class="breadcrumb-item active">Expense Requisition</li>
                     </ol>
                 </div>
             </div>
@@ -43,9 +43,6 @@
                         <img src="/bg.png" style="width: 100%;">
                     </div>
                     <div class="text-center pt-2 pb-4">
-                        @if($employee_id)
-                        <strong class="d-block">Employee Name : {{$user->name}}</strong>
-                        @endif
                         @if($head_id)
                         <strong class="d-block">Expense Head : {{$head->head_name}}</strong>
                         @endif
@@ -75,7 +72,7 @@
                                     <th>S/N</th>
                                     <th>Date</th>
                                     <th>Head Name</th>
-                                    <th>Employee Name</th>
+                                    <th>Accessor Name</th>
                                     <th>Amount</th>
                                     <th>Status</th>
                                 </tr>
@@ -99,7 +96,7 @@
                                         {{$date}}
                                     </td>
                                     <td>{{$expense->head ? $expense->head->head_name : ''}} <br> {{$expense->subhead ? $expense->subhead->subhead_name : ''}}</td>
-                                    <td>{{$expense->employee ? $expense->employee->name : ''}} </td>
+                                    <td>{{$expense->accessor ? $expense->accessor->name : ''}} </td>
                                     <td>{{$expense->amount}} </td>
                                     <td>
                                         @if($expense->status == 0)
@@ -115,7 +112,7 @@
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <td colspan="4" class="text-right">Total Expense Amount</td>
+                                    <td colspan="4" class="text-right">Total Expense Requisition Amount</td>
                                     <td>{{$total_amount}}</td>
                                     <td></td>
                                 </tr>

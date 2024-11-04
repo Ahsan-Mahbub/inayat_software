@@ -50,43 +50,41 @@
                                     @foreach ($all_qrcode as $qrcode)
                                         @for ($i = 0; $i < $qrcode->quantity; $i++)
                                             @if($qrcode->product)
-                                            <div class="single-qrcode" style="border: 1px solid gray; padding: 5px; width: 280px; ">
-                                                <div style="display: flex">
-                                                    <div style="display: inline; margin: auto;">
-                                                        <?php
-                                                            $qrcode_gen = $qrcode->product->sku;
-                                                        ?>
-                                                        <?php
-                                                            echo QrCode::generate($qrcode_gen);
-                                                        ?>
-                                                    </div>
-                                                    <div style="display: inline; padding-left:10px; width: 65%">
-                                                        <b style="color: #000; display: block;">INAYAT LIGHTING</b>
-                                                        <span style="color: #000; display: block; font-size: 13px;">{{ $qrcode->product ? $qrcode->product->sku : 'N/A' }}</span>
-                                                        @if($qrcode->watt_id)
-                                                        <span style="color: #000; display: block; font-size: 13px;">WATT - {{ $qrcode->watt ? $qrcode->watt->watt_name : 'N/A' }}</span>
-                                                        @endif
-                                                        @if($qrcode->color_id)
-                                                        <span style="color: #000; display: block; font-size: 13px;">BODY COLOR - {{ $qrcode->color ? $qrcode->color->color_name : 'N/A' }}</span>
-                                                        @endif
-                                                        @if($qrcode->temperature_id)
-                                                        <span style="color: #000; display: block; font-size: 13px;">TEMPERATURE -  {{ $qrcode->temperature ? $qrcode->temperature->temperature_name : 'N/A' }}</span>
-                                                        @endif
-                                                        @if($qrcode->dimmable_type)
-                                                        <span style="color: #000; display: block; font-size: 13px;">DIMMABLE TYPE - {{ $qrcode->dimmable_type }}</span>
-                                                        @endif
-                                                        @if($qrcode->size)
-                                                        <span style="color: #000; display: block; font-size: 13px;">SIZE - {{ $qrcode->size }}</span>
-                                                        @endif
-                                                        @if($qrcode->patch_type)
-                                                        <span style="color: #000; display: block; font-size: 13px;">PATCH/PIN - {{ $qrcode->patch_type }}</span>
-                                                        @endif
-                                                        @if($qrcode->channel_type)
-                                                        <span style="color: #000; display: block; font-size: 13px;">CHANNEL/ADAPTER - {{ $qrcode->channel_type }}</span>
-                                                        @endif
+                                                <div class="single-qrcode" style="padding: 5px; width: 55mm; height: 25mm; box-sizing: border-box; margin-bottom: 20px; margin-top:20px">
+                                                    <div style="display: flex; height: 100%;">
+                                                        <div style="display: inline; margin: auto;">
+                                                            <?php
+                                                                $qrcode_gen = $qrcode->product->sku;
+                                                            ?>
+                                                            {{ QrCode::size(50)->generate($qrcode_gen) }}
+                                                        </div>
+                                                        <div style="display: inline; padding-left:10px; margin: auto; width: 75%">
+                                                            <b style="color: #000; display: block; font-size: 10px;">INAYAT LIGHTING</b>
+                                                            <span style="color: #000; display: block; font-size: 10px;">{{ $qrcode->product ? $qrcode->product->sku : 'N/A' }}</span>
+                                                            @if($qrcode->watt_id)
+                                                            <span style="color: #000; display: block; font-size: 10px;">WATT - {{ $qrcode->watt ? $qrcode->watt->watt_name : 'N/A' }}</span>
+                                                            @endif
+                                                            @if($qrcode->color_id)
+                                                            <span style="color: #000; display: block; font-size: 10px;">BODY COLOR - {{ $qrcode->color ? $qrcode->color->color_name : 'N/A' }}</span>
+                                                            @endif
+                                                            @if($qrcode->temperature_id)
+                                                            <span style="color: #000; display: block; font-size: 10px;">TEMPERATURE -  {{ $qrcode->temperature ? $qrcode->temperature->temperature_name : 'N/A' }}</span>
+                                                            @endif
+                                                            @if($qrcode->dimmable_type)
+                                                            <span style="color: #000; display: block; font-size: 10px;">DIMMABLE TYPE - {{ $qrcode->dimmable_type }}</span>
+                                                            @endif
+                                                            @if($qrcode->size)
+                                                            <span style="color: #000; display: block; font-size: 10px;">SIZE - {{ $qrcode->size }}</span>
+                                                            @endif
+                                                            @if($qrcode->patch_type)
+                                                            <span style="color: #000; display: block; font-size: 10px;">PATCH/PIN - {{ $qrcode->patch_type }}</span>
+                                                            @endif
+                                                            @if($qrcode->channel_type)
+                                                            <span style="color: #000; display: block; font-size: 10px;">CHANNEL/ADAPTER - {{ $qrcode->channel_type }}</span>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
                                             @endif
                                         @endfor
                                     @endforeach

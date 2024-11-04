@@ -6,6 +6,7 @@ use App\Models\Expense;
 use App\Models\Head;
 use App\Models\SubHead;
 use App\Models\User;
+use App\Models\ExpenseRequisition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Str;
@@ -116,14 +117,22 @@ class ExpenseController extends Controller
     public function create()
     {
         $heads = Head::get();
+        $subheads = SubHead::get();
         $users = User::whereIn('role_id', [11, 12])->get();
-        return view('backend.office-expense.expense.create', compact('heads','users'));
+        return view('backend.office-expense.expense.create', compact('heads','subheads','users'));
     }
 
-    public function subHead($id)
+    public function requisition($id)
     {   
-        $subheads = SubHead::where('head_id', $id)->get();
-        return response()->json($subheads, 200);
+        $expenses = Expense::where('employee_id', $id)->whereNotNull('requisition_id')->pluck('requisition_id');
+        $requisitions = ExpenseRequisition::whereNotIn('id', $expenses)->where('accessor_id', $id)->where('status',1)->get();
+        return response()->json($requisitions, 200);
+    }
+
+    public function getRequisitionDetails(Request $request)
+    {
+        $requisition = ExpenseRequisition::where('id', $request->requisition_id)->first();
+        return response()->json($requisition);
     }
 
     /**
@@ -134,9 +143,13 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+        $requisition = ExpenseRequisition::findOrFail($request->requisition_id);
+
         $requested_data = $request->all();
 
         $expense = new Expense();
+        $expense->head_id = $requisition->head_id ? $requisition->head_id : 0;
+        $expense->subhead_id = $requisition->subhead_id ? $requisition->subhead_id : 0;
         if(!$request->employee_id)
         {
             $expense->employee_id = Auth::user()->id;
@@ -222,6 +235,15 @@ class ExpenseController extends Controller
     {
         Expense::where('id', $id)->firstOrFail()->delete();
         return back()->with('message', 'Expense Successfully Deleted');
+    }
+
+    public function approved($id)
+    {
+        $expense = Expense::where('id', $id)->first();
+        $expense->update([
+            'status' => 1
+        ]);
+        return back()->with('message', 'Expense Approved!');
     }
 
     public function expenseHead()

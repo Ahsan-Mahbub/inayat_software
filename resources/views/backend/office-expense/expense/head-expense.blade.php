@@ -10,7 +10,7 @@
     $monthName = DateTime::createFromFormat('!m', $month)->format('F');
     $year = date('Y');
     $total_budget = App\Models\Budget::whereMonth('date', $month)->whereYear('date', $year)->sum('amount');
-    $total_expense = App\Models\Expense::whereMonth('date', $month)->whereYear('date', $year)->sum('amount');
+    $total_expense = App\Models\Expense::where('status',1)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount');
 ?>
 <div class="row">
     <div class="col-12">
@@ -55,7 +55,7 @@
 <div class="row">
     @foreach($heads as $head)
         <?php
-            $total_head_amount = App\Models\Expense::where('head_id', $head->id)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount');
+            $total_head_amount = App\Models\Expense::where('head_id', $head->id)->where('status',1)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount');
         ?>
         @if($total_head_amount > 0)
             <div class="col-12">

@@ -34,6 +34,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::get('/budget', [BudgetExpenseReportController::class, 'budget'])->name('report.budget');
         Route::get('/budget-data', [BudgetExpenseReportController::class, 'budgetData'])->name('report.budget.data');
 
+        Route::get('/expense-requisition', [BudgetExpenseReportController::class, 'expenseRequisition'])->name('report.expense.requisition');
+        Route::get('/expense-requisition-data', [BudgetExpenseReportController::class, 'expenseRequisitionData'])->name('report.expense.requisition.data');
+
         Route::get('/expense', [BudgetExpenseReportController::class, 'expense'])->name('report.expense');
         Route::get('/expense-data', [BudgetExpenseReportController::class, 'expenseData'])->name('report.expense.data');
 

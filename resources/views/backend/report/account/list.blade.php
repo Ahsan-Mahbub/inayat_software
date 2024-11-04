@@ -65,6 +65,7 @@
 
                     @php
                         $total_budget_amount = 0;
+                        $total_expense_requisition_amount = 0;
                     @endphp
                     @isset($all_budget)
                         <div class="row">
@@ -95,6 +96,46 @@
                                         <tr>
                                             <th colspan="3" class="text-right">Grand Total</th>
                                             <th>TK. {{ $total_budget_amount }}</th>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="4" class="text-center text-danger h4">Item Not Found</td>
+                                        </tr>
+                                    @endif
+                                </table>
+                            </div>
+                        </div>
+                    @endisset
+
+                    @isset($all_expense_requisition)
+                        <div class="row">
+                            <div class="col-md-12 mt-4">
+                                <table class="table table-bordered table-striped text-center">
+                                    <tr>
+                                        <th colspan="4" class="text-center">Expense Requisition Histories</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Sl No.</th>
+                                        <th>Date</th>
+                                        <th>Reason</th>
+                                        <th>Budget</th>
+                                    </tr>
+                                    @if(count($all_expense_requisition) > 0)
+                                        @foreach ($all_expense_requisition as $item)
+                                            @php
+                                                $total_expense_requisition_amount = $total_expense_requisition_amount + $item->amount;
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ date('d-F-Y', strtotime($item->date ?? '')) }}</td>
+                                                <td>{!! $item->reason !!}</td>
+                                                <td>{{ $item->amount ?? ''}}</td>
+                                            </tr>
+                                        @endforeach
+                                        
+                                        <tr>
+                                            <th colspan="3" class="text-right">Grand Total</th>
+                                            <th>TK. {{ $total_expense_requisition_amount }}</th>
                                         </tr>
                                     @else
                                         <tr>
@@ -150,28 +191,28 @@
                     @endisset
 
                     @isset($all_budget)
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-end">
                         <div class="col-md-4">
                             <table class="table table-bordered table-striped text-center">
                                 <tr>
-                                    <th class="text-right">Total Budget Amount</th>
+                                    <th class="text-right">Budget Amount</th>
                                     <th class="text-right">{{$total_budget_amount}}</th>
                                 </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-4">
-                            <table class="table table-bordered table-striped text-center">
+                                <tr>
+                                    <th class="text-right">Expense Requisition Amount</th>
+                                    <th class="text-right">{{$total_expense_requisition_amount}}</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-right">Total Budget Amount</th>
+                                    <th class="text-right">{{$total_budget_amount + $total_expense_requisition_amount}}</th>
+                                </tr>
                                 <tr>
                                     <th class="text-right">Total Expense Amount</th>
                                     <th class="text-right">{{$total_expense_amount}}</th>
                                 </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-4">
-                            <table class="table table-bordered table-striped text-center">
                                 <tr>
                                     <th class="text-right">Extra Balance</th>
-                                    <th class="text-right">{{$total_budget_amount - $total_expense_amount}}</th>
+                                    <th class="text-right">{{$total_budget_amount + $total_expense_requisition_amount - $total_expense_amount}}</th>
                                 </tr>
                             </table>
                         </div>

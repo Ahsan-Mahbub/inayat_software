@@ -941,6 +941,43 @@
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
+                                                <th colspan="2">Expense Requisition</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">List</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['expense-requisition']['index']) checked @endisset name="permission[expense-requisition][index]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Add</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['expense-requisition']['create']) checked @endisset name="permission[expense-requisition][create]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Update</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['expense-requisition']['edit']) checked @endisset name="permission[expense-requisition][edit]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Delete</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['expense-requisition']['destroy']) checked @endisset name="permission[expense-requisition][destroy]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Approved</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['expense-requisition']['approved']) checked @endisset name="permission[expense-requisition][approved]" value="1">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div> 
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-striped text-center ">
+                                            <tr>
                                                 <th colspan="2">Office Expense</th>
                                             </tr>
                                             <tr>
@@ -965,6 +1002,12 @@
                                                 <td class="text-left">Delete</td>
                                                 <td class="text-right">
                                                     <input type="checkbox" class="check-input" @isset($permission['permission']['expense']['destroy']) checked @endisset name="permission[expense][destroy]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Approved</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['expense']['approved']) checked @endisset name="permission[expense][approved]" value="1">
                                                 </td>
                                             </tr>
                                             <tr>
@@ -1020,6 +1063,12 @@
                                                 <td class="text-left">Budget Report</td>
                                                 <td class="text-right">
                                                     <input type="checkbox" class="check-input" @isset($permission['permission']['report']['budget']) checked @endisset name="permission[report][budget]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Expense Requisition Report</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['report']['expense-requisition']) checked @endisset name="permission[report][expense-requisition]" value="1">
                                                 </td>
                                             </tr>
                                             <tr>

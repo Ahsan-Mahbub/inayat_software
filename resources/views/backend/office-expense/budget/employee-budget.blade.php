@@ -31,6 +31,8 @@
                             <tr>
                                 <th>S/N</th>
                                 <th>Employee Name</th>
+                                <th>Budget</th>
+                                <th>Expense Requisition</th>
                                 <th>Total Budget</th>
                                 <th>Total Expense</th>
                                 <th>Now Balance</th>
@@ -51,15 +53,27 @@
                                 <td>{{$employee->name}}</td>
                                 <?php
                                     $budget = App\Models\Budget::where('employee_id', $employee->id)->sum('amount');
-                                    $expense = App\Models\Expense::where('employee_id', $employee->id)->sum('amount');
+                                    $expense = App\Models\Expense::where('employee_id', $employee->id)->where('status',1)->sum('amount');
                                     $total_budget += $budget;
                                     $total_expense += $expense;
+
+                                    if($employee->role_id == 11)
+                                    {
+                                        $requisition = App\Models\ExpenseRequisition::sum('amount');
+                                    }else{
+                                        $requisition = 0;
+                                    }
                                 ?>
                                 <td>{{$budget}} </td>
+                                <td>{{$requisition}} </td>
+                                <td>{{$budget + $requisition}} </td>
                                 <td>{{$expense}} </td>
-                                <td>{{$budget - $expense}}</td>
+                                <td>{{$budget + $requisition - $expense}}</td>
                                 <td width="20%">
                                     <a href="{{route('budget.employee.history',$employee->id)}}" class="btn btn-primary btn-sm mr-2 mb-2">Budget</a>
+                                    @if($employee->role_id == 11)
+                                    <a href="{{route('expense-requisition.employee.history',$employee->id)}}" class="btn btn-info btn-sm mr-2 mb-2">Expense Requisition</a>
+                                    @endif
                                     <a href="{{route('expense.employee.history',$employee->id)}}" class="btn btn-dark btn-sm mr-2 mb-2">Expense</a>
                                     <a href="{{route('budget.employee.monthly',$employee->id)}}" class="btn btn-info btn-sm">Monthly Summary</a>
                                 </td>
@@ -74,7 +88,7 @@
                                     <td style="border: 2px solid #3e3e3e; width: 65%; padding: 3px; text-align: right"
                                         colspan="7" class="text-bold-800"><b>Total Budget</b></td>
                                     <td style="border: 2px solid #3e3e3e; text-align: center; padding: 3px;">
-                                        <b>{{ $total_budget }} /-</b>
+                                        <b>{{ $total_budget + $requisition }} /-</b>
                                     </td>
                                 </tr>
                                 <tr class="bg-grey bg-lighten-4">
@@ -86,9 +100,9 @@
                                 </tr>
                                 <tr class="bg-grey bg-lighten-4">
                                     <td style="border: 2px solid #3e3e3e; width: 65%; padding: 3px; text-align: right"
-                                        colspan="7" class="text-bold-800"><b>Bow Balance</b></td>
+                                        colspan="7" class="text-bold-800"><b>Now Balance</b></td>
                                     <td style="border: 2px solid #3e3e3e; text-align: center; padding: 3px;">
-                                        <b>{{ $total_budget - $total_expense }} /-</b>
+                                        <b>{{ $total_budget + $requisition - $total_expense }} /-</b>
                                     </td>
                                 </tr>
                             </tbody>

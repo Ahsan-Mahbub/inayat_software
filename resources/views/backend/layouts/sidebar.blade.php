@@ -300,6 +300,24 @@
                         </ul>
                     </li>
                     @endif
+                    @if (isset(auth()->user()->role->permission['permission']['expense-requisition']['index']) || isset(auth()->user()->role->permission['permission']['expense-requisition']['create']))
+                        @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 11)
+                        <li class="">
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="mdi mdi-dice-multiple-outline"></i>
+                                <span>Expense Requisition</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="true">
+                                @isset(auth()->user()->role->permission['permission']['expense-requisition']['create'])
+                                <li><a href="{{route('expense.requisition.create')}}">Add Expense Requisition</a></li>
+                                @endisset
+                                @isset(auth()->user()->role->permission['permission']['expense-requisition']['index'])
+                                <li><a href="{{route('expense.requisition.index')}}">Expense Requisition List</a></li>
+                                @endisset
+                            </ul>
+                        </li>
+                        @endif
+                    @endif
                     @if (isset(auth()->user()->role->permission['permission']['expense']['index']) || isset(auth()->user()->role->permission['permission']['expense']['create']))
                     <li class="">
                         <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -368,10 +386,18 @@
                         </a>
                     </li>
                     @endisset
+                    @isset(auth()->user()->role->permission['permission']['report']['expense-requisition'])
+                    <li>
+                        <a href="{{route('report.expense.requisition')}}" class="waves-effect">
+                            <i class="mdi mdi-file-pdf-outline"></i>
+                            <span>Expense Requisition Report</span>
+                        </a>
+                    </li>
+                    @endisset
                     @isset(auth()->user()->role->permission['permission']['report']['expense'])
                     <li>
                         <a href="{{route('report.expense')}}" class="waves-effect">
-                            <i class="mdi mdi-file-pdf-outline"></i>
+                            <i class="mdi mdi-file-pdf-box"></i>
                             <span>Expense Report</span>
                         </a>
                     </li>
@@ -379,7 +405,7 @@
                     @isset(auth()->user()->role->permission['permission']['report']['budget-expense'])
                     <li>
                         <a href="{{route('report.all-account-budget-expense')}}" class="waves-effect">
-                            <i class="mdi mdi-file-pdf-box"></i>
+                            <i class="mdi mdi-file-pdf-outline"></i>
                             <span>Account Budget & Expense Report</span>
                         </a>
                     </li>

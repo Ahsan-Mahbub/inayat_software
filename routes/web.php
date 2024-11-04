@@ -10,7 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\WattController;
 use App\Http\Controllers\ColorController;
-use App\Http\Controllers\TemperatureController;
+use App\Http\Controllers\Temperler;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\QRCodeController;

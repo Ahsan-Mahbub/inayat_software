@@ -30,9 +30,29 @@
                             <label for="validationCustom01">Date *</label>
                             <input type="date" class="form-control" id="validationCustom01" name="date" required="">
                         </div>
+
+                        @if(Auth::user()->role_id != 11 || Auth::user()->role_id != 12)
+                        <div class="col-md-4 mb-3">
+                            <label>Employee Name *</label>
+                            <select class="custom-select select2" onchange="getRequisition()" @if(Auth::user()->role_id != 11 || Auth::user()->role_id != 12) required="" @endif name="employee_id" id="employee_id">
+                                <option value="">Select One</option>
+                                @foreach($users as $user)
+                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
+
+                        <div class="col-md-4 mb-3">
+                            <label>Expense Requisition *</label>
+                            <select class="custom-select select2" name="requisition_id" id="requisition_id" required>
+                                <option value="">Select One</option>
+                            </select>
+                        </div>
+
                         <div class="col-md-4 mb-3">
                             <label>Expense Head *</label>
-                            <select class="custom-select select2" required="" name="head_id" id="head_id" onchange="getSubHead()">
+                            <select class="custom-select" required="" name="head_id" id="head_id" disabled>
                                 <option value="">Select One</option>
                                 @foreach($heads as $head)
                                 <option value="{{$head->id}}">{{$head->head_name}}</option>
@@ -41,28 +61,20 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label>Expense Sub Head</label>
-                            <select class="custom-select select2" name="subhead_id" id="subhead_id">
+                            <select class="custom-select" name="subhead_id" id="subhead_id" disabled>
                                 <option value="">Select One</option>
-                            </select>
-                        </div>
-                        @if(Auth::user()->role_id != 11 || Auth::user()->role_id != 12)
-                        <div class="col-md-4 mb-3">
-                            <label>Employee Name *</label>
-                            <select class="custom-select select2" @if(Auth::user()->role_id != 11 || Auth::user()->role_id != 12) required="" @endif name="employee_id">
-                                <option value="">Select One</option>
-                                @foreach($users as $user)
-                                <option value="{{$user->id}}">{{$user->name}}</option>
+                                @foreach($subheads as $head)
+                                <option value="{{$head->id}}">{{$head->subhead_name}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        @endif
                         <div class="col-md-4 mb-3">
                             <label for="validationCustom01">Expense Amount *</label>
-                            <input type="number" class="form-control" id="validationCustom01" placeholder="Expense Amount" name="amount" required="">
+                            <input type="number" class="form-control" id="amount" placeholder="Expense Amount" name="amount" required="">
                         </div>
                         <div class="col-md-12 mb-3">
                             <label class="d-block">Reason</label>
-                            <textarea id="elm1" name="reason" placeholder="Expense Reason"></textarea>
+                            <textarea class="form-control" id="reason" name="reason" placeholder="Expense Reason"></textarea>
                         </div>
                         <div class="col-md-12">
                             <label>Image </label>
@@ -99,24 +111,42 @@
         }
     </script>
     <script type="text/javascript">
-        function getSubHead() {
-            let id = $("#head_id").val();
-            let url = '/admin/expense/subhead/' + id;
+        function getRequisition() {
+            let id = $("#employee_id").val();
+            let url = '/admin/expense/requisition/' + id;
             $.ajax({
                 type: "get",
                 url: url,
                 dataType: "json",
                 success: function(response) {
                     let html = '';
-                    console.log(response)
                     html += `<option value="">` + 'Select One' + `</option>`
                     response.forEach(element => {
-                        html += '<option value=' + element.id + '>' + element.subhead_name +
+                        html += '<option value=' + element.id + '>' + element.requisition +
                             '</option>'
                     });
-                    $("#subhead_id").html(html);
+                    $("#requisition_id").html(html);
                 }
             });
         }
+
+        $(document).on('change', '#requisition_id', function(e){
+            var requisition_id = $(this).val();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('get-expense-requisition-details') }}",
+                type: "post",
+                data: {requisition_id:requisition_id},
+                dataType: "json",
+                success: function (response) {
+                    $('#head_id').val(response.head_id);
+                    $('#subhead_id').val(response.subhead_id);
+                    $('#amount').val(response.amount);
+                    $('#reason').val(response.reason);
+                }
+            });
+        });
     </script>
 @endsection

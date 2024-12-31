@@ -11,6 +11,7 @@ class PurchaseReturn extends Model
     protected $table = 'purchase_returns';
     protected $fillable = [
         'date',
+        'creator_id',
         'purchase_id',
         'supplier_id',
         'product_id',

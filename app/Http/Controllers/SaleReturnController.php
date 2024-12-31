@@ -8,7 +8,8 @@ use App\Models\Product;
 use App\Models\SaleProduct;
 use App\Models\SaleReturn;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class SaleReturnController extends Controller
 {
@@ -23,7 +24,11 @@ class SaleReturnController extends Controller
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
-        $all_sale_return = SaleReturn::orderBy('id','desc')->paginate($perPage);
+        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
+            $all_sale_return = SaleReturn::orderBy('id','desc')->paginate($perPage);
+        } else {
+            $all_sale_return = SaleReturn::where('creator_id', Auth::user()->id)->orderBy('id','desc')->paginate($perPage);
+        }
         $search = '';
         return view('backend.sale.return.list', compact('all_sale_return','search','startingSerial'));
     }
@@ -85,6 +90,7 @@ class SaleReturnController extends Controller
                         $sale_return_product_data[]=[
                             'date'                => $request->date,
                             'customer_id'         => $request->customer_id,
+                            'creator_id'          => Auth::user()->id,
                             'sale_id'             => $request->sale_id,
                             'sale_product_id'     => $request_data['sale_product_id'][$key],
                             'product_id'          => $request_data['product_id'][$key],

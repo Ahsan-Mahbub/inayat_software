@@ -9,8 +9,10 @@
     $month = date('m');
     $monthName = DateTime::createFromFormat('!m', $month)->format('F');
     $year = date('Y');
-    $total_budget = App\Models\Budget::whereMonth('date', $month)->whereYear('date', $year)->sum('amount');
-    $total_expense = App\Models\Expense::where('status',1)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount');
+    // $total_budget = App\Models\Budget::whereMonth('date', $month)->whereYear('date', $year)->sum('amount');
+    // $total_expense = App\Models\Expense::where('status',1)->whereMonth('date', $month)->whereYear('date', $year)->sum('amount');
+
+    // $previous_amount = 0;
 ?>
 <div class="row">
     <div class="col-12">
@@ -26,8 +28,16 @@
     </div>
 </div>
 
-<div class="row justify-content-center">
-    <div class="col-md-4">
+{{-- <div class="row justify-content-center">
+    <div class="col-md-3">
+        <table class="table table-bordered table-striped text-center">
+            <tr>
+                <th class="text-right">Previous Amount</th>
+                <th class="text-right">{{$previous_amount}}</th>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-3">
         <table class="table table-bordered table-striped text-center">
             <tr>
                 <th class="text-right">{{$monthName}} - Total Budget Amount</th>
@@ -35,7 +45,7 @@
             </tr>
         </table>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <table class="table table-bordered table-striped text-center">
             <tr>
                 <th class="text-right">{{$monthName}} - Total Expense Amount</th>
@@ -43,7 +53,7 @@
             </tr>
         </table>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <table class="table table-bordered table-striped text-center">
             <tr>
                 <th class="text-right">{{$monthName}} - Now Balance</th>
@@ -51,7 +61,7 @@
             </tr>
         </table>
     </div>
-</div>
+</div> --}}
 <div class="row">
     @foreach($heads as $head)
         <?php

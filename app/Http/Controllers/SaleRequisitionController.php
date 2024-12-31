@@ -12,6 +12,8 @@ use App\Models\SaleProduct;
 use App\Models\SaleReturn;
 use App\Models\Unit;
 use App\Models\Discount;
+use App\Models\SampleRequestProduct;
+use App\Models\SampleReturn;
 use App\Models\User;
 use Illuminate\Http\Request;
 use DB;
@@ -105,7 +107,8 @@ class SaleRequisitionController extends Controller
         }
         $units = Unit::get();
         $discount = Discount::where('user_id', Auth::user()->id)->first();
-        return view('backend.sale.requisition.create', compact('customers', 'units', 'discount'));
+        $users = User::get();
+        return view('backend.sale.requisition.create', compact('customers', 'units', 'discount','users'));
     }
 
     /**
@@ -162,11 +165,18 @@ class SaleRequisitionController extends Controller
             $date = date("d", strtotime($currentDate));
             $year = date("y", strtotime($currentDate));
 
-            $creator_name = User::where('id', Auth::user()->id)->select('name')->first();
+            if($request->user_id)
+            {
+                $creator_name = User::where('id', $request->user_id)->select('name')->first();
+                $creator_id = $request->user_id;
+            }else{
+                $creator_name = User::where('id', Auth::user()->id)->select('name')->first();
+                $creator_id = Auth::user()->id;
+            }
 
             $requisition_information = [
                 'date'              => $request->date,
-                'creator_id'        => Auth::user()->id,
+                'creator_id'        => $creator_id,
                 'customer_id'       => $customer_id,
                 'requisition_number' => 'SQ' . '-' . $requisitionNumber . '/' . $month . $date . $year . '/' . $creator_name->name,
                 'subtotal'          => $request->subtotal,
@@ -425,7 +435,10 @@ class SaleRequisitionController extends Controller
         $sale_stock = SaleProduct::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
         $sale_return_stock = SaleReturn::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
 
-        $available_stock = $purchase_stock - $purchase_return_stock - $sale_stock + $sale_return_stock;
+        $sample_request_stock = SampleRequestProduct::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
+        $sample_request_return_stock = SampleReturn::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
+
+        $available_stock = $purchase_stock - $purchase_return_stock - $sale_stock + $sale_return_stock - $sample_request_stock + $sample_request_return_stock;
 
         $product = Product::where('id', $request->product_id)->first();
 

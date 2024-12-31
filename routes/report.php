@@ -12,7 +12,7 @@ use App\Http\Controllers\NotificationController;
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], function(){
     Route::group(['prefix' => 'report'], function () {
-        //Sale Purchase Report
+        //Sale Purchase Sample Report
 
         Route::get('/sale-requisition', [ReportController::class, 'saleRequisition'])->name('report.sale.requisition');
         Route::get('/sale-requisition-data', [ReportController::class, 'saleRequisitionData'])->name('report.sale.requisition.data');
@@ -28,6 +28,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
 
         Route::get('/all-employee', [ReportController::class, 'allEmployee'])->name('report.all-employee');
         Route::get('/all-employee-data', [ReportController::class, 'allEmployeeData'])->name('report.all-employee.data');
+
+        Route::get('/sample-request', [ReportController::class, 'sampleRequest'])->name('report.sample.request');
+        Route::get('/sample-request-data', [ReportController::class, 'sampleRequestData'])->name('report.sample.request.data');
 
         //Budget Expense Report
 

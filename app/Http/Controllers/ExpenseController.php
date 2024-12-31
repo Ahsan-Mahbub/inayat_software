@@ -143,13 +143,13 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        $requisition = ExpenseRequisition::findOrFail($request->requisition_id);
+        // $requisition = ExpenseRequisition::findOrFail($request->requisition_id);
 
         $requested_data = $request->all();
 
         $expense = new Expense();
-        $expense->head_id = $requisition->head_id ? $requisition->head_id : 0;
-        $expense->subhead_id = $requisition->subhead_id ? $requisition->subhead_id : 0;
+        // $expense->head_id = $requisition->head_id ? $requisition->head_id : 0;
+        // $expense->subhead_id = $requisition->subhead_id ? $requisition->subhead_id : 0;
         if(!$request->employee_id)
         {
             $expense->employee_id = Auth::user()->id;

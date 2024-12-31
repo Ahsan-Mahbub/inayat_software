@@ -10,7 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\WattController;
 use App\Http\Controllers\ColorController;
-use App\Http\Controllers\Temperler;
+use App\Http\Controllers\TemperatureController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\QRCodeController;
@@ -18,6 +18,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\DatabaseController;
 
 use Illuminate\Support\Facades\Artisan;
 
@@ -166,3 +167,4 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::get('/search', [DiscountController::class, 'search'])->name('discount.search');
     });
 });
+Route::get('/download-database', [DatabaseController::class, 'download'])->name('database.download');

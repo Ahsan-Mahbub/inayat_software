@@ -87,7 +87,6 @@
                 dataType: "json",
                 success: function(response) {
                     let html = '';
-                    console.log(response)
                     html += `<option value="">` + 'Select One' + `</option>`
                     response.forEach(element => {
                         html += '<option value=' + element.id + '>' + element.subhead_name +

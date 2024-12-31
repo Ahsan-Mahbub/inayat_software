@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use File;
 use Str;
 use Illuminate\Support\Facades\Auth;
+use App\Jobs\SendSMSJob;
 
 class CustomerController extends Controller
 {
@@ -113,7 +114,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'phone' => 'nullable|unique:customers',
+            'phone' => 'nullable|unique:customers|digits:11|max:11',
             'email' => 'nullable|unique:customers',
         ]);
         
@@ -235,4 +236,60 @@ class CustomerController extends Controller
         $delete = Customer::where('id', $id)->firstOrFail()->delete();
         return back()->with('message','Client Successfully Deleted');
     }
+
+    public function message()
+    {
+        $customers = Customer::whereRaw('LENGTH(phone) = 11')->get();
+        return view('backend.sale.customer.message', compact('customers'));
+    }
+
+    #Batch System Message Send
+    // public function sendMessage(Request $request)
+    // {
+    //     $request->validate([
+    //         'customer_phone' => 'required|array',
+    //         'message' => 'required|string',
+    //     ]);
+
+    //     $customers = $request->customer_phone;
+    //     $messageContent = $request->message;
+
+    //     $batchSize = 50;
+    //     $batchedCustomers = array_chunk($customers, $batchSize);
+
+    //     foreach ($batchedCustomers as $batch) {
+
+    //         $numbers = implode(',', array_map(fn($phone) => "88" . $phone, $batch));
+    //         dd($numbers);
+    //         $message_url = "https://sms.rapidsms.xyz/request.php?user_id=200501&password=11111111&number=" . $numbers . "&message=" . urlencode($messageContent);
+    //         $curl = curl_init();
+    //         curl_setopt($curl, CURLOPT_URL, $message_url);
+    //         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    //         curl_setopt($curl, CURLOPT_HEADER, 0);
+    //         $resultdata = curl_exec ($curl);
+    //         curl_close ($curl);
+    //         $resultArray=json_decode($resultdata, true);
+    //     }
+
+    //     return back()->with('message', 'Messages sent successfully to selected clients.');
+    // }
+
+    #Queue System Message Send
+    public function sendMessage(Request $request)
+    {
+        $request->validate([
+            'customer_phone' => 'required|array',
+            'message' => 'required|string',
+        ]);
+
+        $customers = $request->customer_phone;
+        $messageContent = $request->message;
+
+        foreach ($customers as $phone) {
+            SendSMSJob::dispatch($phone, $messageContent);
+        }
+
+        return back()->with('message', 'Messages are being sent to selected clients.');
+    }
+
 }

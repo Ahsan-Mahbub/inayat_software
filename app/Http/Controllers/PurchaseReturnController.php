@@ -8,7 +8,8 @@ use App\Models\Product;
 use App\Models\PurchaseProduct;
 use App\Models\PurchaseReturn;
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseReturnController extends Controller
 {
@@ -23,7 +24,12 @@ class PurchaseReturnController extends Controller
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
-        $all_purchase_return = PurchaseReturn::orderBy('id','desc')->paginate($perPage);
+        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
+            $all_purchase_return = PurchaseReturn::orderBy('id','desc')->paginate($perPage);
+        } else {
+            $all_purchase_return = PurchaseReturn::where('creator_id', Auth::user()->id)->orderBy('id','desc')->paginate($perPage);
+        }
+
         $search = '';
         return view('backend.purchase.return.list', compact('all_purchase_return','search','startingSerial'));
     }

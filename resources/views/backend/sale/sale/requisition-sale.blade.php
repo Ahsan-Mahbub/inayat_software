@@ -54,6 +54,19 @@
                                         value="{{ date('Y-m-d') }}">
                                 </div>
                             </div>
+                            @if(Auth::user()->role_id == 1)
+                            <div class="col-md-3 pb-3">
+                                <label class="form-label">Creator Name</label>
+                                <div class="">
+                                    <select class="custom-select select2" name="user_id" id="user_id" required="">
+                                        <option value="">Select One</option>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}">{{ $user->name }} - ({{$user->role ? $user->role->role_name : 'N/A'}})</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            @endif
                             <div class="col-md-3 pb-3">
                                 <label class="form-label">Quotation Number</label>
                                 <div>
@@ -194,6 +207,13 @@
 
                         </div>
 
+                        <div class="form-check mt-3">
+                            <input class="form-check-input" type="checkbox" name="sent_message"
+                                value="1" id="sent-filed">
+                            <label class="form-check-label" for="sent-filed">
+                                Message Sent
+                            </label>
+                        </div>
                         <div class="row mt-3">
                             <div class="col-md-12 pb-3 text-center">
                                 <button type="submit" name="submit" value="submit" class="btn btn-primary">

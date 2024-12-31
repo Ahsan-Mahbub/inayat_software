@@ -44,17 +44,17 @@
                 <!-- Table -->
                 <div class="push">
                     <div class="row">
-                        <div class="" id="qrcodeToPrint">
+                        <div class="p-0" id="qrcodeToPrint">
                             <div class="qrcode-container">
                                 @if(count($all_qrcode) > 0)
                                     @foreach ($all_qrcode as $qrcode)
                                         @for ($i = 0; $i < $qrcode->quantity; $i++)
                                             @if($qrcode->product)
-                                                <div class="single-qrcode" style="padding: 5px; width: 55mm; height: 25mm; box-sizing: border-box; margin-bottom: 20px; margin-top:20px">
+                                                <div class="single-qrcode" style="width: 50mm; height: 25mm; box-sizing: border-box; margin: 0; padding: 0; page-break-inside: avoid;">
                                                     <div style="display: flex; height: 100%;">
                                                         <div style="display: inline; margin: auto;">
                                                             <?php
-                                                                $qrcode_gen = $qrcode->product->sku;
+                                                                $qrcode_gen = $qrcode->product ? $qrcode->product->sku : 'N/A';
                                                             ?>
                                                             {{ QrCode::size(50)->generate($qrcode_gen) }}
                                                         </div>
@@ -68,7 +68,7 @@
                                                             <span style="color: #000; display: block; font-size: 10px;">BODY COLOR - {{ $qrcode->color ? $qrcode->color->color_name : 'N/A' }}</span>
                                                             @endif
                                                             @if($qrcode->temperature_id)
-                                                            <span style="color: #000; display: block; font-size: 10px;">TEMPERATURE -  {{ $qrcode->temperature ? $qrcode->temperature->temperature_name : 'N/A' }}</span>
+                                                            <span style="color: #000; display: block; font-size: 10px;">TEMP. -  {{ $qrcode->temperature ? $qrcode->temperature->temperature_name : 'N/A' }}</span>
                                                             @endif
                                                             @if($qrcode->dimmable_type)
                                                             <span style="color: #000; display: block; font-size: 10px;">DIMMABLE TYPE - {{ $qrcode->dimmable_type }}</span>
@@ -92,6 +92,7 @@
                                     <span class="text-danger"> No QR Code Found for Print</span>
                                 @endif
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -107,9 +108,8 @@
                 </div>
                 <div class="mt-3">
                     <!-- Form -->
-                    <form id="action-form" action="{{ route('qr-code.store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('qr-code.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" id="action-type" name="action_type" value="">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="validationCustom01">Product Code *</label>
@@ -189,11 +189,8 @@
                             </div>
                         </div>
                         <div class="block-content block-content-full block-content-sm text-center">
-                            <button type="button" class="btn btn-primary" id="save-button" data-value="save">
+                            <button type="submmit" class="btn btn-primary">
                                 Save
-                            </button>
-                            <button type="button" class="btn btn-dark" id="download-button" data-value="download">
-                                Download Image
                             </button>
                         </div>
                     </form> 
@@ -222,18 +219,5 @@
         myWindow.focus();
         myWindow.print();
     }
-</script>
-<script>
-    document.getElementById('save-button').addEventListener('click', function() {
-        var value = this.getAttribute('data-value');
-        document.getElementById('action-type').value = value;
-        document.getElementById('action-form').submit();
-    });
-    
-    document.getElementById('download-button').addEventListener('click', function() {
-        var value = this.getAttribute('data-value');
-        document.getElementById('action-type').value = value;
-        document.getElementById('action-form').submit();
-    });
 </script>
 @endsection

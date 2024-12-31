@@ -19,6 +19,8 @@ use App\Models\PurchaseProduct;
 use App\Models\SaleRequisition;
 use App\Models\SaleTransaction;
 use App\Models\Schedule;
+use App\Models\SampleRequestProduct;
+use App\Models\SampleReturn;
 use Illuminate\Support\Facades\Auth;
 
 class SaleController extends Controller
@@ -79,7 +81,8 @@ class SaleController extends Controller
         $methods = Method::get();
         $units = Unit::get();
         $discount = Discount::where('user_id', Auth::user()->id)->first();
-        return view('backend.sale.sale.create', compact('customers', 'methods', 'units', 'discount'));
+        $users = User::get();
+        return view('backend.sale.sale.create', compact('customers', 'methods', 'units', 'discount', 'users'));
     }
 
     public function createRequisition()
@@ -108,9 +111,9 @@ class SaleController extends Controller
         } else {
             $requisitions = SaleRequisition::where('creator_id', Auth::user()->id)->whereNotIn('id', $sale_requisitions)->where('status', 1)->get();
         }
-
+        $users = User::get();
         $discount = Discount::where('user_id', Auth::user()->id)->first();
-        return view('backend.sale.sale.requisition-sale', compact('customers', 'methods', 'requisitions', 'discount'));
+        return view('backend.sale.sale.requisition-sale', compact('customers', 'methods', 'requisitions', 'discount','users'));
     }
 
     /**
@@ -203,12 +206,19 @@ class SaleController extends Controller
                 $zerosToAdd = 5 - $length;
                 $invoiceNumber = str_pad($numberString, $length + $zerosToAdd, '0', STR_PAD_LEFT);
 
+                if($request->user_id)
+                {
+                    $creator_id = $request->user_id;
+                }else{
+                    $creator_id = Auth::user()->id;
+                }
+
                 $sale_information = [
                     'date'              => $request->date,
                     'customer_id'       => $customer_id,
                     'invoice'           => 'SI' . '-' . $invoiceNumber,
                     'challan'           => 'challan' . '-' . $invoiceNumber,
-                    'creator_id'        => Auth::user()->id,
+                    'creator_id'        => $creator_id,
                     'subtotal'          => $request->subtotal,
                     'discount'          => $request->discount,
                     'percentage'        => 1,
@@ -279,6 +289,22 @@ class SaleController extends Controller
                 'total_amount'   => $customer->total_amount + $request->total_amount,
             ];
             Customer::where('id', $customer->id)->update($customer_amount);
+
+            if ($request->total_amount > 0 && $request->sent_message == 1 && strlen($customer->phone) == 11) {
+                $number = "88" . $customer->phone;
+                $message = "Dear " . $customer->customer_name . ",\n";
+                $message .= "Your purchase amount is  ৳ " . number_format($request->total_amount, 2) . ".\n";
+                $message .= "Thank you for choosing INAYAT!";
+    
+                $message_url="https://sms.rapidsms.xyz/request.php?user_id=200501&password=11111111&number=".$number."&message=".urlencode($message);
+                $curl = curl_init();
+                curl_setopt ($curl, CURLOPT_URL, $message_url);
+                curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
+                curl_setopt($curl, CURLOPT_HEADER, 0);
+                $resultdata = curl_exec ($curl);
+                curl_close ($curl);
+                $resultArray=json_decode($resultdata, true);
+            }
 
             DB::commit();
             return redirect()->route('sale.index')->with('message', 'Product sale successfully');
@@ -412,9 +438,12 @@ class SaleController extends Controller
         $sale_stock = SaleProduct::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
         $sale_return_stock = SaleReturn::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
 
+        $sample_request_stock = SampleRequestProduct::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
+        $sample_request_return_stock = SampleReturn::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
+
         $product = Product::where('id', $request->product_id)->first();
 
-        $available_stock = $purchase_stock - $purchase_return_stock - $sale_stock + $sale_return_stock;
+        $available_stock = $purchase_stock - $purchase_return_stock - $sale_stock + $sale_return_stock - $sample_request_stock + $sample_request_return_stock;
 
         $responseData = [
             'purchase_product' => $purchase_product,

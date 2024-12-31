@@ -16,6 +16,9 @@ use App\Http\Controllers\SaleTransactionController;
 use App\Http\Controllers\SaleReturnController;
 //Sale Requisition
 use App\Http\Controllers\SaleRequisitionController;
+//Sample Request
+use App\Http\Controllers\SampleRequestController;
+use App\Http\Controllers\SampleReturnController;
 //Inventory
 use App\Http\Controllers\InventoryController;
 
@@ -115,6 +118,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::get('/search', [CustomerController::class, 'search'])->name('customer.search');
         Route::get('/profile/{id}', [CustomerController::class, 'show'])->name('customer.show');
         Route::get('/print', [CustomerController::class, 'print'])->name('customer.print');
+
+        Route::get('/message', [CustomerController::class, 'message'])->name('customer.message');
+        Route::post('message-store', [CustomerController::class, 'sendMessage'])->name('customer.message.store');
     });
     Route::group(['prefix' => 'receivable'], function () {
         Route::get('/list', [CustomerController::class, 'index'])->name('receivable.index');
@@ -176,12 +182,54 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
 
     /*
     |--------------------------------------------------------------------------
+    | Sample Request Routes
+    |--------------------------------------------------------------------------
+    */
+
+    //Sample Request Route
+    Route::prefix('sample-request')->group(function () {
+        Route::get('list', [SampleRequestController::class, 'index'])->name('sample.request.index');
+        Route::get('create', [SampleRequestController::class, 'create'])->name('sample.request.create');
+        Route::post('store', [SampleRequestController::class, 'store'])->name('sample.request.store');
+        Route::get('edit/{id}', [SampleRequestController::class, 'edit'])->name('sample.request.edit');
+        Route::post('update/{id}', [SampleRequestController::class, 'update'])->name('sample.request.update');
+        Route::delete('destroy/{id}', [SampleRequestController::class, 'destroy'])->name('sample.request.destroy');
+        Route::get('/search', [SampleRequestController::class, 'search'])->name('sample.request.search');
+
+        Route::get('invoice/{id}', [SampleRequestController::class, 'show'])->name('sample.request.show');
+        Route::get('active/{id}', [SampleRequestController::class, 'requestActive'])->name('sample.request.active');
+        Route::get('deactive/{id}', [SampleRequestController::class, 'requestDeActive'])->name('sample.request.deactive');
+
+        Route::get('/sample-request-search-product', [SampleRequestController::class, 'getSearchProduct'])->name('sample.request-search');
+        Route::post('/get-product-details', [SampleRequestController::class, 'getProductDetails'])->name('sample-request-get-product-details');;
+
+        Route::post('get-request', [SampleRequestController::class, 'getRequestId'])->name('sample.get-request');
+        Route::get('info/{id}', [SampleRequestController::class, 'getData']);
+
+        Route::get('/product-details', [SampleRequestController::class, 'getSampleProduct'])->name('sample.request.get.product');
+    });
+
+    //Sample Return
+    Route::group(['prefix' => 'sample-return'], function () {
+        Route::get('/list', [SampleReturnController::class, 'index'])->name('sample.return.index');
+        Route::get('create', [SampleReturnController::class, 'create'])->name('sample.return.create');
+        Route::post('store', [SampleReturnController::class, 'store'])->name('sample.return.store');
+        Route::get('/invoice/{id}/{creator_id}', [SampleReturnController::class, 'getInvoice']);
+        Route::get('sample-return-invoice', [SampleReturnController::class, 'sampleReturnInvoice'])->name('sample.return.invoice');
+        Route::get('/sample-product', [SampleReturnController::class, 'getSampleProduct'])->name('sample.return.get.product');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
     | Inventory Routes
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['prefix' => 'Inventory'], function () {
+    Route::group(['prefix' => 'inventory'], function () {
         Route::get('/index', [InventoryController::class, 'index'])->name('inventory.index');
         Route::get('/search', [InventoryController::class, 'search'])->name('inventory.search');
+
+        Route::get('/employee', [InventoryController::class, 'employee'])->name('inventory.employee');
+        Route::get('/employee-search', [InventoryController::class, 'employeeSearch'])->name('inventory.employee.search');
     });
 });

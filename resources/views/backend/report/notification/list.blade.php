@@ -34,9 +34,11 @@
                                     $sl = 1;
                                 @endphp
                                 @foreach ($notifications as $notification)
+                                    
                                     <tr>
                                         <td>{{ $sl++ }}</td>
                                         <td>
+                                            @if($notification->customer)
                                             <a href="{{route('customer.transaction', $notification->customer->id)}}" class="text-reset notification-item">
                                                 <div class="media">
                                                     <div class="avatar-xs mr-3">
@@ -59,6 +61,9 @@
                                                     </div>
                                                 </div>
                                             </a>
+                                            @else
+                                            <h6 class="mt-0 mb-1">Notified Customer Delete</h6>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

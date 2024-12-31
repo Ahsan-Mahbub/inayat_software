@@ -45,16 +45,19 @@ class ProductController extends Controller
         if ($request->search && $request->category_id) {
             $all_product = Product::where('product_name', 'LIKE', '%' .$request->search . '%')
                                     ->where('category_id', $search_category)
+                                    ->orderBy('id','desc')
                                     ->paginate($perPage);
         }elseif($request->search){
             $all_product = Product::where('product_name', 'LIKE', '%' .$request->search . '%')
+                                    ->orderBy('id','desc')
                                     ->paginate($perPage);
         }elseif($request->category_id){
             $all_product = Product::where('category_id', $search_category)
+                                    ->orderBy('id','desc')
                                     ->paginate($perPage);
         }
         else {
-            $all_product = Product::paginate($perPage);;
+            $all_product = Product::orderBy('id','desc')->paginate($perPage);;
         }
 
         return view('backend.file.product.list', compact('all_product','search','startingSerial','categories','search_category')); 

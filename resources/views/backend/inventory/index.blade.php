@@ -62,6 +62,8 @@
                                   <input class="ml-3 mr-1" type="checkbox"  id="unit" checked> Unit
                                   <input class="ml-3 mr-1" type="checkbox"  id="purchase-qty" checked> Purchase Qty
                                   <input class="ml-3 mr-1" type="checkbox"  id="purchase-return" checked> Purchase Return Qty
+                                  <input class="ml-3 mr-1" type="checkbox"  id="sample-request-qty" checked> Sample Request Qty
+                                  <input class="ml-3 mr-1" type="checkbox"  id="sample-request-return" checked> Sample Request Return Qty
                                   <input class="ml-3 mr-1" type="checkbox"  id="sale-qty" checked> Sale Qty
                                   <input class="ml-3 mr-1" type="checkbox"  id="sale-return" checked> Sale Return Qty
                                   <input class="ml-3 mr-1" type="checkbox"  id="stock" checked> Available Stock
@@ -72,6 +74,7 @@
                                   <input class="ml-3 mr-1" type="checkbox"  id="total-sale" checked>Available Sale Amount
                                   @endif
                                   <input class="ml-3 mr-1" type="checkbox"  id="status" checked> Status
+                                  <input class="ml-3 mr-1" type="checkbox"  id="calculation" checked> Calculation
                             </div>
                         </div>
                     </div>
@@ -86,6 +89,8 @@
                                     <th class="unit">Unit</th>
                                     <th class="purchase-qty">Purchase Qty</th>
                                     <th class="purchase-return">Purchase Return Qty</th>
+                                    <th class="sample-request-qty">Sample Request Qty</th>
+                                    <th class="sample-request-return">Sample Request Return Qty</th>
                                     <th class="sale-qty">Sale Qty</th>
                                     <th class="sale-return">Sale Return Qty</th>
                                     <th class="stock">Available Stock</th>
@@ -117,14 +122,22 @@
                                         $purchase_return_qty = App\Models\PurchaseReturn::where('product_id', $purchase->product_id)
                                             ->where('unit_id', $purchase->unit_id)
                                             ->sum('qty');
+
                                         $sale_qty = App\Models\SaleProduct::where('product_id', $purchase->product_id)
                                             ->where('unit_id', $purchase->unit_id)
                                             ->sum('qty');
                                         $sale_return_qty = App\Models\SaleReturn::where('product_id', $purchase->product_id)
                                             ->where('unit_id', $purchase->unit_id)
                                             ->sum('qty');
+
+                                        $sample_request_qty = App\Models\SampleRequestProduct::where('product_id', $purchase->product_id)
+                                            ->where('unit_id', $purchase->unit_id)
+                                            ->sum('qty');
+                                        $sample_request_return_qty = App\Models\SampleReturn::where('product_id', $purchase->product_id)
+                                            ->where('unit_id', $purchase->unit_id)
+                                            ->sum('qty');
                                         
-                                        $total_qty = $purchase->total_qty - $purchase_return_qty - $sale_qty + $sale_return_qty;
+                                        $total_qty = $purchase->total_qty - $purchase_return_qty - $sale_qty + $sale_return_qty - $sample_request_qty + $sample_request_return_qty;
                                         
                                         $purchase_last_product = App\Models\PurchaseProduct::where('product_id', $purchase->product_id)
                                             ->where('unit_id', $purchase->unit_id)
@@ -144,6 +157,8 @@
                                             <td class="unit">{{ $unit->unit_name }}</td>
                                             <td class="purchase-qty">{{ $purchase->total_qty }}</td>
                                             <td class="purchase-return">{{ $purchase_return_qty }}</td>
+                                            <td class="sample-request-qty">{{$sample_request_qty}}</td>
+                                            <td class="sample-request-return">{{$sample_request_return_qty}}</td>
                                             <td class="sale-qty">{{ $sale_qty }}</td>
                                             <td class="sale-return">{{ $sale_return_qty }}</td>
                                             <td class="stock">{{ $total_qty }}</td>
@@ -174,7 +189,7 @@
                             </tbody>
                         </table>
                         @if(Auth::user()->role_id == 1)
-                            <div style="width: 35%; float: right;">
+                            <div style="width: 35%; float: right;" class="calculation">
                                 <table class="table">
                                     <tbody>
                                         <tr class="bg-grey bg-lighten-4">

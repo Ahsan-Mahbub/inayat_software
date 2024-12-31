@@ -52,7 +52,8 @@
                                             <div class="single-barcode" style="border: 1px solid gray; width: 280px; padding: 5px; text-align: center;">
                                                 <b style="color: #000; display: block;">INAYAT LIGHTING</b>
                                                 <?php
-                                                    $barcode_gen = $barcode->product->sku;
+                                                    // $barcode_gen = (!empty($barcode) && !empty($barcode->product) && is_object($barcode->product) && isset($barcode->product->sku)) ? rtrim($barcode->product->sku, "'") : "N/A";
+                                                    $barcode_gen = $barcode->product ? $barcode->product->sku : 'N/A';
                                                 ?>
                                                 <span style="padding: 3px 0; text-align: -webkit-center;">
                                                     <?php echo DNS1D::getBarcodeHTML($barcode_gen, 'C39',1.2,23);?>

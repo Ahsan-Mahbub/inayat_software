@@ -403,10 +403,6 @@
                                             </tr>
                                         </table>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
@@ -426,6 +422,10 @@
                                             </tr>
                                         </table>
                                     </div> 
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
@@ -583,6 +583,68 @@
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
+                                                <th colspan="2">Sample Request</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">List</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['sample-request']['index']) checked @endisset name="permission[sample-request][index]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Add</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['sample-request']['create']) checked @endisset name="permission[sample-request][create]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Edit</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['sample-request']['edit']) checked @endisset name="permission[sample-request][edit]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Delete</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['sample-request']['destroy']) checked @endisset name="permission[sample-request][destroy]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">View</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['sample-request']['view']) checked @endisset name="permission[sample-request][view]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Approve Status</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['sample-request']['approve']) checked @endisset name="permission[sample-request][approve]" value="1">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div> 
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-striped text-center ">
+                                            <tr>
+                                                <th colspan="2">Sample Return</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">List</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['sample-return']['index']) checked @endisset name="permission[sample-return][index]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Add</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['sample-return']['create']) checked @endisset name="permission[sample-return][create]" value="1">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>  
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-striped text-center ">
+                                            <tr>
                                                 <th colspan="2">Sale Quotation</th>
                                             </tr>
                                             <tr>
@@ -687,7 +749,13 @@
                                                 <td class="text-right">
                                                     <input type="checkbox" class="check-input" @isset($permission['permission']['customer']['print']) checked @endisset name="permission[customer][print]" value="1">
                                                 </td>
-                                            </tr>                                        
+                                            </tr>         
+                                            <tr>
+                                                <td class="text-left">Send Message</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['customer']['message']) checked @endisset name="permission[customer][message]" value="1">
+                                                </td>
+                                            </tr>                                     
                                         </table>
                                     </div> 
                                     <div class="col-md-12">
@@ -738,7 +806,11 @@
                                                 </td>
                                             </tr> 
                                         </table>
-                                    </div>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">  
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
@@ -757,11 +829,7 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                    </div>   
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row">    
+                                    </div>  
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
@@ -1028,6 +1096,12 @@
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
                                                 <th colspan="2">Report</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Sample Request Report</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" @isset($permission['permission']['report']['sample-request']) checked @endisset name="permission[report][sample-request]" value="1">
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left">Sale Report</td>

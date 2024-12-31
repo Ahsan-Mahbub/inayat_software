@@ -12,7 +12,6 @@ class SaleRequisitionProduct extends Model
     protected $table = 'sale_requisition_products';
     protected $fillable = [
         'requisition_id',
-        'batch_id',
         'product_id',
         'des_show',
         'description',

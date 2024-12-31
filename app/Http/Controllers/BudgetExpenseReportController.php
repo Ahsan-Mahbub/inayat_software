@@ -74,12 +74,13 @@ class BudgetExpenseReportController extends Controller
             $query->where('subhead_id', $subhead_id);
         }
 
-        if ($status == 0) {
-            $query->where('status', 0);
-        }
-
-        if($status == 1){
-            $query->where('status', 1);
+        if (isset($status)) {
+            $status = (int)$status;
+            if ($status === 0) {
+                $query->where('status', 0);
+            } elseif ($status === 1) {
+                $query->where('status', 1);
+            }
         }
         $all_expense = $query->orderBy('date','desc')->get();
         return view('backend.report.expense-requisition.list', compact('all_expense','form_date', 'to_date','head_id','subhead_id','head','subhead'));
@@ -126,12 +127,13 @@ class BudgetExpenseReportController extends Controller
             $query->where('subhead_id', $subhead_id);
         }
 
-        if ($status == 0) {
-            $query->where('status', 0);
-        }
-
-        if($status == 1){
-            $query->where('status', 1);
+        if (isset($status)) {
+            $status = (int)$status;
+            if ($status === 0) {
+                $query->where('status', 0);
+            } elseif ($status === 1) {
+                $query->where('status', 1);
+            }
         }
         $all_expense = $query->orderBy('date','desc')->get();
         return view('backend.report.expense.list', compact('user','all_expense','form_date', 'to_date','employee_id','head_id','subhead_id','head','subhead'));

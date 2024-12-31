@@ -21,13 +21,16 @@
             <div class="card-body">
                 <div class="text-right mb-4">
                     @isset(auth()->user()->role->permission['permission']['customer']['dues'])
-                    <a href="{{route('receivable.dues')}}" class="btn btn-dark btn-sm waves-effect waves-light">Dues Client</a>
+                    <a href="{{route('receivable.dues')}}" class="btn btn-danger btn-sm waves-effect waves-light">Dues Client</a>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['customer']['create'])
                     <button type="button" class="btn btn-primary btn-sm waves-effect waves-light" data-toggle="modal" data-target=".bs-example-modal-md">Add Client</button>
                     @endisset
                     @isset(auth()->user()->role->permission['permission']['customer']['print'])
                     <a href="{{route('customer.print')}}" class="btn btn-warning btn-sm waves-effect waves-light">Print Client</a>
+                    @endisset
+                    @isset(auth()->user()->role->permission['permission']['customer']['message'])
+                    <a href="{{route('customer.message')}}" class="btn btn-dark btn-sm waves-effect waves-light">Send Message</a>
                     @endisset
                 </div>
 
@@ -146,7 +149,7 @@
                             <input type="email" class="form-control" id="validationCustom02" name="email" placeholder="Email">
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="validationCustom03">Phone Number </label>
+                            <label for="validationCustom03">Phone Number (Max 11 digits. Without +88)</label>
                             <input type="tel" class="form-control" id="validationCustom03" name="phone" placeholder="Phone">
                         </div>
                         <div class="col-md-12 mb-3">
@@ -207,7 +210,7 @@
                             <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                         </div>
                         <div class="col-md-12 mb-3">
-                            <label for="validationCustom03">Phone Number</label>
+                            <label for="validationCustom03">Phone Number (Max 11 digits. Without +88)</label>
                             <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone">
                         </div>
                         <div class="col-md-12 mb-3">

@@ -18,62 +18,106 @@
 
                 @if (isset(auth()->user()->role->permission['permission']['category']['index']) || isset(auth()->user()->role->permission['permission']['temperature']['index']) || isset(auth()->user()->role->permission['permission']['color']['index']) || isset(auth()->user()->role->permission['permission']['unit']['index']) || isset(auth()->user()->role->permission['permission']['watt']['index']) || isset(auth()->user()->role->permission['permission']['product']['index']) || isset(auth()->user()->role->permission['permission']['product']['create']) || isset(auth()->user()->role->permission['permission']['qr-code']['index']) || isset(auth()->user()->role->permission['permission']['barcode']['index']))
                 
-                <li class="menu-title">Product Module</li>
-                @if (isset(auth()->user()->role->permission['permission']['category']['index']) || isset(auth()->user()->role->permission['permission']['temperature']['index']) || isset(auth()->user()->role->permission['permission']['color']['index']) || isset(auth()->user()->role->permission['permission']['unit']['index']) || isset(auth()->user()->role->permission['permission']['watt']['index']) || isset(auth()->user()->role->permission['permission']['product']['index']) || isset(auth()->user()->role->permission['permission']['product']['create']))
-                <li class="">
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="mdi mdi-package-variant-closed"></i>
-                        <span>Product</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="true">
-                        @isset(auth()->user()->role->permission['permission']['category']['index'])
-                        <li><a href="{{route('category.index')}}">Category</a></li>
-                        @endisset
-                        @isset(auth()->user()->role->permission['permission']['unit']['index'])
-                        <li><a href="{{route('unit.index')}}">Unit</a></li>
-                        @endisset
-                        @isset(auth()->user()->role->permission['permission']['watt']['index'])
-                        <li><a href="{{route('watt.index')}}">Watt</a></li>
-                        @endisset
-                        @isset(auth()->user()->role->permission['permission']['color']['index'])
-                        <li><a href="{{route('color.index')}}">Body Color</a></li>
-                        @endisset
-                        @isset(auth()->user()->role->permission['permission']['temperature']['index'])
-                        <li><a href="{{route('temperature.index')}}">Temperature</a></li>
-                        @endisset
-                        @if (isset(auth()->user()->role->permission['permission']['product']['create']) || isset(auth()->user()->role->permission['permission']['product']['index']))
-                        <li class=""><a href="javascript: void(0);" class="has-arrow">Product</a>
+                    <li class="menu-title">Product Module</li>
+                    @if (isset(auth()->user()->role->permission['permission']['category']['index']) || isset(auth()->user()->role->permission['permission']['temperature']['index']) || isset(auth()->user()->role->permission['permission']['color']['index']) || isset(auth()->user()->role->permission['permission']['unit']['index']) || isset(auth()->user()->role->permission['permission']['watt']['index']) || isset(auth()->user()->role->permission['permission']['product']['index']) || isset(auth()->user()->role->permission['permission']['product']['create']))
+                    <li class="">
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="mdi mdi-package-variant-closed"></i>
+                            <span>Product</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @isset(auth()->user()->role->permission['permission']['category']['index'])
+                            <li><a href="{{route('category.index')}}">Category</a></li>
+                            @endisset
+                            @isset(auth()->user()->role->permission['permission']['unit']['index'])
+                            <li><a href="{{route('unit.index')}}">Unit</a></li>
+                            @endisset
+                            @isset(auth()->user()->role->permission['permission']['watt']['index'])
+                            <li><a href="{{route('watt.index')}}">Watt</a></li>
+                            @endisset
+                            @isset(auth()->user()->role->permission['permission']['color']['index'])
+                            <li><a href="{{route('color.index')}}">Body Color</a></li>
+                            @endisset
+                            @isset(auth()->user()->role->permission['permission']['temperature']['index'])
+                            <li><a href="{{route('temperature.index')}}">Temperature</a></li>
+                            @endisset
+                            @if (isset(auth()->user()->role->permission['permission']['product']['create']) || isset(auth()->user()->role->permission['permission']['product']['index']))
+                            <li class=""><a href="javascript: void(0);" class="has-arrow">Product</a>
+                                <ul class="sub-menu" aria-expanded="true">
+                                    @isset(auth()->user()->role->permission['permission']['product']['create'])
+                                    <li><a href="{{route('product.create')}}">Add Product</a></li>
+                                    @endisset
+                                    @isset(auth()->user()->role->permission['permission']['product']['index'])
+                                    <li><a href="{{route('product.index')}}">Product List</a></li>
+                                    @endisset
+                                </ul>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+                    @if (isset(auth()->user()->role->permission['permission']['qr-code']['index']) || isset(auth()->user()->role->permission['permission']['barcode']['index']))
+                    <li class="">
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="mdi mdi mdi-barcode-scan"></i>
+                            <span>Code Generate</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @isset(auth()->user()->role->permission['permission']['qr-code']['index'])
+                            <li><a href="{{ route('qr-code.index') }}">QR Code Print</a></li>
+                            @endisset
+                            @isset(auth()->user()->role->permission['permission']['barcode']['index'])
+                            <li><a href="{{ route('barcode.index') }}">Bar Code Print</a></li>
+                            @endisset
+                        </ul>
+                    </li>
+                    @endif
+                
+                @endif
+
+
+                @if (isset(auth()->user()->role->permission['permission']['sample-request']['index']) || isset(auth()->user()->role->permission['permission']['sample-request']['create']) || isset(auth()->user()->role->permission['permission']['sample-return']['index']) || isset(auth()->user()->role->permission['permission']['sample-return']['create']))
+                
+                    <li class="menu-title">Sample Request Module</li>
+                    @if (isset(auth()->user()->role->permission['permission']['sample-request']['index']) || isset(auth()->user()->role->permission['permission']['sample-request']['create']))
+                    <li class="">
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="mdi mdi-package-variant-closed"></i>
+                            <span>Sample Request</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @if (isset(auth()->user()->role->permission['permission']['sample-request']['index']) || isset(auth()->user()->role->permission['permission']['sample-request']['create']))
+                            @isset(auth()->user()->role->permission['permission']['sample-request']['create'])
+                            <li><a href="{{route('sample.request.create')}}">Add Sample Request</a></li>
+                            @endisset
+                            @isset(auth()->user()->role->permission['permission']['sample-request']['index'])
+                            <li><a href="{{route('sample.request.index')}}">Sample Request List</a></li>
+                            @endisset
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+
+                    @if (isset(auth()->user()->role->permission['permission']['sample-return']['index']) || isset(auth()->user()->role->permission['permission']['sample-return']['create']))
+                        <li class="">
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="mdi mdi-dice-multiple-outline"></i>
+                                <span>Sample Return</span>
+                            </a>
                             <ul class="sub-menu" aria-expanded="true">
-                                @isset(auth()->user()->role->permission['permission']['product']['create'])
-                                <li><a href="{{route('product.create')}}">Add Product</a></li>
+                                @isset(auth()->user()->role->permission['permission']['sample-return']['create'])
+                                <li><a href="{{route('sample.return.create')}}">Add Sample Return</a></li>
                                 @endisset
-                                @isset(auth()->user()->role->permission['permission']['product']['index'])
-                                <li><a href="{{route('product.index')}}">Product List</a></li>
+                                @isset(auth()->user()->role->permission['permission']['sample-return']['index'])
+                                <li><a href="{{route('sample.return.index')}}">Sample Return List</a></li>
                                 @endisset
                             </ul>
                         </li>
-                        @endif
-                    </ul>
-                </li>
-                @endif
-                @if (isset(auth()->user()->role->permission['permission']['qr-code']['index']) || isset(auth()->user()->role->permission['permission']['barcode']['index']))
-                <li class="">
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="mdi mdi mdi-barcode-scan"></i>
-                        <span>Code Generate</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="true">
-                        @isset(auth()->user()->role->permission['permission']['qr-code']['index'])
-                        <li><a href="{{ route('qr-code.index') }}">QR Code Print</a></li>
-                        @endisset
-                        @isset(auth()->user()->role->permission['permission']['barcode']['index'])
-                        <li><a href="{{ route('barcode.index') }}">Bar Code Print</a></li>
-                        @endisset
-                    </ul>
-                </li>
-                @endif
+                    @endif
                 
                 @endif
+
+                
 
                 @if (isset(auth()->user()->role->permission['permission']['customer']['index'])  || isset(auth()->user()->role->permission['permission']['sale']['index']) || isset(auth()->user()->role->permission['permission']['sale']['create']) || isset(auth()->user()->role->permission['permission']['sale']['requisition']) || isset(auth()->user()->role->permission['permission']['sale-return']['index']) || isset(auth()->user()->role->permission['permission']['sale-return']['create']) || isset(auth()->user()->role->permission['permission']['sale-requisition']['index']) || isset(auth()->user()->role->permission['permission']['sale-requisition']['create']))
                 <li class="menu-title">Sales Module</li>
@@ -225,6 +269,12 @@
                         <span>Inventory</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('inventory.employee')}}" class="waves-effect">
+                        <i class="mdi mdi-package-variant-closed"></i>
+                        <span>Employee / Dealer Inventory</span>
+                    </a>
+                </li>
                 @endif
 
                 @if (isset(auth()->user()->role->permission['permission']['payment_mathod']['index']) || isset(auth()->user()->role->permission['permission']['account']['index']) || isset(auth()->user()->role->permission['permission']['customer']['receive']) || isset(auth()->user()->role->permission['permission']['account']['dues']))
@@ -336,8 +386,16 @@
                     @endif
                 @endif
 
-                @if (isset(auth()->user()->role->permission['permission']['report']['budget-expense']) || isset(auth()->user()->role->permission['permission']['report']['expense']) || isset(auth()->user()->role->permission['permission']['report']['budget']) || isset(auth()->user()->role->permission['permission']['report']['sale-purchase']) || isset(auth()->user()->role->permission['permission']['report']['sale']) || isset(auth()->user()->role->permission['permission']['report']['sale-requisition']) || isset(auth()->user()->role->permission['permission']['report']['purchase']) || isset(auth()->user()->role->permission['permission']['report']['purchase-requisition']))
+                @if (isset(auth()->user()->role->permission['permission']['report']['sample-request']) || isset(auth()->user()->role->permission['permission']['report']['budget-expense']) || isset(auth()->user()->role->permission['permission']['report']['expense']) || isset(auth()->user()->role->permission['permission']['report']['budget']) || isset(auth()->user()->role->permission['permission']['report']['sale-purchase']) || isset(auth()->user()->role->permission['permission']['report']['sale']) || isset(auth()->user()->role->permission['permission']['report']['sale-requisition']) || isset(auth()->user()->role->permission['permission']['report']['purchase']) || isset(auth()->user()->role->permission['permission']['report']['purchase-requisition']))
                 <li class="menu-title">Report Module</li>
+                    @isset(auth()->user()->role->permission['permission']['report']['sample-request'])
+                    <li>
+                        <a href="{{route('report.sample.request')}}" class="waves-effect">
+                            <i class="mdi mdi-file-pdf-box"></i>
+                            <span>Sample Request Report</span>
+                        </a>
+                    </li>
+                    @endisset
                     @isset(auth()->user()->role->permission['permission']['report']['sale-requisition'])
                     <li>
                         <a href="{{route('report.sale.requisition')}}" class="waves-effect">

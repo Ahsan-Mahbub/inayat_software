@@ -59,7 +59,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'permission'], functi
         Route::get('/search', [SubHeadController::class, 'search'])->name('sub-head.search');
     });
 
-    //Expense Route
+    //Expense Requisition Route
     Route::group(['prefix' => 'expense-requisition'], function () {
         Route::get('/list', [ExpenseRequisitionController::class, 'index'])->name('expense.requisition.index');
         Route::get('/create', [ExpenseRequisitionController::class, 'create'])->name('expense.requisition.create');

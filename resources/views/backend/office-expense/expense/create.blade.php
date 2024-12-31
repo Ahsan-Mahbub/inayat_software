@@ -43,16 +43,16 @@
                         </div>
                         @endif
 
-                        <div class="col-md-4 mb-3">
+                        {{-- <div class="col-md-4 mb-3">
                             <label>Expense Requisition *</label>
                             <select class="custom-select select2" name="requisition_id" id="requisition_id" required>
                                 <option value="">Select One</option>
                             </select>
-                        </div>
+                        </div> --}}
 
                         <div class="col-md-4 mb-3">
                             <label>Expense Head *</label>
-                            <select class="custom-select" required="" name="head_id" id="head_id" disabled>
+                            <select class="custom-select select2" required="" name="head_id" id="head_id" onchange="getSubHead()">
                                 <option value="">Select One</option>
                                 @foreach($heads as $head)
                                 <option value="{{$head->id}}">{{$head->head_name}}</option>
@@ -61,11 +61,8 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <label>Expense Sub Head</label>
-                            <select class="custom-select" name="subhead_id" id="subhead_id" disabled>
+                            <select class="custom-select select2" name="subhead_id" id="subhead_id">
                                 <option value="">Select One</option>
-                                @foreach($subheads as $head)
-                                <option value="{{$head->id}}">{{$head->subhead_name}}</option>
-                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
@@ -97,6 +94,26 @@
 
 @endsection
 @section('script')
+    <script type="text/javascript">
+        function getSubHead() {
+            let id = $("#head_id").val();
+            let url = '/admin/expense-requisition/subhead/' + id;
+            $.ajax({
+                type: "get",
+                url: url,
+                dataType: "json",
+                success: function(response) {
+                    let html = '';
+                    html += `<option value="">` + 'Select One' + `</option>`
+                    response.forEach(element => {
+                        html += '<option value=' + element.id + '>' + element.subhead_name +
+                            '</option>'
+                    });
+                    $("#subhead_id").html(html);
+                }
+            });
+        }
+    </script>
     <script type="text/javascript">
 
         function readURL(input) {

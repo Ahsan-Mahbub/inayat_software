@@ -59,7 +59,7 @@
 
                                     if($employee->role_id == 11)
                                     {
-                                        $requisition = App\Models\ExpenseRequisition::sum('amount');
+                                        $requisition = App\Models\ExpenseRequisition::where('status',1)->sum('amount');
                                     }else{
                                         $requisition = 0;
                                     }

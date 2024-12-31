@@ -69,7 +69,7 @@
                                 <th>S/N</th>
                                 <th>Expense Image</th>
                                 <th>Date</th>
-                                <th>Requisition</th>
+                                {{-- <th>Requisition</th> --}}
                                 <th>Head Name</th>
                                 <th>Employee Name</th>
                                 <th>Amount</th>
@@ -95,7 +95,7 @@
                                     ?>
                                     {{$date}}
                                 </td>
-                                <td>{{$expense->requisition ? $expense->requisition->requisition : ''}}</td>
+                                {{-- <td>{{$expense->requisition ? $expense->requisition->requisition : ''}}</td> --}}
                                 <td>{{$expense->head ? $expense->head->head_name : ''}} <br> {{$expense->subhead ? $expense->subhead->subhead_name : ''}}</td>
                                 <td>{{$expense->employee ? $expense->employee->name : ''}} </td>
                                 <td>{{$expense->amount}} </td>

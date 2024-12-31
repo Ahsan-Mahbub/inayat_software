@@ -54,6 +54,19 @@
                                     <input type="date" readonly class="form-control" name="date" value="<?php echo date('Y-m-d');?>">
                                 </div>
                             </div>
+                            @if(Auth::user()->role_id == 1)
+                            <div class="col-md-3 pb-3">
+                                <label class="form-label">Creator Name</label>
+                                <div class="">
+                                    <select class="custom-select select2" name="user_id" id="user_id" required="">
+                                        <option value="">Select One</option>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}">{{ $user->name }} - ({{$user->role ? $user->role->role_name : 'N/A'}})</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            @endif
                             <div class="col-md-3 pb-3">
                                 <label class="form-label">Client Name</label>
                                 <div class="">

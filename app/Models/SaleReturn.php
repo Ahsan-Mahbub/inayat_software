@@ -12,6 +12,7 @@ class SaleReturn extends Model
     protected $table = 'sale_returns';
     protected $fillable = [
         'date',
+        'creator_id',
         'sale_id',
         'customer_id',
         'product_id',

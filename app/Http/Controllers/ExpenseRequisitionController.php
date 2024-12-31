@@ -23,7 +23,7 @@ class ExpenseRequisitionController extends Controller
     {
         $search_head = '';
         $heads = Head::get();
-        $users = User::where('role_id', 12)->get();
+        $users = User::whereIn('role_id', [11,12])->get();
         $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
@@ -44,7 +44,7 @@ class ExpenseRequisitionController extends Controller
     public function search(Request $request)
     {
         $heads = Head::get();
-        $users = User::where('role_id', 12)->get();
+        $users = User::whereIn('role_id', [11,12])->get();
         $search_user = $request->user_id;
         $search_head = $request->head_id;
         $search_subhead = $request->subhead_id;
@@ -89,7 +89,7 @@ class ExpenseRequisitionController extends Controller
     public function create()
     {
         $heads = Head::get();
-        $users = User::where('role_id', 12)->get();
+        $users = User::whereIn('role_id', [11,12])->get();
         return view('backend.office-expense.expense-requisition.create', compact('heads','users'));
     }
 
@@ -169,7 +169,7 @@ class ExpenseRequisitionController extends Controller
     {
         $expense = ExpenseRequisition::findOrFail($id);
         $heads = Head::get();
-        $users = User::where('role_id', 12)->get();
+        $users = User::whereIn('role_id', [11,12])->get();
         $subhead = SubHead::where('id', $expense->subhead_id)->first();
         return view('backend.office-expense.expense-requisition.edit', compact('expense','heads','users','subhead')); 
     }

@@ -404,10 +404,6 @@
                                             </tr>
                                         </table>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
@@ -427,6 +423,10 @@
                                             </tr>
                                         </table>
                                     </div> 
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row">
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
@@ -584,6 +584,70 @@
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
+                                                <th colspan="2">Sample Request</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">List</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[sample-request][index]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Add</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[sample-request][create]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Edit</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[sample-request][edit]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Delete</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[sample-request][destroy]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">View</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[sample-request][view]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Approve Status</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[sample-request][approve]" value="1">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div> 
+
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-striped text-center ">
+                                            <tr>
+                                                <th colspan="2">Sample Return</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">List</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[sample-return][index]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Add</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[sample-return][create]" value="1">
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div> 
+
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered table-striped text-center ">
+                                            <tr>
                                                 <th colspan="2">Sale Quotation</th>
                                             </tr>
                                             <tr>
@@ -688,6 +752,12 @@
                                                 <td class="text-right">
                                                     <input type="checkbox" class="check-input" name="permission[customer][print]" value="1">
                                                 </td>
+                                            </tr>  
+                                            <tr>
+                                                <td class="text-left">Send Message</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[customer][message]" value="1">
+                                                </td>
                                             </tr>                                           
                                         </table>
                                     </div> 
@@ -739,7 +809,11 @@
                                                 </td>
                                             </tr>   
                                         </table>
-                                    </div>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row"> 
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
@@ -758,11 +832,7 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                    </div>    
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row"> 
+                                    </div> 
                                     <div class="col-md-12">
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
@@ -1029,6 +1099,12 @@
                                         <table class="table table-bordered table-striped text-center ">
                                             <tr>
                                                 <th colspan="2">Report</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Sample Request Report</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[report][sample-request]" value="1">
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td class="text-left">Sale Report</td>

@@ -80,6 +80,7 @@
                       <tr>
                         <th style="border: 2px solid #3e3e3e; vertical-align: middle; font-size: 17px; font-weight: 600; padding: 3px; text-align: center">SL</th>
                         <th style="border: 2px solid #3e3e3e; vertical-align: middle; font-size: 17px; font-weight: 600; padding: 3px; text-align: center; width: 13%;">Name/Code</th>
+                        <th style="border: 2px solid #3e3e3e; vertical-align: middle; font-size: 17px; font-weight: 600; padding: 3px; text-align: center; width: 19%">QR Code</th>
                         <th style="border: 2px solid #3e3e3e; vertical-align: middle; font-size: 17px; font-weight: 600; padding: 3px; text-align: center; width: 19%">Product Image</th>
                         <th style="border: 2px solid #3e3e3e; vertical-align: middle; font-size: 17px; font-weight: 600; padding: 3px; text-align: center">Product Description</th>
                         <th style="border: 2px solid #3e3e3e; vertical-align: middle; font-size: 17px; font-weight: 600; padding: 3px; text-align: center">Unit</th>
@@ -97,6 +98,14 @@
                         <th style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px;" scope="row">{{$sl++}}</th>
                         <td style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px;">
                           {{$product->product ? $product->product->product_name : 'N/A'}}
+                        </td>
+                        <td style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px;">
+                          <?php
+                            $qrcode_gen = $product->product ? $product->product->sku : 'N/A';
+                          ?>
+                          <div class="text-center">
+                            {{ QrCode::generate($qrcode_gen) }}
+                          </div>
                         </td>
                         <td style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px;">
                           @if($product->product)

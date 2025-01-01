@@ -130,7 +130,7 @@
                                                     <td
                                                         style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px;">
                                                         @if ($product->des_show == 1)
-                                                            {!! $product->product->description !!}
+                                                            {!! $product->product ? $product->product->description : '' !!}
                                                         @endif
                                                     </td>
                                                     <td

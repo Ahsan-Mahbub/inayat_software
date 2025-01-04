@@ -99,9 +99,9 @@
                                                 <th
                                                     style="border: 2px solid #3e3e3e; vertical-align: middle; font-size: 17px; font-weight: 600; padding: 3px; text-align: center">
                                                     QTY</th>
-                                                <th
+                                                {{-- <th
                                                     style="border: 2px solid #3e3e3e; vertical-align: middle; font-size: 17px; font-weight: 600; padding: 3px; text-align: center; width: 12%;">
-                                                    Unit Price</th>
+                                                    Unit Price</th> --}}
                                                 {{-- <th
                                                     style="border: 2px solid #3e3e3e; vertical-align: middle; font-size: 17px; font-weight: 600; padding: 3px; text-align: center; width: 12%;">
                                                     Total Price</th> --}}
@@ -140,10 +140,10 @@
                                                     <td
                                                         style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px; text-align: center">
                                                         {{ $product->qty }}</td>
-                                                    <td
+                                                    {{-- <td
                                                         style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px; text-align: center">
                                                         {{ number_format($product->amount / $product->qty, 2, '.', '') }}/-
-                                                    </td>
+                                                    </td> --}}
                                                     {{-- <td
                                                         style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px; text-align: center">
                                                         {{ number_format($product->amount, 2, '.', '') }}/-</td> --}}

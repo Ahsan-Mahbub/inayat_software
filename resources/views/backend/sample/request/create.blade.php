@@ -103,22 +103,22 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-3 pt-2">
-                            <div class="col-3">
+                            <div class="col-4">
                                 <label class="form-label">Product</label>
                             </div>
                             <div class="col-1">
                                 <label class="form-label">Des.</label>
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <label class="form-label">Unit</label>
                             </div>
-                            <div class="col-2">
+                            <div class="d-none">
                                 <label class="form-label">Sale</label>
                             </div>
                             <div class="col-3">
                                 <label class="form-label">Qty</label>
                             </div>
-                            <div class="col-2 d-none">
+                            <div class="d-none">
                                 <label class="form-label">Amount</label>
                             </div>
                             <div class="col-1">
@@ -131,14 +131,14 @@
     
                                     <input type="hidden" name="product_id[]" class="product_id product_id-202112" value="">
     
-                                    <div class="col-3">
+                                    <div class="col-4">
                                         <input type="text" class="form-control search_product search_product-202112" name="product_name[]" placeholder="Search by Product Code.." value="" >
                                     </div>
                                     <div class="col-1">
                                         <input type="checkbox" id="showDes-202112">
                                         <input type="hidden" value="0" name="des_show[]" id="valueDes-202112">
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <select class="custom-select unit-202112" required="" name="unit_id[]" id="unit_id" required random_number="202112">
                                             <option value="">Select One</option>
                                             @foreach($units as $unit)
@@ -146,7 +146,7 @@
                                             @endforeach
                                         </select>
                                     </div>  
-                                    <div class="col-2">
+                                    <div class="d-none">
                                         <input type="hidden" id="textToNumber" class="form-control purchasePrice-202112" name="purchase_price[]" placeholder="Purchase Price.." readonly required>
                                         <input type="text" id="textToNumber" class="form-control salePrice-202112" name="unit_price[]" placeholder="Sale Price.." required readonly>
                                     </div>                             
@@ -155,7 +155,7 @@
                                         
                                         <div class="mt-1"><span>Total Stock : </span><span class="stock-202112">0</span></div> 
                                     </div>
-                                    <div class="col-2 d-none">
+                                    <div class="d-none">
                                         <input type="text" class="form-control amount amount-202112 single_subtotal single_subtotal-202112" name="amount[]" id="single_subtotal" readonly value="0">
                                     </div>   
                                     <div class="col-1">
@@ -254,7 +254,7 @@
             </div>
             <div class="col-md-12 pb-3 text-center">
                 <button type="submit" name="submit" value="submit" class="btn btn-primary">
-                    Submit Quotation
+                    Submit Sample Request
                 </button>
             </div>
         </div>
@@ -510,19 +510,19 @@
 
                                 <input type="hidden" name="product_id[]" class="product_id product_id-${random_number}" value="">
 
-                                <div class="col-3">
+                                <div class="col-4">
                                     <input type="text" class="form-control search_product search_product-${random_number}" name="product_name[]" placeholder="Search by Product Code.." value="" >
                                 </div>
                                 <div class="col-1">
                                     <input type="checkbox" id="showDes-${random_number}">
                                     <input type="hidden" value="0" name="des_show[]" id="valueDes-${random_number}">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-3">
                                     <select class="custom-select unit-${random_number}" required="" name="unit_id[]" id="unit_id" required random_number="${random_number}">
                                         ${unitOptions}
                                     </select>
                                 </div> 
-                                <div class="col-2">
+                                <div class="d-none">
                                     <input type="hidden" id="textToNumber" class="form-control purchasePrice-${random_number}" name="purchase_price[]" placeholder="Purchase Price.." readonly required>
                                     <input type="text" id="textToNumber" class="form-control salePrice-${random_number}" name="unit_price[]" placeholder="Sale Price.." required readonly>
                                 </div>                             
@@ -531,7 +531,7 @@
 
                                     <div class="mt-1"><span>Total Stock : </span><span class="stock-${random_number}">0</span></div> 
                                 </div>
-                                <div class="col-2 d-none">
+                                <div class="d-none">
                                     <input type="text" class="form-control amount amount-${random_number} single_subtotal single_subtotal-${random_number}" name="amount[]" id="single_subtotal" readonly value="0">
                                 </div>   
                                 <div class="col-1">

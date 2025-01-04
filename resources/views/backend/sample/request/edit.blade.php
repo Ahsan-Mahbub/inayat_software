@@ -87,22 +87,22 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row mb-3 pt-2">
-                            <div class="col-3">
+                            <div class="col-4">
                                 <label class="form-label">Product</label>
                             </div>
                             <div class="col-1">
                                 <label class="form-label">Des.</label>
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <label class="form-label">Unit</label>
                             </div>
-                            <div class="col-2">
+                            <div class="d-none">
                                 <label class="form-label">Sale</label>
                             </div>
                             <div class="col-3">
                                 <label class="form-label">Qty</label>
                             </div>
-                            <div class="col-2 d-none">
+                            <div class="d-none">
                                 <label class="form-label">Amount</label>
                             </div>
                             <div class="col-1">
@@ -118,28 +118,28 @@
         
                                         <input type="hidden" name="product_id[]" class="product_id product_id-{{$product->id}}" value="{{$product->product_id}}">
         
-                                        <div class="col-3">
+                                        <div class="col-4">
                                             <input type="text" class="form-control search_product search_product-{{$product->id}}" name="product_name[]" placeholder="Search by Product Code.." value="{{$product->product ? $product->product->product_name : ''}}" readonly>
                                         </div>
                                         <div class="col-1">
                                             <input type="checkbox" class="showDes" random="{{$product->id}}" id="showDes-{{$product->id}}" @if($product->des_show == 1) checked @endif>
                                             <input type="hidden" @if($product->des_show == 1) value="1" @else value="0" @endif name="des_show[]" id="valueDes-{{$product->id}}">
                                         </div>
-                                        <div class="col-2">
+                                        <div class="col-3">
                                             <select class="custom-select unit-{{$product->id}}" required="" name="unit_id[]" id="unit_id">
                                                 @foreach($units as $unit)
                                                 <option value="{{$unit->id}}" {{$product->unit_id == $unit->id ? 'selected' : '' }}>{{$unit->unit_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>  
-                                        <div class="col-2">
+                                        <div class="d-none">
                                             <input type="hidden" id="textToNumber" class="form-control purchasePrice-{{$product->id}}" name="purchase_price[]" placeholder="Purchase Price.." value="{{$product->purchase_price}}" readonly required>
                                             <input type="text" id="textToNumber" class="form-control salePrice-{{$product->id}}" name="unit_price[]" placeholder="Sale Price.." value="{{$product->sale_price}}" required readonly>
                                         </div>                             
                                         <div class="col-3">
                                             <input type="text" class="form-control buyingQty buyingQty-{{$product->id}}" name="buying_qty[]" value="{{$product->qty}}" random={{$product->id}} placeholder="Qty.." required>
                                         </div>
-                                        <div class="col-2 d-none">
+                                        <div class="d-none">
                                             <input type="text" class="form-control amount amount-{{$product->id}} single_subtotal single_subtotal-{{$product->id}}" name="amount[]" value="{{$product->amount}}" id="single_subtotal" readonly value="0">
                                         </div>   
                                         <div class="col-1">
@@ -251,7 +251,7 @@
             </div>
             <div class="col-md-12 pb-3 text-center">
                 <button type="submit" name="submit" value="submit" class="btn btn-primary">
-                    Submit Quotation
+                    Submit Sample Request
                 </button>
             </div>
         </div>
@@ -370,26 +370,26 @@
 
                                 <input type="hidden" name="product_id[]" class="product_id product_id-${random_number}" value="">
 
-                                <div class="col-3">
+                                <div class="col-4">
                                     <input type="text" class="form-control search_product search_product-${random_number}" name="product_name[]" placeholder="Search by Product Code.." value="" >
                                 </div>
                                 <div class="col-1">
                                     <input type="checkbox" id="showDes-${random_number}">
                                     <input type="hidden" value="0" name="des_show[]" id="valueDes-${random_number}">
                                 </div>
-                                <div class="col-2">
+                                <div class="col-3">
                                     <select class="custom-select unit-${random_number}" required="" name="unit_id[]" id="unit_id">
                                         ${unitOptions}
                                     </select>
                                 </div> 
-                                <div class="col-2">
+                                <div class="d-none">
                                     <input type="hidden" id="textToNumber" class="form-control purchasePrice-${random_number}" name="purchase_price[]" placeholder="Purchase Price.." readonly required>
                                     <input type="text" id="textToNumber" class="form-control salePrice-${random_number}" name="unit_price[]" placeholder="Sale Price.." required readonly>
                                 </div>                             
                                 <div class="col-3">
                                     <input type="text" class="form-control buyingQty-${random_number}" name="buying_qty[]" placeholder="Qty.." required>
                                 </div>
-                                <div class="col-2 d-none">
+                                <div class="d-none">
                                     <input type="text" class="form-control amount amount-${random_number} single_subtotal single_subtotal-${random_number}" name="amount[]" id="single_subtotal" readonly value="0">
                                 </div>   
                                 <div class="col-1">

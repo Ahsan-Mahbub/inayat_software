@@ -27,7 +27,7 @@ class ProductController extends Controller
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
-        $all_product = Product::orderBy('id','desc')->paginate($perPage);
+        $all_product = Product::orderBy('product_name','asc')->paginate($perPage);
         $search = '';
         return view('backend.file.product.list', compact('all_product','search','startingSerial','categories','search_category'));
     }
@@ -45,19 +45,19 @@ class ProductController extends Controller
         if ($request->search && $request->category_id) {
             $all_product = Product::where('product_name', 'LIKE', '%' .$request->search . '%')
                                     ->where('category_id', $search_category)
-                                    ->orderBy('id','desc')
+                                    ->orderBy('product_name','asc')
                                     ->paginate($perPage);
         }elseif($request->search){
             $all_product = Product::where('product_name', 'LIKE', '%' .$request->search . '%')
-                                    ->orderBy('id','desc')
+                                    ->orderBy('product_name','asc')
                                     ->paginate($perPage);
         }elseif($request->category_id){
             $all_product = Product::where('category_id', $search_category)
-                                    ->orderBy('id','desc')
+                                    ->orderBy('product_name','asc')
                                     ->paginate($perPage);
         }
         else {
-            $all_product = Product::orderBy('id','desc')->paginate($perPage);;
+            $all_product = Product::orderBy('product_name','asc')->paginate($perPage);;
         }
 
         return view('backend.file.product.list', compact('all_product','search','startingSerial','categories','search_category')); 

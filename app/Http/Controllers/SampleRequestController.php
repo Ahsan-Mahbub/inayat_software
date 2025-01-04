@@ -10,6 +10,7 @@ use App\Models\PurchaseProduct;
 use App\Models\PurchaseReturn;
 use App\Models\SaleProduct;
 use App\Models\SaleReturn;
+use App\Models\SampleReturn;
 use App\Models\Unit;
 use App\Models\Discount;
 use App\Models\User;
@@ -431,7 +432,10 @@ class SampleRequestController extends Controller
         $sale_stock = SaleProduct::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
         $sale_return_stock = SaleReturn::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
 
-        $available_stock = $purchase_stock - $purchase_return_stock - $sale_stock + $sale_return_stock;
+        $sample_request_stock = SampleRequestProduct::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
+        $sample_request_return_stock = SampleReturn::where('product_id', $request->product_id)->where('unit_id', $request->unit_id)->sum('qty');
+
+        $available_stock = $purchase_stock - $purchase_return_stock - $sale_stock + $sale_return_stock - $sample_request_stock + $sample_request_return_stock;
 
         $product = Product::where('id', $request->product_id)->first();
 

@@ -16,6 +16,76 @@
                     </a>
                 </li>
 
+                @if (isset(auth()->user()->role->permission['permission']['budget']['index']) || isset(auth()->user()->role->permission['permission']['budget']['create']) || isset(auth()->user()->role->permission['permission']['head']['index']) || isset(auth()->user()->role->permission['permission']['sub-head']['index']) || isset(auth()->user()->role->permission['permission']['expense']['index']) || isset(auth()->user()->role->permission['permission']['expense']['create']))
+                <li class="menu-title">Office Expense Module</li>
+                    @if (isset(auth()->user()->role->permission['permission']['head']['index']) || isset(auth()->user()->role->permission['permission']['sub-head']['index']))
+                    <li class="">
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="mdi mdi-dice-multiple-outline"></i>
+                            <span>Expense Head</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @isset(auth()->user()->role->permission['permission']['head']['index'])
+                            <li><a href="{{route('head.index')}}">Expense Head</a></li>
+                            @endisset
+                            @isset(auth()->user()->role->permission['permission']['sub-head']['index'])
+                            <li><a href="{{route('sub-head.index')}}">Expense Sub Head</a></li>
+                            @endisset
+                        </ul>
+                    </li>
+                    @endif
+                    @if (isset(auth()->user()->role->permission['permission']['budget']['index']) || isset(auth()->user()->role->permission['permission']['budget']['create']))
+                    <li class="">
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="mdi mdi-dice-multiple-outline"></i>
+                            <span>Employee Budget</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @isset(auth()->user()->role->permission['permission']['budget']['create'])
+                            <li><a href="{{route('budget.create')}}">Add Budget</a></li>
+                            @endisset
+                            @isset(auth()->user()->role->permission['permission']['budget']['index'])
+                            <li><a href="{{route('budget.index')}}">Budget List</a></li>
+                            @endisset
+                        </ul>
+                    </li>
+                    @endif
+                    @if (isset(auth()->user()->role->permission['permission']['expense-requisition']['index']) || isset(auth()->user()->role->permission['permission']['expense-requisition']['create']))
+                        @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 11)
+                        <li class="">
+                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                <i class="mdi mdi-dice-multiple-outline"></i>
+                                <span>Expense Requisition</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="true">
+                                @isset(auth()->user()->role->permission['permission']['expense-requisition']['create'])
+                                <li><a href="{{route('expense.requisition.create')}}">Add Expense Requisition</a></li>
+                                @endisset
+                                @isset(auth()->user()->role->permission['permission']['expense-requisition']['index'])
+                                <li><a href="{{route('expense.requisition.index')}}">Expense Requisition List</a></li>
+                                @endisset
+                            </ul>
+                        </li>
+                        @endif
+                    @endif
+                    @if (isset(auth()->user()->role->permission['permission']['expense']['index']) || isset(auth()->user()->role->permission['permission']['expense']['create']))
+                    <li class="">
+                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <i class="mdi mdi-dice-multiple-outline"></i>
+                            <span>Expense</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            @isset(auth()->user()->role->permission['permission']['expense']['create'])
+                            <li><a href="{{route('expense.create')}}">Add Expense</a></li>
+                            @endisset
+                            @isset(auth()->user()->role->permission['permission']['expense']['index'])
+                            <li><a href="{{route('expense.index')}}">Expense List</a></li>
+                            @endisset
+                        </ul>
+                    </li>
+                    @endif
+                @endif
+
                 @if (isset(auth()->user()->role->permission['permission']['category']['index']) || isset(auth()->user()->role->permission['permission']['temperature']['index']) || isset(auth()->user()->role->permission['permission']['color']['index']) || isset(auth()->user()->role->permission['permission']['unit']['index']) || isset(auth()->user()->role->permission['permission']['watt']['index']) || isset(auth()->user()->role->permission['permission']['product']['index']) || isset(auth()->user()->role->permission['permission']['product']['create']) || isset(auth()->user()->role->permission['permission']['qr-code']['index']) || isset(auth()->user()->role->permission['permission']['barcode']['index']))
                 
                     <li class="menu-title">Product Module</li>
@@ -311,76 +381,6 @@
                                 </ul>
                             </li>
                             @endif
-                        </ul>
-                    </li>
-                    @endif
-                @endif
-
-                @if (isset(auth()->user()->role->permission['permission']['budget']['index']) || isset(auth()->user()->role->permission['permission']['budget']['create']) || isset(auth()->user()->role->permission['permission']['head']['index']) || isset(auth()->user()->role->permission['permission']['sub-head']['index']) || isset(auth()->user()->role->permission['permission']['expense']['index']) || isset(auth()->user()->role->permission['permission']['expense']['create']))
-                <li class="menu-title">Office Expense Module</li>
-                    @if (isset(auth()->user()->role->permission['permission']['head']['index']) || isset(auth()->user()->role->permission['permission']['sub-head']['index']))
-                    <li class="">
-                        <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="mdi mdi-dice-multiple-outline"></i>
-                            <span>Expense Head</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="true">
-                            @isset(auth()->user()->role->permission['permission']['head']['index'])
-                            <li><a href="{{route('head.index')}}">Expense Head</a></li>
-                            @endisset
-                            @isset(auth()->user()->role->permission['permission']['sub-head']['index'])
-                            <li><a href="{{route('sub-head.index')}}">Expense Sub Head</a></li>
-                            @endisset
-                        </ul>
-                    </li>
-                    @endif
-                    @if (isset(auth()->user()->role->permission['permission']['budget']['index']) || isset(auth()->user()->role->permission['permission']['budget']['create']))
-                    <li class="">
-                        <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="mdi mdi-dice-multiple-outline"></i>
-                            <span>Employee Budget</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="true">
-                            @isset(auth()->user()->role->permission['permission']['budget']['create'])
-                            <li><a href="{{route('budget.create')}}">Add Budget</a></li>
-                            @endisset
-                            @isset(auth()->user()->role->permission['permission']['budget']['index'])
-                            <li><a href="{{route('budget.index')}}">Budget List</a></li>
-                            @endisset
-                        </ul>
-                    </li>
-                    @endif
-                    @if (isset(auth()->user()->role->permission['permission']['expense-requisition']['index']) || isset(auth()->user()->role->permission['permission']['expense-requisition']['create']))
-                        @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 11)
-                        <li class="">
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="mdi mdi-dice-multiple-outline"></i>
-                                <span>Expense Requisition</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="true">
-                                @isset(auth()->user()->role->permission['permission']['expense-requisition']['create'])
-                                <li><a href="{{route('expense.requisition.create')}}">Add Expense Requisition</a></li>
-                                @endisset
-                                @isset(auth()->user()->role->permission['permission']['expense-requisition']['index'])
-                                <li><a href="{{route('expense.requisition.index')}}">Expense Requisition List</a></li>
-                                @endisset
-                            </ul>
-                        </li>
-                        @endif
-                    @endif
-                    @if (isset(auth()->user()->role->permission['permission']['expense']['index']) || isset(auth()->user()->role->permission['permission']['expense']['create']))
-                    <li class="">
-                        <a href="javascript: void(0);" class="has-arrow waves-effect">
-                            <i class="mdi mdi-dice-multiple-outline"></i>
-                            <span>Expense</span>
-                        </a>
-                        <ul class="sub-menu" aria-expanded="true">
-                            @isset(auth()->user()->role->permission['permission']['expense']['create'])
-                            <li><a href="{{route('expense.create')}}">Add Expense</a></li>
-                            @endisset
-                            @isset(auth()->user()->role->permission['permission']['expense']['index'])
-                            <li><a href="{{route('expense.index')}}">Expense List</a></li>
-                            @endisset
                         </ul>
                     </li>
                     @endif

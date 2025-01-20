@@ -31,13 +31,21 @@ class InventoryController extends Controller
         $categories = Category::get();
         $all_products = Product::get();
         // dd($request->all());
-        if ($request->search) {
+        if ($request->category_id && $request->product_id) {
 
-            $purchase_products = DB::table('purchase_products')
-                ->where('product_id', $request->product_id)
-                ->select('product_id', 'unit_id', DB::raw('SUM(qty) as total_qty'))
-                ->groupBy('product_id', 'unit_id')
-                ->get();
+            $search_product = Product::where('id', $request->product_id)->where('category_id', $request->category_id)->pluck('id');
+            if ($search_product->isNotEmpty()) {
+                $purchase_products = DB::table('purchase_products')
+                    ->whereIn('product_id', $search_product)
+                    ->select('product_id', 'unit_id', DB::raw('SUM(qty) as total_qty'))
+                    ->groupBy('product_id', 'unit_id')
+                    ->get();
+            } else {
+                $purchase_products = DB::table('purchase_products')
+                    ->select('product_id', 'unit_id', DB::raw('SUM(qty) as total_qty'))
+                    ->groupBy('product_id', 'unit_id')
+                    ->get();
+            }
         } elseif ($request->category_id) {
 
             $search_product = Product::where('category_id', $request->category_id)->pluck('id');

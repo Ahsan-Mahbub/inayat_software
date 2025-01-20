@@ -287,7 +287,7 @@
                     $("#address").val(response.address);
                     $("#designation").val(response.designation);
                     $("#company_name").val(response.company_name);
-                    $("delivery_address").val(response.delivery_address);
+                    $("#delivery_address").val(response.delivery_address);
                     $('.customer_image').attr('src', response.image ? '/'+ response.image  : '/demo.svg');
                 }
             })

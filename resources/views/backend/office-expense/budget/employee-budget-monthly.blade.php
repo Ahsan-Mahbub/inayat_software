@@ -163,8 +163,8 @@
                     @endisset
 
                     @isset($budgets)
-                    <div class="row justify-content-end">
-                        <div class="col-md-4">
+                    <div class="row justify-content-center">
+                        <div class="col-md-6" style="width: 50%">
                             <table class="table table-bordered table-striped text-center">
                                 <tr>
                                     <th class="text-right">Last Month Closing Balance</th>
@@ -183,12 +183,16 @@
                                     <th class="text-right">{{$previous_amount + $total_budget_amount + $total_requisition_amount}}</th>
                                 </tr>
                             </table>
+                        </div>
+                        <div class="col-md-6" style="width: 50%">
                             <table class="table table-bordered table-striped text-center">
                                 <tr>
                                     <th class="text-right">{{$monthName}} - Total Expense Amount</th>
                                     <th class="text-right">{{$total_expense_amount}}</th>
                                 </tr>
                             </table>
+                        </div>
+                        <div class="col-md-6" style="width: 50%">
                             <table class="table table-bordered table-striped text-center">
                                 <tr>
                                     <th class="text-right">{{$monthName}} - Current Balance</th>

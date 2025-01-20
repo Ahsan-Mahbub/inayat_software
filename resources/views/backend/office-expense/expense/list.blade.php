@@ -86,8 +86,32 @@
                             @foreach($all_expense as $expense)
                             <tr>
                                 <td>{{$startingSerial++}}</td>
-                                <td><img style="width: auto; height: 100px;"
-                                    src="{{ $expense->image ? '/' . $expense->image : '/demo.svg' }}"></td>
+                                <td>
+                                    <img style="width: auto; height: 100px; cursor: pointer;"
+                                        src="{{ $expense->image ? '/' . $expense->image : '/demo.svg' }}"
+                                        class="img-thumbnail"
+                                        data-toggle="modal"
+                                        data-target="#imageModal"
+                                        onclick="showImageModal('{{ $expense->image ? '/' . $expense->image : '/demo.svg' }}')">
+                                </td>
+                                
+                                <!-- Modal Structure -->
+                                <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="imageModalLabel">Expense Image</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-center">
+                                                <img id="modalImage" src="" alt="Expense Image" class="img-fluid">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <td>
                                     <?php
                                         $timestamp = strtotime($expense->date);
@@ -166,6 +190,12 @@
                     $("#subhead_id").html(html);
                 }
             });
+        }
+    </script>
+    <script>
+        function showImageModal(imageSrc) {
+            const modalImage = document.getElementById('modalImage');
+            modalImage.src = imageSrc;
         }
     </script>
 @endsection

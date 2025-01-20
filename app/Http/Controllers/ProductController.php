@@ -256,7 +256,7 @@ class ProductController extends Controller
         }
         $updated = $update->fill($formData)->save();
         if($updated){
-            return redirect()->route('product.index')->with('message','Product Updated Successfully');
+            return back()->with('message','Product Updated Successfully');
         }else{
             return back()->with('error','Product Updated Failed');
         }

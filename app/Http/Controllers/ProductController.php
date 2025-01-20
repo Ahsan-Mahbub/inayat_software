@@ -219,6 +219,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $categories = Category::get();
+        session()->put('redirect_url', url()->previous());
         return view('backend.file.product.edit', compact('product','categories')); 
     }
 
@@ -255,10 +256,12 @@ class ProductController extends Controller
             $formData['qr_code'] = $path . $name;
         }
         $updated = $update->fill($formData)->save();
-        if($updated){
-            return back()->with('message','Product Updated Successfully');
-        }else{
-            return back()->with('error','Product Updated Failed');
+
+        if ($updated) {
+            $redirectUrl = session()->get('redirect_url', route('product.index'));
+            return redirect($redirectUrl)->with('message', 'Product Updated Successfully');
+        } else {
+            return back()->with('error', 'Product Update Failed');
         }
     }
 

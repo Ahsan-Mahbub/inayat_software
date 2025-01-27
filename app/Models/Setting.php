@@ -20,5 +20,6 @@ class Setting extends Model
         'address',
         'trams_condition',
         'purchase_trams_condition',
+        'sample_trams'
     ];
 }

@@ -62,7 +62,7 @@
                                         @csrf
                                         @method('delete')
                                         @isset(auth()->user()->role->permission['permission']['role']['destroy'])
-                                        @if(!in_array($role->id, [1,4,5,6,11,12]))
+                                        @if(!in_array($role->id, [1,4,5,6,11,12,18]))
                                         <button type="submit"
                                             class="btn btn-sm btn-danger delete-confirm">
                                             <i class="far fa-trash-alt"></i>

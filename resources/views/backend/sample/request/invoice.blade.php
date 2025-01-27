@@ -154,7 +154,16 @@
                                 </div>
                             </div>
 
-
+                            <div >
+                                @if ($request->show_terms == 1)
+                                    <b
+                                        style="color: #000; text-transform: capitalize;display: block; margin-top: 5px">
+                                        Terms and Condition : </b></b>
+                                    <div>
+                                        {!! $request->trams_condition !!}
+                                    </div>
+                                @endif
+                            </div>
                             {{-- <div style="width: 100%">
                                 <div style="display: flex;">
                                     <div style="width: 65%">

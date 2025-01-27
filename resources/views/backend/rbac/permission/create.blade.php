@@ -839,9 +839,15 @@
                                                 <th colspan="2">Inventory</th>
                                             </tr>
                                             <tr>
-                                                <td class="text-left">List</td>
+                                                <td class="text-left">Inventory</td>
                                                 <td class="text-right">
                                                     <input type="checkbox" class="check-input" name="permission[inventory][index]" value="1">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-left">Employee / Dealer Inventory</td>
+                                                <td class="text-right">
+                                                    <input type="checkbox" class="check-input" name="permission[inventory][dealer]" value="1">
                                                 </td>
                                             </tr>
                                             <tr>

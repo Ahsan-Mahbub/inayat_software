@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $roles = Role::get();
-        $head_users = User::where('role_id', 4)->get();
+        $head_users = User::whereIn('role_id', [4, 18])->get();
         $subhead_users = User::where('role_id', 5)->get();
         $perPage = 50;
         $page = $request->query('page', 1);
@@ -62,7 +62,7 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $roles = Role::get();
-        $head_users = User::where('role_id', 4)->get();
+        $head_users = User::whereIn('role_id', [4, 18])->get();
         $subhead_users = User::where('role_id', 5)->get();
 
         $search = $request->search;
@@ -127,6 +127,8 @@ class UserController extends Controller
         if($request->m_password)
         {
             $update->password = Hash::make($request->m_password);
+        }else{
+            $update->password = $update->password;
         }
         if ($request->hasFile('image')) {
             if (File::exists($update->image)) {

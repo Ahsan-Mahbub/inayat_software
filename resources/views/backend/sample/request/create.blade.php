@@ -250,7 +250,7 @@
 
             <div class="col-md-12 mb-3">
                 <label for="validationCustom04">Terms & Condition : </label> <input type="checkbox" name="show_terms" value="1">
-                <textarea class="form-control editor" name="trams_condition" placeholder="Terms & Condition">{{$info->trams_condition}}</textarea>
+                <textarea class="form-control editor" name="trams_condition" placeholder="Terms & Condition">{{$info->sample_trams}}</textarea>
             </div>
             <div class="col-md-12 pb-3 text-center">
                 <button type="submit" name="submit" value="submit" class="btn btn-primary">

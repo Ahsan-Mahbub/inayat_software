@@ -46,8 +46,8 @@
                                     <th>Editor</th>
                                     <th>Request Number</th>
                                     <th>Client Name</th>
-                                    <th>Total Amount</th>
                                     <th>Status</th>
+                                    <th>Return Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -72,7 +72,6 @@
                                         <td>{{ $request->request_number }}</td>
                                         <td>{{ $request->customer ? $request->customer->customer_name : 'N/A' }}
                                         </td>
-                                        <td>{{ $request->total_amount }}</td>
                                         <td>
                                             @if ($request->status == 0)
                                                 @isset(auth()->user()->role->permission['permission']['sample-request']['approve'])
@@ -122,6 +121,18 @@
                                                 <button class="btn btn-sm btn-danger" type="button">
                                                     Rejected
                                                 </button>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <?php
+                                                $product = App\Models\SampleRequestProduct::where('request_id', $request->id)->sum('qty');
+                                                $return_product = App\Models\SampleReturn::where('request_id', $request->id)->sum('qty');
+                                                $main_qty = $product - $return_product; 
+                                            ?>
+                                            @if($main_qty <= 0)
+                                            <span class="badge badge-pill badge-success">Return</span>
+                                            @else
+                                            <span class="badge badge-pill badge-warning">Not Return</span>
                                             @endif
                                         </td>
                                         <td>

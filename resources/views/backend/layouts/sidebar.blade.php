@@ -331,20 +331,24 @@
                 @endif
                 @endif
 
-                @if (isset(auth()->user()->role->permission['permission']['inventory']['index']))
+                @if (isset(auth()->user()->role->permission['permission']['inventory']['index']) || isset(auth()->user()->role->permission['permission']['inventory']['dealer']))
                 <li class="menu-title">Inventory Module</li>
-                <li>
-                    <a href="{{route('inventory.index')}}" class="waves-effect">
-                        <i class="mdi mdi-package-variant-closed"></i>
-                        <span>Inventory</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('inventory.employee')}}" class="waves-effect">
-                        <i class="mdi mdi-package-variant-closed"></i>
-                        <span>Employee / Dealer Inventory</span>
-                    </a>
-                </li>
+                    @isset(auth()->user()->role->permission['permission']['inventory']['index'])
+                    <li>
+                        <a href="{{route('inventory.index')}}" class="waves-effect">
+                            <i class="mdi mdi-package-variant-closed"></i>
+                            <span>Inventory</span>
+                        </a>
+                    </li>
+                    @endisset
+                    @isset(auth()->user()->role->permission['permission']['inventory']['dealer'])
+                    <li>
+                        <a href="{{route('inventory.employee')}}" class="waves-effect">
+                            <i class="mdi mdi-package-variant-closed"></i>
+                            <span>Employee / Dealer Inventory</span>
+                        </a>
+                    </li>
+                    @endisset
                 @endif
 
                 @if (isset(auth()->user()->role->permission['permission']['payment_mathod']['index']) || isset(auth()->user()->role->permission['permission']['account']['index']) || isset(auth()->user()->role->permission['permission']['customer']['receive']) || isset(auth()->user()->role->permission['permission']['account']['dues']))

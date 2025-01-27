@@ -151,6 +151,7 @@
                                         $total_sale_amount += $sale_amount;
                                         $total_now_stock += $total_qty;
                                         ?>
+                                        @if($total_qty > 0)
                                         <tr>
                                             <td class="sl">{{ $sl++ }}</td>
                                             <td class="name">{{ $product->product_name }}</td>
@@ -175,12 +176,13 @@
                                                 @elseif($total_qty == 0)
                                                     <span class="badge badge-pill badge-danger">Zero inventory</span>
                                                 @elseif($total_qty < 0)
-                                                    <span class="badge badge-pill badge-dark">Stock Negetive</span>
+                                                    <span class="badge badge-pill badge-dark">Stock Negative</span>
                                                 @else
                                                     <span class="badge badge-pill badge-success">Up to 5</span>
                                                 @endif
                                             </td>
-                                        </tr>   
+                                        </tr>
+                                        @endif   
                                         <?php
                                     }
                                 ?>

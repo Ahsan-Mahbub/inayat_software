@@ -44,6 +44,10 @@
                             <label for="validationCustom04">Terms & Condition for Sale</label>
                             <textarea class="form-control editor" name="trams_condition" placeholder="Terms & Condition">{{$info->trams_condition}}</textarea>
                         </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="validationCustom04">Terms & Condition for Sample Request</label>
+                            <textarea class="form-control editor" name="sample_trams" placeholder="Terms & Condition">{{$info->sample_trams}}</textarea>
+                        </div>
                     </div>
                     <div class="text-center">
                         <button class="btn btn-primary" type="submit">Update</button>

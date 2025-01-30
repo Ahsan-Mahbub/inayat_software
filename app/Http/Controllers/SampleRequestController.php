@@ -32,7 +32,7 @@ class SampleRequestController extends Controller
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
-        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5) {
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
             $userIds = User::where(function ($query) {
                 $userId = Auth::user()->id;
                 $query->where('head_id', $userId)
@@ -45,7 +45,7 @@ class SampleRequestController extends Controller
             })
                 ->orderBy('id', 'desc')
                 ->paginate($perPage);
-        } elseif(Auth::user()->role_id == 1) {
+        } elseif(Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
             $all_request = SampleRequest::orderBy('id', 'desc')->paginate($perPage);
         }else {
             $all_request = SampleRequest::where('creator_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($perPage);
@@ -68,7 +68,7 @@ class SampleRequestController extends Controller
         $startingSerial = ($page - 1) * $perPage + 1;
 
         if ($request->searchDataLength >= 0) {
-            if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5) {
+            if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
                 $userIds = User::where(function ($query) {
                     $userId = Auth::user()->id;
                     $query->where('head_id', $userId)
@@ -81,10 +81,10 @@ class SampleRequestController extends Controller
                 })
                     ->orderBy('id', 'desc')
                     ->paginate($perPage);
-            } elseif (Auth::user()->role_id == 6 || Auth::user()->role_id == 11) {
-                $all_request = SampleRequest::where('request_number', 'LIKE', '%' . $request->search . '%')->where('creator_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($perPage);
-            } else {
+            } elseif (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
                 $all_request = SampleRequest::where('request_number', 'LIKE', '%' . $request->search . '%')->orderBy('id', 'desc')->paginate($perPage);
+            } else {
+                $all_request = SampleRequest::where('request_number', 'LIKE', '%' . $request->search . '%')->where('creator_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($perPage);
             }
         } else {
             return back();

@@ -33,7 +33,7 @@ class SaleRequisitionController extends Controller
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
-        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5) {
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
             $userIds = User::where(function ($query) {
                 $userId = Auth::user()->id;
                 $query->where('head_id', $userId)
@@ -69,7 +69,7 @@ class SaleRequisitionController extends Controller
         $startingSerial = ($page - 1) * $perPage + 1;
 
         if ($request->searchDataLength >= 0) {
-            if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5) {
+            if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
                 $userIds = User::where(function ($query) {
                     $userId = Auth::user()->id;
                     $query->where('head_id', $userId)

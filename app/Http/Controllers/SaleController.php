@@ -92,7 +92,7 @@ class SaleController extends Controller
         $sale_requisitions = Sale::whereNotNull('requisition_id')->pluck('requisition_id');
 
         $currentUserId = Auth::user()->id;
-        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5) {
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
             $userIds = User::where(function ($query) {
                 $userId = Auth::user()->id;
                 $query->where('head_id', $userId)

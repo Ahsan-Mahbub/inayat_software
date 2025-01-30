@@ -239,7 +239,12 @@ class CustomerController extends Controller
 
     public function message()
     {
-        $customers = Customer::whereRaw('LENGTH(phone) = 11')->get();
+        if(Auth::user()->role_id == 1)
+        {
+            $customers = Customer::whereRaw('LENGTH(phone) = 11')->get();
+        }else{
+            $customers = Customer::where('creator_id', Auth::user()->id)->whereRaw('LENGTH(phone) = 11')->get();
+        }
         return view('backend.sale.customer.message', compact('customers'));
     }
 

@@ -51,9 +51,12 @@
 
                                 <span
                                     style="display: block; margin-bottom: 2px">{{ $request->request_number }}</span>
+                                
                                 <?php
-                                echo date('j-M-y');
+                                    $timestamp = strtotime($request->date);
+                                    $date = date('j-M-y', $timestamp);
                                 ?>
+                                {{ $date }}
                                 <ul class="px-0 list-unstyled" style="color: #000">
                                     <li style="margin-top: 5px">To</li>
                                     <li><b>{{ $request->customer ? $request->customer->customer_name : 'N/A' }}</b>

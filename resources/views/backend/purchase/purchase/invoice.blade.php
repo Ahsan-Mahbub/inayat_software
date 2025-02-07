@@ -49,9 +49,12 @@
                             <span style="display: block; margin-bottom: 2px">{{ $purchase->invoice }}</span>
                             <span
                                 style="display: block; margin-bottom: 2px">{{ $purchase->requisition ? $purchase->requisition->requisition_number : '' }}</span>
+                            
                             <?php
-                            echo date('j-M-y');
+                                $timestamp = strtotime($purchase->date);
+                                $date = date('j-M-y', $timestamp);
                             ?>
+                            {{$date}}
                             <ul class="px-0 list-unstyled" style="color: #000">
                                 <li style="margin-top: 5px">To</li>
                                 <li><b>{{ $purchase->supplier ? $purchase->supplier->supplier_name : 'N/A' }}</b></li>
@@ -140,7 +143,12 @@
                                                 @if(Auth::user()->role_id == 1)
                                                 <td
                                                     style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px; text-align:center">
-                                                    {{ $product->amount / $product->qty }}</td>
+                                                    @if($product->qty > 0)
+                                                        {{ $product->amount / $product->qty }}
+                                                    @else
+                                                        0
+                                                    @endif
+                                                </td>
                                                 <td
                                                     style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px; text-align:center">
                                                     {{ $product->amount }}</td>

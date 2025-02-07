@@ -11,6 +11,7 @@ use App\Models\Supplier;
 use App\Models\Product;
 use App\Models\PurchaseProduct;
 use App\Models\Unit;
+use App\Models\User;
 Use Illuminate\Support\Facades\Auth;
 
 class RequisitionController extends Controller
@@ -26,7 +27,29 @@ class RequisitionController extends Controller
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
-        $all_requisition = Requisition::orderBy('id','desc')->paginate($perPage);
+
+        $currentUserId = Auth::user()->id;
+
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
+            $userIds = User::where(function ($query) {
+                $userId = Auth::user()->id;
+                $query->where('head_id', $userId)
+                    ->orWhere('subhead_id', $userId);
+            })->pluck('id');
+
+            $all_requisition = Requisition::where(function ($query) use ($currentUserId, $userIds) {
+                $query->where('creator_id', $currentUserId)
+                    ->orWhereIn('creator_id', $userIds);
+            })
+                ->orderBy('id', 'desc')
+                ->paginate($perPage);
+        } elseif (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
+            $all_requisition = Requisition::orderBy('id', 'desc')->paginate($perPage);
+        } else {
+            $all_requisition = Requisition::where('creator_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($perPage);
+        }
+
+
         $search = '';
         return view('backend.purchase.requisition.list', compact('all_requisition','search','startingSerial'));
     }
@@ -36,15 +59,34 @@ class RequisitionController extends Controller
         $search = $request->search;
 
         $perPage = 50;
+        $currentUserId = Auth::user()->id;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
-        
+
         if ($request->searchDataLength >= 0) {
-            $all_requisition = Requisition::where('requisition_number', 'LIKE', '%' .$request->search . '%')->orderBy('id','desc')
-                                    ->paginate($perPage);
-        }
-        else {
-            $all_requisition = Requisition::orderBy('id','desc')->paginate(15);
+            if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
+                $userIds = User::where(function ($query) use ($currentUserId) {
+                    $query->where('head_id', $currentUserId)
+                          ->orWhere('subhead_id', $currentUserId);
+                })->pluck('id');
+            
+                $all_requisition = Requisition::where(function ($query) use ($request) {
+                        $query->where('requisition_number', 'LIKE', '%' . $request->search . '%');
+                    })
+                    ->where(function ($query) use ($currentUserId, $userIds) {
+                        $query->where('creator_id', $currentUserId)
+                              ->orWhereIn('creator_id', $userIds);
+                    })
+                    ->orderBy('id', 'desc')
+                    ->paginate($perPage);
+            }
+             elseif (Auth::user()->role_id == 6 || Auth::user()->role_id == 11) {
+                $all_requisition = Requisition::where('requisition_number', 'LIKE', '%' . $request->search . '%')->where('creator_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($perPage);
+            } else {
+                $all_requisition = Requisition::where('requisition_number', 'LIKE', '%' . $request->search . '%')->orderBy('id', 'desc')->paginate($perPage);
+            }
+        } else {
+            return back();
         }
         return view('backend.purchase.requisition.list', compact('all_requisition','search','startingSerial')); 
     }

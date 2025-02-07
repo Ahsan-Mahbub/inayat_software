@@ -20,9 +20,6 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-right mb-4">
-                    @isset(auth()->user()->role->permission['permission']['customer']['create'])
-                    <button type="button" class="btn btn-primary btn-sm waves-effect waves-light" data-toggle="modal" data-target=".bs-example-modal-md">Add Client</button>
-                    @endisset
                     <button type="button" class="btn btn-info btn-sm" onclick="printableContent('printableContent')">
                         <i class="mdi mdi-printer-check"></i> Print
                     </button>

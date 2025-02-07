@@ -24,8 +24,22 @@ class SampleReturnController extends Controller
         $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
+        $currentUserId = Auth::user()->id;
 
-        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
+            $userIds = User::where(function ($query) {
+                $userId = Auth::user()->id;
+                $query->where('head_id', $userId)
+                    ->orWhere('subhead_id', $userId);
+            })->pluck('id');
+
+            $all_sample_return = SampleReturn::where(function ($query) use ($currentUserId, $userIds) {
+                $query->where('creator_id', $currentUserId)
+                    ->orWhereIn('creator_id', $userIds);
+            })
+                ->orderBy('id', 'desc')
+                ->paginate($perPage);
+        } elseif (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
             $all_sample_return = SampleReturn::orderBy('id','desc')->paginate($perPage);
         } else {
             $all_sample_return = SampleReturn::where('creator_id', Auth::user()->id)->orderBy('id','desc')->paginate($perPage);

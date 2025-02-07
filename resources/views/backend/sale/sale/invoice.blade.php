@@ -49,8 +49,10 @@
                             <span
                                 style="display: block; margin-bottom: 2px">{{ $sale->requisition ? $sale->requisition->requisition_number : '' }}</span>
                             <?php
-                            echo date('j-M-y');
+                                $timestamp = strtotime($sale->date);
+                                $date = date('j-M-y', $timestamp);
                             ?>
+                            {{$date}}
                             <ul class="px-0 list-unstyled" style="color: #000">
                                 <li style="margin-top: 5px">To</li>
                                 <li><b>{{ $sale->customer ? $sale->customer->customer_name : 'N/A' }}</b></li>
@@ -136,7 +138,12 @@
                                                     {{ $product->qty }}</td>
                                                 <td
                                                     style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px; text-align:center">
-                                                    {{ $product->amount / $product->qty }}</td>
+                                                    @if($product->qty > 0)
+                                                        {{ $product->amount / $product->qty }}
+                                                    @else
+                                                        0
+                                                    @endif
+                                                </td>
                                                 <td
                                                     style="border: 2px solid #3e3e3e; vertical-align: middle; padding: 3px; text-align:center">
                                                     {{ $product->amount }}</td>

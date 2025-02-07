@@ -51,9 +51,12 @@
               <div class="col-md-12" style="color: #000">
 
                 <span style="display: block; margin-bottom: 2px">{{$requisition->requisition_number}}</span>
+
                 <?php
-                    echo date('j-M-y');
-                  ?>
+                  $timestamp = strtotime($requisition->date);
+                  $date = date('j-M-y', $timestamp);
+                ?>
+                {{$date}}
                 <ul class="px-0 list-unstyled" style="color: #000">
                   <li style="margin-top: 5px">To</li>
                   <li><b>{{$requisition->supplier ? $requisition->supplier->supplier_name : 'N/A'}}</b></li>

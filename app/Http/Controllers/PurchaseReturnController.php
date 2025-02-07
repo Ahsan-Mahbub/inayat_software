@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use App\Models\Purchase;
-use App\Models\Product;
+use App\Models\User;
 use App\Models\PurchaseProduct;
 use App\Models\PurchaseReturn;
 use Illuminate\Http\Request;
@@ -18,18 +18,33 @@ class PurchaseReturnController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index(Request $request)
     {
         $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
-        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
+        $currentUserId = Auth::user()->id;
+
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
+            $userIds = User::where(function ($query) {
+                $userId = Auth::user()->id;
+                $query->where('head_id', $userId)
+                    ->orWhere('subhead_id', $userId);
+            })->pluck('id');
+
+            $all_purchase_return = PurchaseReturn::where(function ($query) use ($currentUserId, $userIds) {
+                $query->where('creator_id', $currentUserId)
+                    ->orWhereIn('creator_id', $userIds);
+            })
+                ->orderBy('id', 'desc')
+                ->paginate($perPage);
+        } elseif (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
             $all_purchase_return = PurchaseReturn::orderBy('id','desc')->paginate($perPage);
         } else {
             $all_purchase_return = PurchaseReturn::where('creator_id', Auth::user()->id)->orderBy('id','desc')->paginate($perPage);
         }
-
         $search = '';
         return view('backend.purchase.return.list', compact('all_purchase_return','search','startingSerial'));
     }

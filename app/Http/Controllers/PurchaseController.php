@@ -18,7 +18,7 @@ use DB;
 use App\Models\Category;
 use App\Models\Requisition;
 use App\Models\Unit;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
 {
@@ -27,13 +27,36 @@ class PurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index(Request $request)
     {
         $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
 
-        $all_purchase = Purchase::orderBy('id','desc')->paginate($perPage);
+
+        $currentUserId = Auth::user()->id;
+
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
+            $userIds = User::where(function ($query) {
+                $userId = Auth::user()->id;
+                $query->where('head_id', $userId)
+                    ->orWhere('subhead_id', $userId);
+            })->pluck('id');
+
+            $all_purchase = Purchase::where(function ($query) use ($currentUserId, $userIds) {
+                $query->where('creator_id', $currentUserId)
+                    ->orWhereIn('creator_id', $userIds);
+            })
+                ->orderBy('id', 'desc')
+                ->paginate($perPage);
+        } elseif (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
+            $all_purchase = Purchase::orderBy('id', 'desc')->paginate($perPage);
+        } else {
+            $all_purchase = Purchase::where('creator_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($perPage);
+        }
+
+
         $search = '';
         return view('backend.purchase.purchase.list', compact('all_purchase','search','startingSerial'));
     }
@@ -217,17 +240,39 @@ class PurchaseController extends Controller
         $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
-        
-        if ($request->searchDataLength >= 0) {
-            $all_purchase = Purchase::where('invoice', 'LIKE', '%' .$request->search . '%')->orderBy('id','desc')
-                                    ->paginate($perPage);
-        }
-        else {
-            $all_purchase = Purchase::orderBy('id','desc')->paginate(15);
-        }
-        return view('backend.purchase.purchase.list', compact('all_purchase','search','startingSerial')); 
-    }
 
+        if ($request->searchDataLength >= 0) {
+            $currentUserId = Auth::user()->id;
+
+            if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
+            
+                $userIds = User::where(function ($query) use ($currentUserId) {
+                    $query->where('head_id', $currentUserId)
+                          ->orWhere('subhead_id', $currentUserId);
+                })->pluck('id');
+            
+                $all_purchase = Purchase::where(function ($query) use ($currentUserId, $userIds) {
+                        $query->where('creator_id', $currentUserId)
+                              ->orWhereIn('creator_id', $userIds);
+                    })
+                    ->where(function ($query) use ($request) {
+                        $query->where('invoice', 'LIKE', '%' . $request->search . '%');
+                    })
+                    ->orderBy('id', 'desc')
+                    ->paginate($perPage);
+            }
+             elseif (Auth::user()->role_id == 1 || Auth::user()->role_id == 11){
+                $all_purchase = Purchase::where('invoice', 'LIKE', '%' . $request->search . '%')->orderBy('id', 'desc')
+                ->paginate($perPage);
+            }else{
+                $all_purchase = Purchase::where('invoice', 'LIKE', '%' . $request->search . '%')->where('creator_id', Auth::user()->id)->orderBy('id', 'desc')->orderBy('id', 'desc')
+                ->paginate($perPage);
+            }
+        }else{
+            return back();
+        }
+        return view('backend.purchase.purchase.list', compact('all_purchase', 'search', 'startingSerial'));
+    }
     /**
      * Show the form for editing the specified resource.
      *

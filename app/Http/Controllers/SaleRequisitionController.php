@@ -70,19 +70,21 @@ class SaleRequisitionController extends Controller
 
         if ($request->searchDataLength >= 0) {
             if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
-                $userIds = User::where(function ($query) {
-                    $userId = Auth::user()->id;
-                    $query->where('head_id', $userId)
-                        ->orWhere('subhead_id', $userId);
-                })
-                    ->pluck('id');
-                $all_requisition = SaleRequisition::where('requisition_number', 'LIKE', '%' . $request->search . '%')->where(function ($query) use ($currentUserId, $userIds) {
-                    $query->where('creator_id', $currentUserId)
-                        ->orWhereIn('creator_id', $userIds);
-                })
+                $userIds = User::where(function ($query) use ($currentUserId) {
+                    $query->where('head_id', $currentUserId)
+                          ->orWhere('subhead_id', $currentUserId);
+                })->pluck('id');
+            
+                $all_requisition = SaleRequisition::where(function ($query) use ($request) {
+                        $query->where('requisition_number', 'LIKE', '%' . $request->search . '%');
+                    })
+                    ->where(function ($query) use ($currentUserId, $userIds) {
+                        $query->where('creator_id', $currentUserId)
+                              ->orWhereIn('creator_id', $userIds);
+                    })
                     ->orderBy('id', 'desc')
                     ->paginate($perPage);
-            } elseif (Auth::user()->role_id == 6 || Auth::user()->role_id == 11) {
+            }elseif (Auth::user()->role_id == 6 || Auth::user()->role_id == 11) {
                 $all_requisition = SaleRequisition::where('requisition_number', 'LIKE', '%' . $request->search . '%')->where('creator_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($perPage);
             } else {
                 $all_requisition = SaleRequisition::where('requisition_number', 'LIKE', '%' . $request->search . '%')->orderBy('id', 'desc')->paginate($perPage);

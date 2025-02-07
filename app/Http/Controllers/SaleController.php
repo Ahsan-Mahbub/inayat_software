@@ -37,7 +37,22 @@ class SaleController extends Controller
         $startingSerial = ($page - 1) * $perPage + 1;
 
 
-        if (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
+        $currentUserId = Auth::user()->id;
+
+        if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
+            $userIds = User::where(function ($query) {
+                $userId = Auth::user()->id;
+                $query->where('head_id', $userId)
+                    ->orWhere('subhead_id', $userId);
+            })->pluck('id');
+
+            $all_sale = Sale::where(function ($query) use ($currentUserId, $userIds) {
+                $query->where('creator_id', $currentUserId)
+                    ->orWhereIn('creator_id', $userIds);
+            })
+                ->orderBy('id', 'desc')
+                ->paginate($perPage);
+        } elseif (Auth::user()->role_id == 1 || Auth::user()->role_id == 11) {
             $all_sale = Sale::orderBy('id', 'desc')->paginate($perPage);
         } else {
             $all_sale = Sale::where('creator_id', Auth::user()->id)->orderBy('id', 'desc')->paginate($perPage);
@@ -57,7 +72,24 @@ class SaleController extends Controller
         $startingSerial = ($page - 1) * $perPage + 1;
 
         if ($request->searchDataLength >= 0) {
-            if (Auth::user()->role_id == 1 || Auth::user()->role_id == 11){
+            $currentUserId = Auth::user()->id;
+
+            if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
+                $userIds = User::where(function ($query) use ($currentUserId) {
+                    $query->where('head_id', $currentUserId)
+                          ->orWhere('subhead_id', $currentUserId);
+                })->pluck('id');
+            
+                $all_sale = Sale::where(function ($query) use ($currentUserId, $userIds) {
+                        $query->where('creator_id', $currentUserId)
+                              ->orWhereIn('creator_id', $userIds);
+                    })
+                    ->where(function ($query) use ($request) {
+                        $query->where('invoice', 'LIKE', '%' . $request->search . '%');
+                    })
+                    ->orderBy('id', 'desc')
+                    ->paginate($perPage);
+            }elseif (Auth::user()->role_id == 1 || Auth::user()->role_id == 11){
                 $all_sale = Sale::where('invoice', 'LIKE', '%' . $request->search . '%')->orderBy('id', 'desc')
                 ->paginate($perPage);
             }else{

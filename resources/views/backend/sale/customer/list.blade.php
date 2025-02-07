@@ -37,10 +37,29 @@
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <div class="row">
-                            <div class="col-sm-12 col-md-6">
-                                <label>Search:<form method="get" action="{{route('customer.search')}}"><input type="text" class="form-control mt-2" placeholder="Search by Client ID, Name, Phone, Email.." name="search" id="search" value="{{$search}}" style="width: 100%"> <input type="submit" class="d-none"></form></label>
-                            </div>
+                            <form method="get" action="{{route('customer.search')}}">
+                                <div class="col-sm-12 col-md-3">
+                                    <label>Creator:</label>
+                                    <select class="custom-select select2" name="user_id" id="user_id">
+                                        <option value="">Select One</option>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->id }}" {{$user->id == $get_user ? 'selected' : ''}}>{{ $user->name }} - ({{$user->role ? $user->role->role_name : 'N/A'}})</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-sm-12 col-md-1 m-auto text-center">
+                                    <span>Or</span>
+                                </div>
+                                <div class="col-sm-12 col-md-3">
+                                    <label>Search:<input type="text" class="form-control mt-2" placeholder="Search by Client ID, Name, Phone, Email.." name="search" id="search" value="{{$search}}" style="width: 100%"> </label>
+                                </div>
+                                <div class="col-md-5 mt-4">
+                                    <input type="submit" class="btn btn-info" value="Search">
+                                </div>
+                            </form>
                         </div>
+
+
                         <thead>
                             <tr>
                                 <th>S/N</th>

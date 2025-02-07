@@ -22,6 +22,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
+        $users = User::get();
         $perPage = 50;
         $currentUserId = Auth::user()->id;
         $page = $request->query('page', 1);
@@ -48,9 +49,9 @@ class CustomerController extends Controller
 
         
         $search = '';
+        $get_user = '';
 
-
-        return view('backend.sale.customer.list', compact('all_customer','search','startingSerial'));
+        return view('backend.sale.customer.list', compact('all_customer','search','startingSerial','users','get_user'));
     }
 
     public function dues(Request $request)
@@ -233,49 +234,83 @@ class CustomerController extends Controller
     public function search(Request $request)
     {
         $search = $request->search;
-
+        $users = User::get();
         $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
         $currentUserId = Auth::user()->id;
-        
-        if ($request->searchDataLength >= 0) {
-            if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
-                $userIds = User::where(function ($query) {
-                    $userId = Auth::user()->id;
-                    $query->where('head_id', $userId)
-                          ->orWhere('subhead_id', $userId);
-                })->pluck('id');
+        $get_user = $request->user_id;
+        $get_user = $request->user_id;
+
+        if($get_user && $search){
+            return back()->with('error','Select Creator or Type something!');
+        }elseif ($get_user) {
+            $find_user_role = User::where('id', $get_user)->select('role_id')->first();
             
-                $all_customer = Customer::where(function ($query) use ($currentUserId, $userIds) {
-                        $query->where('creator_id', $currentUserId)
-                              ->orWhereIn('creator_id', $userIds);
-                    })
-                    ->where(function ($query) use ($request) {
-                        $query->where('customer_name', 'LIKE', '%' . $request->search . '%')
-                              ->orWhere('customer_id', 'LIKE', '%' . $request->search . '%')
-                              ->orWhere('email', 'LIKE', '%' . $request->search . '%')
-                              ->orWhere('phone', 'LIKE', '%' . $request->search . '%');
+            if ($find_user_role) {
+                $role_id = $find_user_role->role_id;
+
+                if (in_array($role_id, [4, 5, 18])) { 
+                    $userIds = User::where(function ($query) use ($get_user) {
+                        $query->where('head_id', $get_user)
+                            ->orWhere('subhead_id', $get_user);
+                    })->pluck('id');
+
+                    $all_customer = Customer::where(function ($query) use ($get_user, $userIds) {
+                        $query->where('creator_id', $get_user)
+                            ->orWhereIn('creator_id', $userIds);
                     })
                     ->orderBy('id', 'desc')
                     ->paginate($perPage);
-            }elseif(Auth::user()->role_id == 1 || Auth::user()->role_id == 11){
-                $all_customer = Customer::where('customer_name', 'LIKE', '%' .$request->search . '%')
-                    ->orWhere('customer_id', 'LIKE', '%' .$request->search . '%')
-                    ->orWhere('email', 'LIKE', '%' .$request->search . '%')
-                    ->orWhere('phone', 'LIKE', '%' .$request->search . '%')->orderBy('id', 'desc')->paginate($perPage);
-            }else{
-                $all_customer = Customer::where('creator_id', Auth::user()->id)->where('customer_name', 'LIKE', '%' .$request->search . '%')
-                    ->orWhere('customer_id', 'LIKE', '%' .$request->search . '%')
-                    ->orWhere('email', 'LIKE', '%' .$request->search . '%')
-                    ->orWhere('phone', 'LIKE', '%' .$request->search . '%')->orderBy('id', 'desc')->paginate($perPage);
+
+                } elseif (in_array($role_id, [1, 11])) {
+                    $all_customer = Customer::orderBy('id', 'desc')->paginate($perPage);
+                } else {
+                    $all_customer = Customer::where('creator_id', $get_user)
+                                            ->orderBy('id', 'desc')
+                                            ->paginate($perPage);
+                }
             }
-            
+        }else{
+            if ($request->searchDataLength >= 0) {
+                if (Auth::user()->role_id == 4 || Auth::user()->role_id == 5 || Auth::user()->role_id == 18) {
+                    $userIds = User::where(function ($query) {
+                        $userId = Auth::user()->id;
+                        $query->where('head_id', $userId)
+                              ->orWhere('subhead_id', $userId);
+                    })->pluck('id');
+                
+                    $all_customer = Customer::where(function ($query) use ($currentUserId, $userIds) {
+                            $query->where('creator_id', $currentUserId)
+                                  ->orWhereIn('creator_id', $userIds);
+                        })
+                        ->where(function ($query) use ($request) {
+                            $query->where('customer_name', 'LIKE', '%' . $request->search . '%')
+                                  ->orWhere('customer_id', 'LIKE', '%' . $request->search . '%')
+                                  ->orWhere('email', 'LIKE', '%' . $request->search . '%')
+                                  ->orWhere('phone', 'LIKE', '%' . $request->search . '%');
+                        })
+                        ->orderBy('id', 'desc')
+                        ->paginate($perPage);
+                }elseif(Auth::user()->role_id == 1 || Auth::user()->role_id == 11){
+                    $all_customer = Customer::where('customer_name', 'LIKE', '%' .$request->search . '%')
+                        ->orWhere('customer_id', 'LIKE', '%' .$request->search . '%')
+                        ->orWhere('email', 'LIKE', '%' .$request->search . '%')
+                        ->orWhere('phone', 'LIKE', '%' .$request->search . '%')->orderBy('id', 'desc')->paginate($perPage);
+                }else{
+                    $all_customer = Customer::where('creator_id', Auth::user()->id)->where('customer_name', 'LIKE', '%' .$request->search . '%')
+                        ->orWhere('customer_id', 'LIKE', '%' .$request->search . '%')
+                        ->orWhere('email', 'LIKE', '%' .$request->search . '%')
+                        ->orWhere('phone', 'LIKE', '%' .$request->search . '%')->orderBy('id', 'desc')->paginate($perPage);
+                }
+                
+            }
+            else {
+                $all_customer = Customer::paginate(15);
+            }
         }
-        else {
-            $all_customer = Customer::paginate(15);
-        }
-        return view('backend.sale.customer.list', compact('all_customer','search','startingSerial')); 
+        
+        return view('backend.sale.customer.list', compact('all_customer','search','startingSerial', 'users', 'get_user')); 
     }
 
     

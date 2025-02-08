@@ -73,11 +73,11 @@ class CustomerController extends Controller
                     ->orWhereIn('creator_id', $userIds);
             })
                 ->orderBy('id', 'desc')
-                ->paginate($perPage);
+                ->get();
         }elseif(Auth::user()->role_id == 1 || Auth::user()->role_id == 11){
-            $all_customer = Customer::orderBy('id','desc')->paginate($perPage);
+            $all_customer = Customer::orderBy('id','desc')->get();
         }else{
-            $all_customer = Customer::where('creator_id', Auth::user()->id)->orderBy('id','desc')->paginate($perPage);
+            $all_customer = Customer::where('creator_id', Auth::user()->id)->orderBy('id','desc')->get();
         }
         $search = '';
         return view('backend.sale.customer.dues', compact('all_customer','search','startingSerial'));
@@ -111,7 +111,7 @@ class CustomerController extends Controller
                             ->orWhere('phone', 'LIKE', '%' . $request->search . '%');
                     })
                     ->orderBy('id', 'desc')
-                    ->paginate($perPage);
+                    ->get();
         
             } elseif (in_array(Auth::user()->role_id, [1, 11])) {
                 $all_customer = Customer::where(function ($query) use ($request) {
@@ -121,7 +121,7 @@ class CustomerController extends Controller
                             ->orWhere('phone', 'LIKE', '%' . $request->search . '%');
                     })
                     ->orderBy('id', 'desc')
-                    ->paginate($perPage);
+                    ->get();
         
             } else {
                 $all_customer = Customer::where('creator_id', $currentUserId)
@@ -132,7 +132,7 @@ class CustomerController extends Controller
                             ->orWhere('phone', 'LIKE', '%' . $request->search . '%');
                     })
                     ->orderBy('id', 'desc')
-                    ->paginate($perPage);
+                    ->get();
             }
         
         } else {

@@ -89,7 +89,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $all_customer->appends(request()->except('page'))->links() }}
+                    {{-- {{ $all_customer->appends(request()->except('page'))->links() }} --}}
                 </div>
                 
             </div>

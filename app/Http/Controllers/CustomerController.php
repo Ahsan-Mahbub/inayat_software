@@ -22,7 +22,12 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::get();
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 11)
+        {
+            $users = User::get();
+        }else{
+            $users = User::where('id', Auth::user()->id)->orWhere('head_id', Auth::user()->id)->orWhere('subhead_id', Auth::user()->id)->get();
+        }
         $perPage = 50;
         $currentUserId = Auth::user()->id;
         $page = $request->query('page', 1);
@@ -234,7 +239,12 @@ class CustomerController extends Controller
     public function search(Request $request)
     {
         $search = $request->search;
-        $users = User::get();
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 11)
+        {
+            $users = User::get();
+        }else{
+            $users = User::where('id', Auth::user()->id)->orWhere('head_id', Auth::user()->id)->orWhere('subhead_id', Auth::user()->id)->get();
+        }
         $perPage = 50;
         $page = $request->query('page', 1);
         $startingSerial = ($page - 1) * $perPage + 1;
@@ -298,15 +308,20 @@ class CustomerController extends Controller
                         ->orWhere('email', 'LIKE', '%' .$request->search . '%')
                         ->orWhere('phone', 'LIKE', '%' .$request->search . '%')->orderBy('id', 'desc')->paginate($perPage);
                 }else{
-                    $all_customer = Customer::where('creator_id', Auth::user()->id)->where('customer_name', 'LIKE', '%' .$request->search . '%')
-                        ->orWhere('customer_id', 'LIKE', '%' .$request->search . '%')
-                        ->orWhere('email', 'LIKE', '%' .$request->search . '%')
-                        ->orWhere('phone', 'LIKE', '%' .$request->search . '%')->orderBy('id', 'desc')->paginate($perPage);
+                    $all_customer = Customer::where('creator_id', Auth::user()->id)
+                        ->where(function ($query) use ($request) {
+                            $query->where('customer_name', 'LIKE', '%' . $request->search . '%')
+                                ->orWhere('customer_id', 'LIKE', '%' . $request->search . '%')
+                                ->orWhere('email', 'LIKE', '%' . $request->search . '%')
+                                ->orWhere('phone', 'LIKE', '%' . $request->search . '%');
+                        })
+                        ->orderBy('id', 'desc')
+                        ->paginate($perPage);
                 }
                 
             }
             else {
-                $all_customer = Customer::paginate(15);
+                $all_customer = Customer::orderBy('id','desc')->paginate($perPage);
             }
         }
         

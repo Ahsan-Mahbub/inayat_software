@@ -105,9 +105,9 @@ class UserController extends Controller
                               ->orWhere('phone', 'LIKE', '%' . $search . '%');
                     });
                 });
-            })->paginate($perPage);
+            })->orderBy('id','desc')->paginate($perPage);
         } else {
-            $all_user = User::paginate(15);
+            $all_user = User::orderBy('id','desc')->paginate(15);
         }
         
         return view('backend.rbac.user.list', compact('all_user','search','startingSerial','roles','head_users','subhead_users')); 

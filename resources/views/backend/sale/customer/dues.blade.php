@@ -89,7 +89,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- {{ $all_customer->appends(request()->except('page'))->links() }} --}}
+                    {{-- paginated link code if using pagination --}}
                 </div>
                 
             </div>
